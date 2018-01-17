@@ -1,0 +1,24 @@
+NAME = prg19_1
+OBJS = $(NAME).obj
+DEF  = $(NAME).def
+
+!if $d(DEBUG)
+TASMDEBUG=/zi
+LINKDEBUG=/v
+!else
+TASMDEBUG=
+LINKDEBUG=
+!endif
+
+!if $d(MAKEDIR)
+IMPORT=$(MAKEDIR)\..\lib\import32
+!else
+IMPORT=import32
+!endif
+
+
+$(NAME).EXE: $(OBJS) $(DEF)
+  tlink32 /Tpe /aa /c  /v $(LINKDEBUG) $(OBJS),$(NAME),, $(IMPORT), $(DEF)
+
+.asm.obj:
+   tasm32 $(TASMDEBUG)/zi  /ml $&.asm,,,
