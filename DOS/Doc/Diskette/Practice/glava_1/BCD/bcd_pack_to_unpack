@@ -1,0 +1,36 @@
+BCD_PACK_TO_UNPACK	macro	PACK,N,UNPACK
+local	cycl
+;----------------------------------------------------------
+;BCD_PACK_TO_UNPACK PACK,N,UNPACK - макрокоманда 
+;преобразования упакованного BCD-числа размером N байт в 
+;неупакованное BCD-число размером N*2 байт
+;Вход: PACK - адрес упакованного BCD-числа, UNPACK - адрес 
+;неупакованного BCD-числа, N - длина PACK в байтах.
+;Порядок следования байт - младший байт по младшему адресу 
+;(Intel).
+;Выход: UNPACK - результат преобразования размером N*2 
+;байт.
+;----------------------------------------------------------
+	push	eax
+	push	ecx
+	push	es
+	push	edi
+	push	esi
+	push	ds
+	pop	es
+	mov	ecx,N
+	cld		;порядок обработки BCD-цифр - начиная с младшей
+	lea	edi,UNPACK
+	lea	esi,PACK
+cycl:	xor	ax,ax
+	lodsb		;загрузить очередные 2 упакованные BCD-цифры из PACK в al
+	ror	ax,4
+	ror	ah,4
+	stosw
+	loop	cycl
+	pop	esi
+	pop	edi
+	pop	es
+	pop	ecx
+	pop	eax
+	endm

@@ -1,0 +1,11 @@
+NAME = mmx16
+OBJS = $(NAME).obj
+
+TASMDEBUG=/zi
+LINKDEBUG=/v
+
+$(NAME).EXE: $(OBJS)
+  tlink  $(LINKDEBUG) $(OBJS)
+
+.asm.obj:
+   tasm $(TASMDEBUG) $&.asm,,,

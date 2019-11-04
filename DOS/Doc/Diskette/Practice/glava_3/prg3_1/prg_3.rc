@@ -1,0 +1,85 @@
+#include	"Prg_3.h"
+#include	<windows.h>
+IDI_ICON1               ICON    DISCARDABLE     "icon1.ico"
+MYMENU MENU DISCARDABLE 
+{	
+POPUP "&Текст"
+	{	
+	MENUITEM  "&DrawText",	IDM_DRAWTEXT
+	MENUITEM "&TextOut",		 IDM_TEXTOUT
+	}	
+POPUP "&Графика"
+	{	
+	POPUP "&Примитивы"                    
+	        {	
+	            MENUITEM "&Отрезок",	 IDM_LENGTH
+	            MENUITEM "&Прямоугольник",	 IDM_RECTANGLE
+	        }	
+	POPUP "&Эффекты"
+	        {
+	            MENUITEM "&Павлин",	IDM_PEACOCK
+	            MENUITEM "&Кружева",	IDM_LACES
+			MENUITEM "&Еще кружева из DLL(без лок. перем)",IDM_DLL_LACES_1
+			MENUITEM "&Еще кружева из DLL(с лок. перем)",IDM_DLL_LACES_2
+	        }	
+	}	
+MENUITEM "&About",		 IDM_ABOUT
+}
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog для отрезка
+//
+
+IDD_DIALOG1 DIALOG DISCARDABLE  0, 0, 186, 95
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Отрезок"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,35,72,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,118,72,50,14
+    LTEXT           "Задайте координаты концов отрезка:",IDC_STATIC,22,6,
+                    134,8
+    EDITTEXT        IDC_EDIT1,34,37,20,12,ES_AUTOHSCROLL
+    LTEXT           "Xstart",IDC_STATIC,5,40,19,8
+    LTEXT           "Ystart",IDC_STATIC,5,54,19,8
+    LTEXT           "Xend",IDC_STATIC,91,39,18,8
+    LTEXT           "Yend",IDC_STATIC,91,52,18,8
+    EDITTEXT        IDC_EDIT2,34,52,20,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT3,118,36,20,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT4,118,52,20,12,ES_AUTOHSCROLL
+END
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog для прямоугольника
+//
+
+IDD_DIALOG2 DIALOG DISCARDABLE  0, 0, 186, 95
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Прямоугольник"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,35,72,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,118,72,50,14
+    LTEXT           "Задайте координаты углов прямоугольника:",IDC_STATIC,22,6,
+                    174,8
+    EDITTEXT        IDC_EDIT1,34,37,20,12,ES_AUTOHSCROLL
+    LTEXT           "X",IDC_STATIC,22,39,8,8
+    LTEXT           "Y",IDC_STATIC,21,55,8,8
+    LTEXT           "X",IDC_STATIC,104,39,8,8
+    LTEXT           "Y",IDC_STATIC,104,54,8,8
+    EDITTEXT        IDC_EDIT2,34,52,20,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT3,118,36,20,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT4,118,52,20,12,ES_AUTOHSCROLL
+    LTEXT           "Left_Top:",IDC_STATIC,4,27,32,8
+    LTEXT           "Right_Bottom:",IDC_STATIC,65,27,46,8
+END
+
+AboutBox DIALOG  20, 20, 160, 80
+     STYLE WS_POPUP | WS_DLGFRAME
+     {
+     CTEXT "TASM32"                      -1,   0, 12, 160,  8
+     ICON  "IDI_ICON1"                  -1,   8,  8,   0,  0
+     CTEXT "Win32 Demo Program with DLL"      -1,   0, 36, 160,  8
+     CTEXT "(c) Юров Виктор, 2001"   -1,   0, 48, 160,  8
+     DEFPUSHBUTTON "OK"                IDOK,  64, 60,  32, 14, WS_GROUP
+     } 

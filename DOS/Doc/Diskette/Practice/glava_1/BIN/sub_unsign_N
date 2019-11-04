@@ -1,0 +1,22 @@
+;----------------------------------------------------------
+;sub_unsign_N - процедура вычитания чисел размером N байт без учета знака
+;Вход: minuend и deduction - уменьшаемое и вычитаемое, N - длина в байтах.
+;Выход: minuend - значение разности.
+;----------------------------------------------------------
+.data
+;значения в minuend и deduction нужно внести
+minuend	db	?	;уменьшаемое
+N=$-minuend		;длина в байтах значений minuend и deduction
+deduction	db	?	;вычитаемое
+.code
+sub_unsign_N	proc
+	mov	cl,N
+	xor	si,si
+cycl:	mov	al,deduction[si]
+	sbb	minuend[si],al
+	jnc	@@m1
+	neg	minuend[si]
+@@m1:	inc	si
+	loop	cycl
+	ret
+sub_unsign_N	endp

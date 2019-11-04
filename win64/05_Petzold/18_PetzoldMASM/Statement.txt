@@ -1,7 +1,0 @@
-2017-12-17
-~~~~~~~~~~
-Primary goals have been achieved:
-1) Principles of Windows(R) programs are understood. Procedures, infinite loop, parameters passing, structures, variables, calling convention, stack usage and alignment;
-2) win64 SDI and MDI Application Templates have been built with fasm and MASM with and without macros;
-3) Petzold's MDI sample is translated totally into fasm and partially into MASM. The main trouble of MASM-built app is CRASH after calling of HeapFree function. Thread programming will be learned in 2018 in Petzold's lessons. So MASM64MDI will stand-by until this Windows' technology is unveiled.
-The 2017 plan on programming is completed successfully

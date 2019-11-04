@@ -1,0 +1,9 @@
+*****
+MINICA'S(r) ASCII - BCD converters(tm) description sector
+*****
+Purpose:	convertion ASCII to unpacked BCD
+		for work after keyboard intput 
+*****
+0001	finished full-functional program
+Misadvantages: none
+*****

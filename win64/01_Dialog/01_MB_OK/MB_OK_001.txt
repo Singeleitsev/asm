@@ -1,0 +1,9 @@
+00007FF6C7101000 | sub rsp,28                                     |
+00007FF6C7101004 | xor r9,r9                                      |
+00007FF6C7101007 | lea r8,qword ptr ds:[7FF6C7103000]             | 7FF6C7103000:"Message"
+00007FF6C710100E | lea rdx,qword ptr ds:[7FF6C7103008]            | 7FF6C7103008:"Hello World!"
+00007FF6C7101015 | xor rcx,rcx                                    |
+00007FF6C7101018 | call <mb_ok_001.MessageBoxA>                   |
+00007FF6C710101D | xor rcx,rcx                                    |
+00007FF6C7101020 | call <mb_ok_001.ExitProcess>                   |
+00007FF6C7101025 | add rsp,28                                     |

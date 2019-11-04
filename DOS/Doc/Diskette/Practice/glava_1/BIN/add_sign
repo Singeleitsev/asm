@@ -1,0 +1,33 @@
+;----------------------------------------------------------
+;add_sign - процедура сложения чисел размером 1 байт с учетом знака
+;Вход: summand_1 и summand_2 - слагаемые.
+;Выход: sum_b или sum_w - значение суммы, в зависимости от наличия расширения знака.
+;----------------------------------------------------------
+.data
+sum_w	label	word
+summand_1	db	?	;значения в summand_1 и summand_2 нужно внести
+carry	db	0	;расширение знака
+summand_2	db	?
+.code
+add_sign	proc
+	mov	al,summand_2
+	add	summand_1,al
+	jc	@@cf1_of1
+	jo	@@cf0_of1
+;cf=0 of=0 -> результат верный
+;cf=1 of=0 -> результат верный
+r_true:	jmp	end_p	;результат -> summand_1
+@@cf1_of1:
+	jno	@@cf1_of0
+;cf=1 of=1 -> результат неверный
+	mov	carry,0ffh	;расширение знака д.б. =1, результат ->sum_w
+	jmp	end_p
+@@cf1_of0:
+;cf=1 of=0 -> результат верный
+	jmp	r_true	;результат -> summand_1
+@@cf0_of1:
+;cf=0 of=1 -> результат неверный
+	mov	carry,0	;расширение знака д.б. =0, результат ->sum_w
+	jmp	end_p
+end_p:	ret
+add_sign	endp

@@ -1,0 +1,22 @@
+2018-01-21
+1. The ASM Code is written correctly.
+The goal was to understand in/out operations with a Dialog Window.
+This goal has been achieved.
+
+2. But there's a severe error in *.rc file/
+Urov's original code places LTEXT's after EDITTEXT's
+This sequence causes an error with duplicating, shifting,
+and overlapping of all elements.
+
+3. Placing LTEXT's before EDITTEXT's fixes an error with *duplicating*
+But the new error occurs.
+After filling all fields and pressing "OK" button
+the Application stops responding
+and continues to operate only after switching to any other application
+and re-setting focus from the TaskBar
+
+4. I won't search the reason of this error now because:
+(a) it doesn't affect the functions
+that were studied in the Urov's Lesson 19.
+(b) it's caused by the original Urov's code
+that was made for TASM32

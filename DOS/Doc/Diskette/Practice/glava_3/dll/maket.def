@@ -1,0 +1,5 @@
+NAME         maket
+DESCRIPTION 'Assembly Console Windows Program'
+CODE         PRELOAD MOVEABLE DISCARDABLE
+DATA         PRELOAD MOVEABLE MULTIPLE
+EXPORTS

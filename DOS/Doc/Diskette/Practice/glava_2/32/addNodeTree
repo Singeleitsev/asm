@@ -1,0 +1,64 @@
+;--------------------------------------------------------------------------------;
+;addNodeTree - рекурсивная процедура включения нового узла в дерево.
+;Вход: NewItem - новый элемент размером в байт.
+;при первом вызове необходимо инициализировать след. поля и регистры:
+;count_call=0
+;edi=0
+;eax= адрес указателя на корень дерева (lea	eax,HeadTree)
+;ebx= содержимому указателя на корень дерева (mov	ebx,HeadTree)
+;--------------------------------------------------------------------------------;
+addNodeTree	proc
+	inc	count_call	;подсчет количества вызовов процедуры (для согласования количества записей и извлечений из стека)
+	cmp	ebx,0	;дерево пустое или это лист, к которому будем стыковаться?
+	jne	@@m_search	;переход если это не так
+	mov	ebx,eax	;адрес папы в ebx
+;запрашиваем блок памяти из кучи для нового узла дерева:
+;LPVOID HeapAlloc(HANDLE hHeap, DWORD dwFlags, DWORD dwBytes);
+	push	type node_tree	;размер структуры для узла дерева
+	push	0	;флаги не задаем
+	push	Hand_Head	;описатель кучи
+	call	HeapAlloc
+	add	ebx,edi	;позиционируем место записи указателя внутри папы
+	mov	[ebx],eax	;запоминаем указатель на новый узел дерева в папе
+	mov	ebx,eax
+;подчистим выделенную область памяти в куче, заодно обнулятся все указатели
+	mov	edi,eax
+	push	ecx
+	mov	ecx,type node_tree
+	mov	al,0
+rep	stosb
+	pop	ecx
+;число из NewItem записываем в новый узел
+	mov	al,NewItem	;число в al
+	mov	[ebx].simbol,al	;и в узел дерева
+;подчистим за собой стек и на выход
+	mov	ecx,count_call
+	dec	ecx
+	jecxz	$+10	;на команду "jmp	@@exit_p	;и на выход"
+	pop	NewNode	;pop "в никуда"
+	loop	$-6
+	jmp	@@exit_p	;и на выход
+@@m_search:
+;ищем место в дереве согласно условию упорядочивания и настраиваем указатели в узлах дерева
+	mov	al,NewItem	;число в al
+	cmp	al,[ebx].simbol
+	jae	@@m1	;если al >= [ebx].simbol 
+;если меньше, то идем по левой ветке
+	lea	edi,[ebx].l_son
+	sub	edi,ebx	;смещение в узле
+	mov	eax,ebx	;запомним адрес этого узла
+	mov	ebx,[ebx].l_son	;адрес младшего сына
+	call	addNodeTree
+	jmp	@@exit_p
+;если больше или равно, то по правой
+@@m1:
+	lea	edi,[ebx].r_son
+	sub	edi,ebx	;смещение в узле
+	mov	eax,ebx	;запомним адрес этого узла
+	mov	ebx,[ebx].r_son	;адрес старшего сына
+	call	addNodeTree
+	jmp	@@exit_p
+@@exit_p:
+	dec	count_call
+	ret
+	endp

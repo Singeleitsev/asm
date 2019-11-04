@@ -1,0 +1,5 @@
+LIBRARY		maket_dll
+DESCRIPTION	'Win32 DLL'
+EXPORTS		WriteCon
+		DrawPattern_1
+		DrawPattern_2

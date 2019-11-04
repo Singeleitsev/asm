@@ -1,0 +1,37 @@
+;----------------------------------------------------------
+;add_sign_N - процедура сложения с учетом знака чисел размером N байт
+;Вход: summand_1 и summand_2 - слагаемые, N - длина в байтах.
+;Выход: summand_1 или carry+summand_1 - значение суммы, в зависимости от наличия переполнения.
+;----------------------------------------------------------
+.data
+summand_1	db	?	;первое слагаемое
+N=$-summand_1		;длина в байтах значений summand_1 и summand_2
+carry	db	0	;расширение знака
+summand_2	db	?	;второе слагаемое
+.code
+add_sign_N	proc
+	mov	cx,N
+	mov	si,0-1
+cycl:	inc	si
+	mov	al,summand_2[si]
+	adc	summand_1[si],al
+	loop	cycl
+	jc	@@cf1_of1
+	jo	@@cf0_of1
+;cf=0 of=0 -> результат верный
+;cf=1 of=0 -> результат верный
+r_true:	jmp	end_p	;результат -> summand_1
+@@cf1_of1:
+	jno	@@cf1_of0
+;cf=1 of=1 -> результат неверный
+	mov	carry,0ffh	;расширение знака д.б. =1, результат ->sum_w
+	jmp	end_p
+@@cf1_of0:
+;cf=1 of=0 -> результат верный
+	jmp	r_true	;результат -> summand_1
+@@cf0_of1:
+;cf=0 of=1 -> результат неверный
+	mov	carry,0	;расширение знака д.б. =0, результат ->sum_w
+	jmp	end_p
+end_p:	ret
+add_sign_N	endp

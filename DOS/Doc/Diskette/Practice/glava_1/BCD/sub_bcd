@@ -1,0 +1,48 @@
+sub_bcd	macro	minuend,len_m, deduction,len_d, difference
+local	temp,m1,m2,exit_m
+;----------------------------------------------------------
+;sub_bcd minuend,len_m,deduction,len_d,difference - 
+;макрокоманда вычитани€ неупакованных BCD-чисел размером 
+;len_m и len_d байт и помещение результата в difference.
+;¬ход: minuend и deduction - адреса младших байт 
+;уменьшаемого и вычитаемого; len_m и len_d - длины 
+;уменьшаемого и вычитаемого в байтах.
+;¬ыход: difference - адрес младшего байта пол€ разности. 
+;ƒлина пол€ difference должна быть не меньше длины 
+;уменьшаемого.
+;ѕор€док следовани€ байт - младший байт по младшему адресу (Intel).
+;----------------------------------------------------------
+	push	si
+;копируем уменьшаемое в difference:
+	push	ds
+	pop	es
+	cld
+	lea	si,minuend
+	lea	di,difference
+	mov	cx,len_m
+	push	cx
+rep	movsb
+;копируем вычитаемое во врем. область temp:
+	jmp	m1
+temp	db	len_m dup (0)
+m1:
+	lea	si,deduction
+	lea	di,cs:temp
+	mov	cx,len_d
+	push	cs
+	pop	es
+rep	movsb
+	xor	si,si
+	pop	cx
+m2:	mov	al,minuend[si]
+	sbb	al,cs:temp[si]
+	aas
+	mov	difference[si],al
+	inc	si
+	loop	m2
+	jc	m3	;на обработку заема из старшего разр€да
+	jmp	exit_m
+m3:	nop
+exit_m:
+	pop	si
+	endm

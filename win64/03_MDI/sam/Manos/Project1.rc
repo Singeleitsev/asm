@@ -1,0 +1,87 @@
+#include "\masm32\include\resource.h"
+
+#define					IDB_TOOLBAR				51
+#define					IDR_MAINMENU			101
+#define					IDR_CHILDMENU			102
+#define					IDM_FILE_NEW			201
+#define					IDM_FILE_OPEN			202
+#define					IDM_FILE_CLOSE			203
+#define					IDM_FILE_EXIT 			204
+#define					IDM_FILE_SAVE			205
+#define					IDM_FILE_PRINT			206
+#define					IDM_EDIT_CUT			207
+#define					IDM_EDIT_COPY			208
+#define					IDM_EDIT_PASTE			209
+#define					IDM_VIEW_TOOLBAR		210
+#define					IDM_VIEW_STATUS			211
+#define					IDM_WIN_TILEHORZ		212
+#define					IDM_WIN_TILEVERT		213
+#define					IDM_WIN_CASCADE			214
+#define					IDM_HELP_CONTENTS		215
+#define					IDM_HELP_ABOUT			216
+#define					ID_TOOLBAR				250
+#define 				IDC_STATIC_ABOUT		1001
+#define					IDC_BTN_OK				1002
+
+
+IDB_TOOLBAR		BITMAP  DISCARDABLE	"Res/Toolbar.bmp"
+
+IDR_MAINMENU 	MENU DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New",			IDM_FILE_NEW
+        MENUITEM "&Open",			IDM_FILE_OPEN
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",			IDM_FILE_EXIT
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "Contents",		IDM_HELP_CONTENTS
+        MENUITEM SEPARATOR
+        MENUITEM "About",			IDM_HELP_ABOUT
+    END
+END
+
+IDR_CHILDMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New",			IDM_FILE_NEW
+        MENUITEM "&Open",			IDM_FILE_OPEN
+        MENUITEM "&Close",			IDM_FILE_CLOSE
+        MENUITEM SEPARATOR
+        MENUITEM "&Save",			IDM_FILE_SAVE
+        MENUITEM "&Print",			IDM_FILE_PRINT
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",			IDM_FILE_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "Cut",				IDM_EDIT_CUT
+        MENUITEM "Copy",			IDM_EDIT_COPY
+        MENUITEM "Paste",			IDM_EDIT_PASTE
+    END
+    POPUP "&Window"
+    BEGIN
+        MENUITEM "Tile Horizontal",	IDM_WIN_TILEHORZ
+        MENUITEM "Tile Vertical",	IDM_WIN_TILEVERT
+        MENUITEM "Cascade",			IDM_WIN_CASCADE
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "Contents",		IDM_HELP_CONTENTS
+        MENUITEM SEPARATOR
+        MENUITEM "About",			IDM_HELP_ABOUT
+    END
+END
+;-------------------------Dialogs-------------------------
+ABOUTDLG DIALOG DISCARDABLE  10, 10, 180, 100
+STYLE DS_MODALFRAME | DS_CENTER | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "SdiApp"
+FONT 12, "Times New Roman"
+BEGIN
+    CTEXT           "\nMdiApp\n\nA Multi Document Interface Application,\n written using Manos's  Coder's Studio IDE. \n\n Copyright © Your Name 2010.\n Version 1.0",
+                    IDC_STATIC_ABOUT,10,5,160,70,SS_SUNKEN
+    PUSHBUTTON      "OK",IDC_BTN_OK,130,82,40,10
+END

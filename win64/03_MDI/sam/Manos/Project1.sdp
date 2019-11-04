@@ -1,0 +1,162 @@
+[PROJECT_SETTINGS]
+ProjectType=0
+VersionType=1
+OutName=Project1.exe
+ObjDir=C:\MyProjects\Project1\Release
+OutDir=C:\MyProjects\Project1\Release
+AsmType=1
+AsmDir=Bin\JWASM.exe
+WarnLevel=0
+SymbDebInfo=0
+LineDebInfo=0
+WarnAsErrors=0
+AsmNoExt=0
+AsmOptions=/c /Cp /coff /nologo /W0
+iLinkType=0
+LinkDir=\masm32\bin\Link.exe
+GenDebInfo=0
+LinkIncrem=0
+ObjLinking=
+LinkOptions=/SUBSYSTEM:WINDOWS /NOLOGO /RELEASE /INCREMENTAL:NO
+RcType=0
+RcDir=\masm32\bin\RC.exe
+RcPrintPogr=1
+RcLang=6
+RcOptions=/v
+[PROJECT_FILES]
+1=Project1.asm
+2=Project1.inc
+3=Project1.rc
+[OPENED_FILES]
+1=C:\MyProjects\Project1\Project1.asm
+nFiles=1
+[GENERAL]
+Platform=0
+Version=0
+Charset=0
+AsmType=2
+CCType=0
+LinkType=1
+RcType=1
+[STRINGS_SIZE]
+OutNameSize=5
+IntermediateSize=5
+OutFileSize=5
+MasmSize=64
+JWasmSize=64
+PoAsmSize=64
+PoCDefSize=0
+PoCUnDefSize=0
+MsLinkSize=128
+PoLinkSize=128
+MsRcSize=32
+PoRcSize=32
+[STRINGS]
+OutName=empty
+Intermediate=empty
+OutFile=empty
+MasmExtra=empty
+JWasmExtra=empty
+PoAsmExtra=empty
+PoCDefSymb=
+PoCUnDefSymb=
+MsLinkExtra=empty
+PoLinkExtra=empty
+MsRcExtra=empty
+PoRcExtra=empty
+[MASM]
+0=Yes (/nologo)
+1=Yes (/c)
+2=Yes (/Cp)
+3=COFF (/coff)
+4=stdcall (/Gz)
+5=No
+6=Default
+7=No
+8=2 (/W2)
+9=No
+10=No
+[JWASM]
+0=Yes (-nologo)
+1=Yes (-c)
+2=None (-Cp)
+3=32-bit COFF (-coff)
+4=stdcall (-Gz)
+5=Yes (-Zg)
+6=Flat (-mf)
+7=Default
+8=No
+9=2 (-W2)
+10=No
+11=No
+[POASM]
+0=IA32 (/AIA32)
+1=No
+2=Yes
+3=stdcall (/Gz)
+4=No
+5=1 (/V1)
+6=No
+7=No
+[POCC]
+0=C11 (-std:C11)
+1=No
+2=Default
+3=Multi-threaded LIB (-MT)
+4=Level 1 (-W1)
+5=x86 (-Tx86)
+6=Maximize speed (-Ot)
+7=Precise (-fp:precise)
+8=Nothing (-Ob0)
+9=Nothing
+10=No
+11=No
+12=No
+13=No
+14=No
+15=No
+[MSLINK]
+0=Yes (/nologo)
+1=No (/INCREMENTAL:NO)
+2=No
+3=Nothing
+4=Default
+5=Not Set
+6=Default
+7=No
+8=No
+9=
+10=No
+11=MachineX86 (/MACHINE:X86)
+12=Merge .rdata to .text (/merge:.rdata=.text)
+13=No (/OPT:NOWIN98)
+14=Eliminate Unreferenced Data (/OPT:REF)
+15=Windows (/SUBSYSTEM:WINDOWS)
+[POLINK]
+0=No (/DEBUG:NO)
+1=Nothing
+2=Default
+3=Not Set
+4=Default
+5=No
+6=No
+7=
+8=No
+9=MachineX86 (/MACHINE:X86)
+10=Merge .rdata to .text (/merge:.rdata=.text)
+11=No (/OPT:NOWIN98)
+12=Eliminate Unreferenced Data (/OPT:REF)
+13=Windows (/SUBSYSTEM:WINDOWS)
+[MSRC]
+0=Default
+1=Yes (/v)
+2=No
+3=No
+4=Yes
+5=No
+[PORC]
+0=Default
+1=Yes (/V)
+2=No
+3=No
+4=No

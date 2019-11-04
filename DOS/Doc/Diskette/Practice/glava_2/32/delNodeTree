@@ -1,0 +1,93 @@
+;delNodeTree - рекурсивная процедура исключения узла из дерева [4].
+;Вход: при первом вызове необходимо инициализировать след. поля и регистры
+;ebx= содержимое указателя на корень дерева (mov	ebx,HeadTree)
+;al=delItem - исключаемый элемент размером в байт в регистре al
+;count_call=0
+;--------------------------------------------------------------------------------;
+delNodeTree	proc
+	inc	count_call	;подсчет количества вызовов процедуры (для согласования количества записей и извлечений из стека)
+	cmp	ebx,0	;дерево пустое или элемента со значением delItem в дереве нет
+	je	@@exit_pp	;выход, если это так
+	cmp	al,[ebx].simbol	;al<[ebx].simbol
+	jae	@@m1	;переход, если нет
+lea	edi,[ebx].l_son
+	mov	ebx,[ebx].l_son
+	call	delNodeTree
+	jmp	@@exit_p	;выход
+@@m1:
+	cmp	al,[ebx].simbol	;al>[ebx].simbol
+	jbe	@@m2	;переход, если нет
+lea	edi,[ebx].r_son	;
+	mov	ebx,[ebx].r_son
+	call	delNodeTree
+	jmp	@@exit_p	;выход
+@@m2:
+;элемент найден, т.е. al=[ebx].simbol
+;удаление элемента с одним потомком (младшим или старшим)
+	cmp	[ebx].r_son,0
+	jne	@@m3
+	mov	eax,ebx
+	mov	ebx,[ebx].l_son
+	mov	[edi],ebx
+	jmp	@@m_del
+@@m3:
+	cmp	[ebx].l_son,0
+	jne	@@m4
+	mov	eax,ebx
+	mov	ebx,[ebx].r_son
+	mov	[edi],ebx
+	jmp	@@m_del
+@@m4:
+;удаление элемента с двумя потомками - для этого существует отдельная процедура del (рекурсивная)
+	mov	eax,[ebx].l_son
+;адрес поля с адресом младшего (левого) сына для случая, если он не имеет правого потомка
+	lea	edi,[ebx].l_son
+	call	del	;передаваемые параметры - указатели в eax и ebx, адрес в edi
+@@m_del:
+;удаление элемента (освобождение памяти)
+;BOOL HeapFree(HANDLE hHeap,  // handle to heap 
+;DWORD dwFlags, // heap free options 
+;LPVOID lpMem   // pointer to memory);
+	push	eax	;адрес освобождаемого блока
+	push	0
+	push	Hand_Head	;описатель кучи
+	call	HeapFree
+@@exit_pp:	;на эту метку переход, если дерево пустое или элемента со значением delItem в дереве нет
+;подчистим за собой стек и на выход
+	mov	ecx,count_call
+	dec	ecx
+	jecxz	$+10	;на команду "jmp	@@exit_p	;и на выход"
+	pop	NewNode	;pop "в никуда"
+	loop	$-6
+	jmp	@@exit_p	;и на выход
+@@exit_p:
+	dec	count_call
+	ret
+delNodeTree	endp
+del	proc
+;вспомогательная рекурсивная процедура исключения узла из дерева [4]
+;на входе - регистры eax и ebx
+;в eax адрес ближайшего левого узла для удаляемого элемента - мы должны спуститься вдоль его самой правой ветви
+;edi - адрес поля с адресом младшего (левого) сына для случая если он не имеет правого потомка
+	inc	count_call	;подсчет количества вызовов процедуры
+	cmp	[eax].r_son,0
+	je	@@m1
+	lea	edi,[eax].r_son	;адрес со старшим сыном у папы
+	mov	eax,[eax].r_son
+	call	del
+	jmp	@@exit_p
+@@m1:
+;переписываем содержательную часть из самого правого элемента в содержательную часть удаляемого элемента
+	push	eax
+	mov	al,[eax].simbol
+	mov	[ebx].simbol,al
+	pop	eax
+	push	eax
+;настраиваем ссылку на сына у его папы
+	mov	eax,[eax].l_son
+	mov	[edi],eax
+	pop	eax
+@@exit_p:	
+	dec	count_call
+	ret
+del	endp

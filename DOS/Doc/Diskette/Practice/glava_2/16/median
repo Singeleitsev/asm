@@ -1,0 +1,66 @@
+median	proc
+;----------------------------------------------------------
+;median - процедура нахождения k-го по величине элемента 
+;массива mas длиною n. Для нахождения медианы k=n/2.
+;Вход: bx - номер k-го элемента (нумерация в диапазоне 
+;0..n-1); ax - n длина mas[i], i=0,n-1
+;Выход: x - значение k-го по величине элемента 
+;последовательности mas[n].
+;----------------------------------------------------------;проверка, что k=<n-1
+	dec	ax	;нумерация элементов с 0
+	cmp	bx,ax
+	jg	exit_error	;если ошибка, то возврат значения 0ffffh в ax
+;адресация элементов массива с 0
+	dec	L
+	dec	R
+@@m8:
+;цикл(1)начало, пока L<R
+	mov	ax,L
+	cmp	ax,R
+	jge	exit
+;temp:=mas[k]
+	mov	al,mas[bx]	;al - это x
+	mov	si,L	;I:=L	si это i
+	mov	di,R	;J:=R 	di это j
+@@m7:
+;цикл repeat начало
+	cmp	mas[si],al	;mas[i]<temp ???
+	jae	@@m3
+	inc	si
+	jmp	@@m7
+@@m3:
+	cmp	al,mas[di]	; temp<mas[j] ???
+	jae	@@m5
+	dec	di
+	jmp	@@m3
+@@m5:
+	cmp	si,di	;I=<J	???
+	ja	@@m6
+;если I=<J, то обмен mas[i]<->mas[j]
+	mov	dl,mas[si]
+	xchg	mas[di],dl
+	xchg	mas[si],dl
+	inc	si	;I:=I+1
+	dec	di	;J=J+1
+@@m6:
+;цикл(2) конец, пока I=<J:
+	cmp	si,di
+	jg	@@m1	;ja нельзя !!!
+	jmp	@@m7
+@@m1:
+	cmp	di,k	;j<k ???
+	jge	$+6
+	mov	L,si	;L<-I
+	cmp	k,si	;k<i ???
+	jge	$+6
+	mov	R,di	;R<-J
+;цикл(1)конец
+	jmp	@@m8
+exit_error:
+;выход с ошибкой k>n-1
+	mov	ax,0ffffh
+	ret
+;выход - медиана в al
+exit:
+	ret
+median	endp

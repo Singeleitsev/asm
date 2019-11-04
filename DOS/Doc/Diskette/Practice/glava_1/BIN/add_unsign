@@ -1,0 +1,20 @@
+;----------------------------------------------------------
+;add_unsign - процедура сложени€ чисел размером 1 байт без учета знака
+;¬ход: summand_1 и summand_2 - слагаемые.
+;¬ыход: sum_b или sum_w - значение суммы, в зависимости от наличи€ переполнени€.
+;----------------------------------------------------------
+.data
+summand_1	db	?	;значени€ в summand_1 и summand_2
+summand_2	db	?	;нужно внести
+sum_w	label	word
+sum_b	db	0
+carry	db	0
+.code
+add_unsign	proc
+	mov	al,summand_2
+	add	al,summand_1
+	mov	sum_b,al
+	jnc	end_p	;проверка на переполнение
+	adc	carry,0
+end_p:	ret
+add_unsign	endp

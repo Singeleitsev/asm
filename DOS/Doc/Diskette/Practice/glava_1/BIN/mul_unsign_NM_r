@@ -1,0 +1,58 @@
+.data
+k	db	0	;перенос 0 Ј k < 255
+b	dw	100h	;размер машинного слова
+.code
+mul_unsign_NM_r	macro	u,i,v,j,w
+local	m2,m4,m6
+;----------------------------------------------------------
+;mul_unsign_NM_r u,i,v,j,w - макрокоманда умножения I-байтного числа на число размером J байт
+;(порядок - старший байт по младшему адресу (не Intel))
+;Вход: U - адрес первого множителя; i - длина U; V - адрес второго множителя; j - длина V; W - адрес области размерностью i+j байт, куда необходимо поместить произведение; b=256 - размерность машинного слова.
+;Выход: W - произведение размерностью i+j байт.
+;----------------------------------------------------------
+	push	si
+;очистим w
+	push	ds
+	pop	es
+	xor	al,al
+	lea	di,w
+	mov	cx,i+j
+rep	stosb
+;m1
+	mov	bx,j-1	;j=0..m-1
+	mov	cx,j
+m2:
+	push	cx	;вложенные циклы
+	cmp	v[bx],0
+	je	m6
+;m3
+	mov	si,i-1	;i=0..n-1
+	mov	cx,i
+	mov	k,0
+m4:
+	mov	al,u[si]
+	mul	byte ptr v[bx]
+	xor	dx,dx
+	mov	dl,w[bx+si+1]
+	add	ax,dx
+	xor	dx,dx
+	mov	dl,k
+	add	ax,dx	;t=(ax) - временная переменная
+	push	dx
+	xor	dx,dx
+	div	b	;t mod b
+	mov	ah,dl
+	pop	dx
+	mov	k,al
+	mov	w[bx+si+1],ah
+;m5
+	dec	si
+	loop	m4
+	mov	al,k
+	mov	w[bx],al
+m6:
+	dec	bx
+	pop	cx
+	loop	m2
+	pop	si
+	endm

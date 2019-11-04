@@ -1,0 +1,12 @@
+NAME = mmx32
+OBJS = $(NAME).obj
+DEF  = $(NAME).def
+
+IMPORT=import32
+
+$(NAME).EXE: $(OBJS) $(DEF) 
+  tlink32 /Tpe /aa /c /v  $(OBJS),$(NAME),, $(IMPORT), $(DEF)
+
+.asm.obj:
+   tasm32 /zi /ml $&.asm,,,
+

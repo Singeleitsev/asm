@@ -1,0 +1,20 @@
+*****
+MINICA'S(r) In - out converters(tm) description sector
+*****
+Purpose:	convertion from ASCII-keycodes to unpacked BCD-numbers
+		after keyboard input and
+		convertion from unpacked BCD-numbers to ASCII-keycodes
+		before screen output 
+*****
+*****
+0001	Полностью работоспособные макросы
+Недостатки:
+	-	Модуль GetBCD не позволяет исправлять возможные ошибки
+	-	при вводе исходных данных;
+	-	модуль GetBCD не осуществляет контроля над форматом 
+	-	вводимых данных
+*****
+0002	Полностью работоспособные макросы
+Недостатки: те же.
+*****
+0003	

@@ -1,0 +1,19 @@
+*****
+MINICA'S(r) Bin -> BCD converters(tm) description sector
+*****
+Purpose:	convertion binary numbers to unpacked BCD
+		for work or
+		before screen output 
+*****
+Bin2BCD	finished full-functional program
+*****
+Nachar
+Misadvantages:
+	-	ineffective way of computing
+*****
+Yurov
+Misadvantages:
+	-	it's a program and not a macro,
+	so it can't be included in other programs;
+	-	it has some troubles making MASM assembling impossible.
+*****
