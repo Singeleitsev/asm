@@ -1,8 +1,8 @@
 option casemap:none
 ;Standard Libraries
-	includelib D:\bin\dev\ml64\VS2017\lib\user32.lib
-	includelib D:\bin\dev\ml64\VS2017\lib\kernel32.lib
-	;includelib D:\bin\dev\ml64\VS2017\lib\gdi32.lib
+	includelib D:\bin\dev\ml64\VS2019\lib\user32.lib
+	includelib D:\bin\dev\ml64\VS2019\lib\kernel32.lib
+	;includelib D:\bin\dev\ml64\VS2019\lib\gdi32.lib
 ;Custom Includes
 	include include\API64.inc
 	include include\struct64.inc
