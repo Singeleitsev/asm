@@ -34,7 +34,8 @@
 	Call2 GetWindowLongPtrA,hwnd,0
 	mov lpNgonData,rax
 	mov rdi,rax ;lpNgonData
-
+;Note! The N Number has already been stored in wmNgonCreate
+;at the address [lpN] = [lpNGonData+00h]
 	add rdi,4 ;[lpNgonData+04h]
 	mov lpAlpha,rdi
 	add rdi,4 ;[lpNgonData+08h]

@@ -44,7 +44,7 @@ cmp iMsg,222h ;WM_MDIACTIVATE
 cmp iMsg,5 ;WM_SIZE
 	je wmNgonSize
 cmp iMsg,202h ;WM_LBUTTONUP
-	je wmNgonSize
+	je wmNgonLButtonUp
 cmp rdx,11h ;WM_QUERYENDSESSION
 	;;In Windows NT WM_QUERYENDSESSION
 	;;can be sent only to the Frame Window?

@@ -1,38 +1,8 @@
-;DrawNgon:
-
-;NGONDATA
-;
-;00h-N ;Number of Vertices
-;04h-Alpha ;Minimal Angle
-;08h-AlphaCurr ;Current Angle
-;0Ch-CenterX
-;10h-CenterY
-;14h-Radius
-;18h-i ;Iteration Counter
-;1Ch-Buffer
-;
-;lpNgonX = [lpNgonData+20h]
-;(N*4)-x[N];...;04h-x[1];00h-x[0]
-;
-;lpNgonY = [lpNgonData+20h+(N+1)*4]
-;(N*4)-y[N];...;04h-y[1];00h-y[0]
-;
-;lpNgonR = [lpNgonData+20h+(N+1)*4+(N+1)*4]
-;02h-b[0];01h-g[0];00h-r[0]
-;05h-b[1];04h-g[1];03h-r[1]
-;(N*3+3)-b[N];(N*3+2)-g[N];(N*3+1)-r[N]
-;
-;sizeof NGONDATA =
-;= 20h+(N+1)*4+(N+1)*4+(N+1)*3 =
-;= 20h+(N+1)*0Bh = (N*0Bh)+2Bh
-;
-;Vertex Colors are loaded in wmNgonCreate
-;Coordinates of Vertices are calculated in wmNgonSize
-;Coordinates of Current Point are calculated in wmNgonPaint
+;lblDrawNgon:
 
 ;Get NgonData Variable Pointers
 ;lpNgonData = (LPRECTDATA) GetWindowLong (hwnd, 0)
-	include 711_GetData.asm
+	include 711_SetPointers.asm
 
 ;Set Counter
 ;0FFFFh = 65,535 Points
@@ -42,8 +12,7 @@
 	mov rax,lpIteration
 	mov dword ptr [rax],0FFFFh
 
-;lblNgonNewPoint:
-@@:
+@@: ;lblNgonNewPoint:
 ;x = (x + 2*x_A)/3,
 ;y = (y + 2*y_A)/3,
 ;where
@@ -232,7 +201,7 @@
 	;mov r9d,dword ptr [rsi] ;Color
 	;and r9,0FFFFFFh
 
-	mov r9,0FFh ;Red
+	;mov r9,0FFh ;Red
 
 	call SetPixel
 	add rsp,20h
@@ -241,6 +210,7 @@
 	mov rax,lpIteration
 	dec dword ptr [rax]
 	cmp dword ptr [rax],0
-jg @b ;lblNgonNewPoint ;Loop
-
-
+;Loop
+	jg @b ;lblNgonNewPoint
+;Return
+	;jmp lpBuffer

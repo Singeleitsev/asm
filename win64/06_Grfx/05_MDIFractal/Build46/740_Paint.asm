@@ -14,6 +14,7 @@ wmNgonPaint:
 	add rsp,20h
 
 include 741_DrawVertices.asm
+
 include 742_DrawNgon.asm
 
 ;Release Graphic Context

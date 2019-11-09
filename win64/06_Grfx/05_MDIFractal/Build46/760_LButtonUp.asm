@@ -9,6 +9,9 @@ wmNgonLButtonUp:
 	add rsp,20h
 
 include 742_DrawNgon.asm
+	;mov rax,lpBuffer
+	;mov qword prt[rax],rip
+	;jmp lblDrawNgon
 
 ;Release Graphic Context
 	sub rsp,20h
