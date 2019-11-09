@@ -1,11 +1,10 @@
 option casemap:none
-;Standard Includes and Libraries
-	include D:\bin\dev\ml64\include\user32.inc
-	include D:\bin\dev\ml64\include\kernel32.inc
-	includelib D:\bin\dev\ml64\VS2017\lib\user32.lib
-	includelib D:\bin\dev\ml64\VS2017\lib\kernel32.lib
+;Standard Libraries
+	includelib C:\bin\dev\ml64\VS2017\lib\user32.lib
+	includelib C:\bin\dev\ml64\VS2017\lib\kernel32.lib
+	includelib C:\bin\dev\ml64\VS2017\lib\msvcrt.lib
 ;Custom includes
-	include include\Spell_09.inc
+	include include\API64.inc
 
 .const
 ;Window Caption
@@ -15,39 +14,31 @@ option casemap:none
 	pi dq 3.14159265389
 
 .data
-;Formatted String
-	szFmt db "hInstance = %016Xh",0Ah, "hIcon = %016Xh",0Ah, "hCursor = %016Xh",0
-	n = $ - szFmt + 33
-	szText db n dup (?)
 ;Output Messages
-	szYMM0 db  "ymm0:", 9,  "%f", 9, "%f", 9, "%f", 9, "%f" ,0; 0Dh,0Ah
-	szYMM1 db  "ymm1:", 9,  "%f", 9, "%f", 9, "%f", 9, "%f" ,0; 0Dh,0Ah
-	szYMM2 db  "ymm2:", 9,  "%f", 9, "%f", 9, "%f", 9, "%f" ,0; 0Dh,0Ah
-	szYMM3 db  "ymm3:", 9,  "%f", 9, "%f", 9, "%f", 9, "%f" ,0; 0Dh,0Ah
-	szYMM4 db  "ymm4:", 9,  "%f", 9, "%f", 9, "%f", 9, "%f" ,0; 0Dh,0Ah
-	szYMM5 db  "ymm5:", 9,  "%f", 9, "%f", 9, "%f", 9, "%f" ,0; 0Dh,0Ah
-	szYMM6 db  "ymm6:", 9,  "%f", 9, "%f", 9, "%f", 9, "%f" ,0; 0Dh,0Ah
-	szYMM7 db  "ymm7:", 9,  "%f", 9, "%f", 9, "%f", 9, "%f" ,0; 0Dh,0Ah
-	szYMM8 db  "ymm8:", 9,  "%f", 9, "%f", 9, "%f", 9, "%f" ,0; 0Dh,0Ah
-	szYMM9 db  "ymm9:", 9,  "%f", 9, "%f", 9, "%f", 9, "%f" ,0; 0Dh,0Ah
-	szYMM10 db "ymm10:", 9,  "%f", 9, "%f", 9, "%f", 9, "%f" ,0; 0Dh,0Ah
-	szYMM11 db "ymm11:", 9,  "%f", 9, "%f", 9, "%f", 9, "%f" ,0; 0Dh,0Ah
-	szYMM12 db "ymm12:", 9,  "%f", 9, "%f", 9, "%f", 9, "%f" ,0; 0Dh,0Ah
-	szYMM13 db "ymm13:", 9,  "%f", 9, "%f", 9, "%f", 9, "%f" ,0; 0Dh,0Ah
-	szYMM14 db "ymm14:", 9,  "%f", 9, "%f", 9, "%f", 9, "%f" ,0; 0Dh,0Ah
-	szYMM15 db "ymm15:", 9,  "%f", 9, "%f", 9, "%f", 9, "%f" ,0; 0Dh,0Ah
+	szYMM db 'ymm0:  %f,%f,%f,%f', 0Ah,0Dh
+	db 'ymm1:  %f,%f,%f,%f', 0Ah,0Dh
+	db 'ymm2:  %f,%f,%f,%f', 0Ah,0Dh
+	db 'ymm3:  %f,%f,%f,%f', 0Ah,0Dh
+	db 'ymm4:  %f,%f,%f,%f', 0Ah,0Dh
+	db 'ymm5:  %f,%f,%f,%f', 0Ah,0Dh
+	db 'ymm6:  %f,%f,%f,%f', 0Ah,0Dh
+	db 'ymm7:  %f,%f,%f,%f', 0Ah,0Dh
+	db 'ymm8:  %f,%f,%f,%f', 0Ah,0Dh
+	db 'ymm9:  %f,%f,%f,%f', 0Ah,0Dh
+	db 'ymm10: %f,%f,%f,%f', 0Ah,0Dh
+	db 'ymm11: %f,%f,%f,%f', 0Ah,0Dh
+	db 'ymm12: %f,%f,%f,%f', 0Ah,0Dh
+	db 'ymm13: %f,%f,%f,%f', 0Ah,0Dh
+	db 'ymm14: %f,%f,%f,%f', 0Ah,0Dh
+	db 'ymm15: %f,%f,%f,%f', 0
 
 .data?
-	bBuffer db 1000h dup ?
+	bBuffer db 1000h dup (?)
 
 .code
 WinMain proc
 ;Align the Stack by 10h
-	mov rax,rsp
-	and rax,0Fh
-;Reserve 80h Bytes as Buffer for possible 16 Parameters
-	add rax,80h
-	sub rsp,rax
+	and rsp,-16
 
 ;Check for (in)compatibility
 	mov eax,1
@@ -62,7 +53,7 @@ WinMain proc
 	jne noAVX
 
 ;Broadcast double-precision floating-point element in mem to four locations in ymm0
-	vbroadcastsd ymm0,x ;ymm0 = |pi|pi|pi|pi|
+	vbroadcastsd ymm0,pi ;ymm0 = |pi|pi|pi|pi|
 
 	vsqrtpd ymm1,ymm0 ;ymm1 = |sqrt(pi)|sqrt(pi)|sqrt(pi)|sqrt(pi)|
 
@@ -100,25 +91,52 @@ WinMain proc
 	vroundpd ymm9,ymm7,0 ;Round to nearest (even)
 
 
+	sub rsp,410h
 
+	vmovups [rsp+10h],ymm0
+	vmovups [rsp+30h],ymm1
+	vmovups [rsp+50h],ymm2
+	vmovups [rsp+70h],ymm3
+	vmovups [rsp+90h],ymm4
+	vmovups [rsp+0B0h],ymm5
+	vmovups [rsp+0D0h],ymm6
+	vmovups [rsp+0F0h],ymm7
+	vmovups [rsp+110h],ymm8
+	vmovups [rsp+130h],ymm9
+	vmovups [rsp+150h],ymm10
+	vmovups [rsp+170h],ymm11
+	vmovups [rsp+190h],ymm12
+	vmovups [rsp+1B0h],ymm13
+	vmovups [rsp+1D0h],ymm14
+	vmovups [rsp+1F0h],ymm15
 
 
 ;Format Data
-	lea rcx,bBuffer ;lpOut
-	lea rdx,szCaption ;lpFmt
-	mov r8, hInstance ;arg_1
-	mov r9, hIcon ;arg_2
-	mov rax, hCursor
-	mov qword ptr [rsp+20h], rax ;arg_n
-	call wsprintf
+	lea rcx,bBuffer ;buffer
+	lea rdx,szYMM ;format
+	mov r8,qword ptr[rsp+10h] ;argument?
+	mov r9,qword ptr[rsp+18h] ;locale?
+	call sprintf
 ;Show Message
 	xor rcx,rcx ;hWnd = HWND_DESKTOP = 0
-	lea rdx,szText ;lpText
+	lea rdx,bBuffer ;lpText
 	lea r8,szCaption ;lpCaption
 	mov r9,40h ;uType = MB_OK + MB_ICONINFORMATION = 0 + 40h
 	call MessageBoxA
 
-	xor rcx,rcx
-	call ExitProcess
+	xor rcx,rcx ;Return 0
+	jmp AppExit
+
+ noAVX:
+	sub rsp,20h
+	xor ecx,ecx
+	lea rdx,szError
+	lea r8,szCaption
+	mov r9,10h
+	call MessageBoxA
+	mov ecx,1 ;Return 1
+
+AppExit:
+	call FatalExit
 WinMain endp
 end
