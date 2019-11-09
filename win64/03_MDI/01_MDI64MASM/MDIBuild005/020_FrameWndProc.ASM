@@ -149,7 +149,7 @@ wmFrameCommand:
                         jmp defFrmProc
 
 wmFrameClose:
-	Call4 SendMessage,hWnd,111h,IDM_CLOSEALL,0
+	Call4 SendMessageA,hWnd,111h,IDM_CLOSEALL,0
 	Call2 GetWindow,hWndClient,5 ;GW_CHILD = 5
 	test rax,rax
 		je defFrmProc

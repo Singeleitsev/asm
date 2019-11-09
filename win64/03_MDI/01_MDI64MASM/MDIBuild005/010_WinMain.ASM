@@ -1,6 +1,5 @@
-;===========
 WinMain proc
-;===========
+
 ;Assembler will add this prologue automatically:
 	;push rbp
 	;mov rbp,rsp
@@ -28,7 +27,7 @@ Spell64rax 0, szFrameTitle, szAppHandle
         ;WndClass.hInstance = hInstance;
                 m64m64 wc.hInstance,hInstance
         ;WndClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
-                Call2 LoadIcon, 0, 7F00h
+                Call2 LoadIconA, 0, 7F00h
                 mov wc.hIcon,rax
                 mov wc.hIconSm,rax
         ;WndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
@@ -152,6 +151,6 @@ errWinMainAlarm:
 CleanUp:
         Call1 DestroyMenu, hChildMenu
 ;There is no need to restore the Stack before exit
-        Call1 ExitProcess, msg.wParam
+        Call1 FatalExit, msg.wParam
 WinMain endp
 
