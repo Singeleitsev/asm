@@ -50,7 +50,7 @@ wmDestroy:
 	xor rax,rax
 	jmp endWndProc
 defWndProc:
-	Call4 DefWindowProc,hWnd,uMsg,wParam,lParam
+	Call4 DefWindowProcA,hWnd,uMsg,wParam,lParam
 endWndProc:
 ;Assembler will add this epilogue automatically:
 	;leave 

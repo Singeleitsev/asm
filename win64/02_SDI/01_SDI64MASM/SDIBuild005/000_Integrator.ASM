@@ -1,21 +1,18 @@
 option casemap:none
-;Standard Includes and Libraries
-	include D:\bin\dev\ml64\include\user32.inc
-	include D:\bin\dev\ml64\include\kernel32.inc
-	;include D:\bin\dev\ml64\include\gdi32.inc
+;Standard Libraries
 	includelib D:\bin\dev\ml64\VS2017\lib\user32.lib
 	includelib D:\bin\dev\ml64\VS2017\lib\kernel32.lib
 	;includelib D:\bin\dev\ml64\VS2017\lib\gdi32.lib
 ;Custom Includes
-	include include\struct64_20.inc
-	include include\Mem_03.inc
-	include include\Call_04.inc
-	include include\Spell_09.inc
-
-WinMain PROTO :QWORD,:QWORD,:QWORD,:QWORD
-WndProc PROTO :QWORD,:QWORD,:QWORD,:QWORD
+	include include\API64.inc
+	include include\struct64.inc
+	include include\Mem.inc
+	include include\Call.inc
+	include include\Spell.inc
 
 .const
+;Menu Equates
+	;include include\Menu.inc
 ;Class Names
 	szWndClass db "clsSDI64",0
 ;Window Captions
@@ -44,8 +41,8 @@ WndProc PROTO :QWORD,:QWORD,:QWORD,:QWORD
 
 .code
 
-include 010_WinMain_002.ASM
+include 010_WinMain.ASM
 
-include 020_WndProc_003.ASM
+include 020_WndProc.ASM
 
 end

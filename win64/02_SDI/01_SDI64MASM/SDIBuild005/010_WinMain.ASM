@@ -36,7 +36,7 @@ Spell64rax 0,szAppTitle,szAppHandle
 	m64addr wc.lpszClassName,szWndClass
 	mov wc.hIconSm,0
 ;Now call the Function
-	Call1 RegisterClassEx,offset wc
+	Call1 RegisterClassExA,offset wc
 cmp rax,0
 je errWinMain
 
@@ -100,6 +100,6 @@ errWinMainAlarm:
 CleanUp:
 mov rax,rsp
 Spell64rax 0,szAppTitle,szStackPointer
-	Call1 ExitProcess,0
+	Call1 FatalExit,0
 WinMain endp
 
