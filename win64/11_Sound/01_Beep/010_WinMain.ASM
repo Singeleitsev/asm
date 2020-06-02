@@ -14,7 +14,7 @@ Spell64rax 0,szAppTitle,szStackPointer
 	mov hInst,rax
 cmp rax,0
 je errWinMain
-Spell64rax 0,szAppTitle,szAppHandle
+;Spell64rax 0,szAppTitle,szAppHandle
 
 ;Register the Frame Window Class
 ;Fill up the WNDCLASSEX structure
@@ -59,7 +59,7 @@ je errWinMain
 	mov hWndMain,rax
 cmp rax,0
 je errWndHandle
-Spell64rax 0,szAppTitle,szWndHandle
+;Spell64rax 0,szAppTitle,szWndHandle
 
 ;Show and Update the Main Window
 	Call2 ShowWindow,hWndMain,1 ;nCmdShow = SW_SHOWNORMAL = 1
