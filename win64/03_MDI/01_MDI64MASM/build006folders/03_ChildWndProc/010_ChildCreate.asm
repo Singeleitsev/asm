@@ -1,0 +1,3 @@
+wmChildCreate:
+	nop
+        jmp endChildProc

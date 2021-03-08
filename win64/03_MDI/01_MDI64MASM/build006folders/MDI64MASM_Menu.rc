@@ -1,0 +1,47 @@
+#define IDR_MAINMENU	0x0100
+#define IDR_CHILDMENU	0x0110
+
+#define IDM_NEW		0x1100
+#define IDM_CLOSE	0x1F00
+#define IDM_CLOSEALL	0x1FF0
+#define IDM_EXIT	0x1FFF
+
+#define IDM_TILEHORZ	0xE001
+#define IDM_TILEVERT	0xE002
+#define IDM_CASCADE	0xE004
+
+#define IDM_ABOUT	0xF000
+
+IDR_MAINMENU MENU DISCARDABLE
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New", IDM_NEW
+        MENUITEM "E&xit", IDM_EXIT
+    END
+    POPUP "&Help"    
+    BEGIN
+    	MENUITEM "&About", IDM_ABOUT
+    END
+END
+
+IDR_CHILDMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New", IDM_NEW
+        MENUITEM "&Close", IDM_CLOSE
+        MENUITEM "Close &All", IDM_CLOSEALL
+        MENUITEM "E&xit", IDM_EXIT
+    END
+    POPUP "&Window"    
+    BEGIN
+    	MENUITEM "Tile Horizontal", IDM_TILEHORZ
+    	MENUITEM "Tile Vertical", IDM_TILEVERT
+    	MENUITEM "Cascade", IDM_CASCADE
+    END
+    POPUP "&Help"    
+    BEGIN
+    	MENUITEM "&About", IDM_ABOUT
+    END
+END
