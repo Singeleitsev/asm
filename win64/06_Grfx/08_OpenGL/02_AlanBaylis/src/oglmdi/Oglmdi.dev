@@ -1,0 +1,35 @@
+[Project]
+FileName=Oglmdi.dev
+Name=OpenGL MDI
+Folders=
+Focused=0
+Order=0
+UnitCount=1
+Type=0
+Ver=1
+ObjFiles=""
+Includes=""
+Libs=
+PrivateResource=project.rc
+ResourceIncludes=
+MakeIncludes=
+Resources=resource.rc
+Compiler=
+Linker=-lopengl32 -lglu32 -lwinmm
+IsCpp=1
+Icon=
+ExeOutput=
+ObjectOutput=
+
+[Views]
+ProjectView=1
+
+[Unit1]
+FileName=Oglmdi.cpp
+Open=1
+Folder=
+Top=1
+CursorCol=1
+CursorRow=1
+TopLine=1
+

@@ -1,0 +1,70 @@
+# Project: OpenGL MDI 2
+# Makefile created by Dev-C++ 4.9.5.0
+
+CC   = g++.exe
+WINDRES = windres.exe
+RES  = project.res
+OBJ  = Oglmdi2.o vertex.o camera.o general.o matrix.o object.o polygon.o quat.o texture.o vector.o console.o glFont.o locmath.o log.o mmgr.o $(RES)
+LIBS =  -L"C:\Dev-Cpp\lib" -lopengl32 -lglu32 -lwinmm
+INCS =  -I"C:\Dev-Cpp\include"  -I"C:\Dev-Cpp\include\g++-3"  -I"C:\Dev-Cpp\include" 
+BIN  = Oglmdi2.exe
+CFLAGS = $(INCS)  -s -mwindows
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before Oglmdi2.exe all-after
+
+
+clean: clean-custom
+	rm -f $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CC) $(OBJ) -o "Oglmdi2.exe" $(LIBS) $(CFLAGS)
+
+Oglmdi2.o: Oglmdi2.cpp
+	$(CC) -c Oglmdi2.cpp -o Oglmdi2.o $(CFLAGS)
+
+vertex.o: vertex.cpp
+	$(CC) -c vertex.cpp -o vertex.o $(CFLAGS)
+
+camera.o: camera.cpp
+	$(CC) -c camera.cpp -o camera.o $(CFLAGS)
+
+general.o: general.cpp
+	$(CC) -c general.cpp -o general.o $(CFLAGS)
+
+matrix.o: matrix.cpp
+	$(CC) -c matrix.cpp -o matrix.o $(CFLAGS)
+
+object.o: object.cpp
+	$(CC) -c object.cpp -o object.o $(CFLAGS)
+
+polygon.o: polygon.cpp
+	$(CC) -c polygon.cpp -o polygon.o $(CFLAGS)
+
+quat.o: quat.cpp
+	$(CC) -c quat.cpp -o quat.o $(CFLAGS)
+
+texture.o: texture.cpp
+	$(CC) -c texture.cpp -o texture.o $(CFLAGS)
+
+vector.o: vector.cpp
+	$(CC) -c vector.cpp -o vector.o $(CFLAGS)
+
+console.o: console.cpp
+	$(CC) -c console.cpp -o console.o $(CFLAGS)
+
+glFont.o: glFont.cpp
+	$(CC) -c glFont.cpp -o glFont.o $(CFLAGS)
+
+locmath.o: locmath.cpp
+	$(CC) -c locmath.cpp -o locmath.o $(CFLAGS)
+
+log.o: log.cpp
+	$(CC) -c log.cpp -o log.o $(CFLAGS)
+
+mmgr.o: mmgr.cpp
+	$(CC) -c mmgr.cpp -o mmgr.o $(CFLAGS)
+
+project.res: 
+	$(WINDRES) -i project.rc -I rc -o project.res -O coff 
