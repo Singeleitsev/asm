@@ -1,0 +1,6 @@
+@echo off
+cd top
+ATSR221.EXE
+KEYRUS.COM
+VMODE.COM EGA
+TERE.EXE

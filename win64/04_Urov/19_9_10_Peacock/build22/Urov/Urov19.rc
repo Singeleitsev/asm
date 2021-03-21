@@ -1,0 +1,82 @@
+#include	"Urov19.h"
+
+IDI_ICON1 ICON DISCARDABLE     "icon1.ico"
+
+MYMENU MENU DISCARDABLE
+{
+POPUP "&Текст"
+	{
+	MENUITEM "&DrawText", IDM_DRAWTEXT
+	MENUITEM "&TextOut", IDM_TEXTOUT
+	}
+POPUP "&Графика"
+	{
+	POPUP "&Примитивы"
+	        {
+	            MENUITEM "&Отрезок", IDM_LENGTH
+	            MENUITEM "&Прямоугольник", IDM_RECTANGLE
+	        }
+	POPUP "&Эффекты"
+	        {
+	            MENUITEM "&Павлин", IDM_PEACOCK
+	            MENUITEM "&Кружева", IDM_LACES
+	        }
+	}
+MENUITEM "&About", IDM_ABOUT
+}
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog для отрезка
+//
+IDD_DIALOG1 DIALOGEX 0, 0, 187, 95
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Отрезок"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,34,71,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,98,71,50,14
+    LTEXT           "Задайте координаты концов отрезка:",IDC_STATIC,22,14,134,8
+    LTEXT           "Xstart",IDC_STATIC,20,34,25,8
+    EDITTEXT        IDC_EDIT11,49,31,34,12,ES_AUTOHSCROLL
+    LTEXT           "Ystart",IDC_STATIC,20,48,22,8
+    EDITTEXT        IDC_EDIT12,49,46,33,12,ES_AUTOHSCROLL
+    LTEXT           "Xend",IDC_STATIC,100,33,22,8
+    EDITTEXT        IDC_EDIT13,127,31,33,12,ES_AUTOHSCROLL
+    LTEXT           "Yend",IDC_STATIC,100,47,24,8
+    EDITTEXT        IDC_EDIT14,127,47,34,12,ES_AUTOHSCROLL
+END
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog для прямоугольника
+//
+IDD_DIALOG2 DIALOGEX 0, 0, 186, 95
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Прямоугольник"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,35,72,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,100,72,50,14
+    LTEXT           "Задайте координаты углов прямоугольника:",IDC_STATIC,22,6,174,8
+    LTEXT           "Left_Top:",IDC_STATIC,39,23,32,8
+    LTEXT           "X",IDC_STATIC,33,37,8,8
+    EDITTEXT        IDC_EDIT21,45,35,33,12,ES_AUTOHSCROLL
+    LTEXT           "Y",IDC_STATIC,33,52,8,8
+    EDITTEXT        IDC_EDIT22,45,50,34,12,ES_AUTOHSCROLL
+    LTEXT           "Right_Bottom:",IDC_STATIC,98,22,46,8
+    LTEXT           "X",IDC_STATIC,98,38,8,8
+    EDITTEXT        IDC_EDIT23,109,35,34,12,ES_AUTOHSCROLL
+    LTEXT           "Y",IDC_STATIC,98,52,8,8
+    EDITTEXT        IDC_EDIT24,109,51,34,12,ES_AUTOHSCROLL
+END
+
+AboutBox DIALOG  20, 20, 160, 80
+     STYLE WS_POPUP | WS_DLGFRAME
+     {
+     CTEXT "MASM64"                  -1,   0, 12, 160,  8
+     ICON  "IDI_ICON1"               -1,   8,  8,   0,  0
+     CTEXT "Win64 Demo Program"      -1,   0, 36, 160,  8
+     CTEXT "(c) Юров Виктор, 1999"   -1,   0, 48, 160,  8
+     DEFPUSHBUTTON "OK"            IDOK,  64, 60,  32, 14, WS_GROUP
+     }
