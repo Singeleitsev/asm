@@ -1,13 +1,13 @@
-.GasketModeX87:
+.SpongeModeX87:
 
 mov rsi,P ;Address of Previous Point
 mov rcx,8 ;Members of CustomPoint Structure
 
-.GasketCalcX87:
+.SpongeCalcX87:
  finit ;Clean
  fld dword [rsi] ;st(0) = P
  fadd dword [rdx] ;st(0) = P+N
- fadd dword [rdx] ;st(0) = P+ 2*N
+ fadd dword [rdx] ;st(0) = P+2*N
  fdiv dword [three] ;st(0) = (P+2*N)/3
  fstp dword [rsi] ;P = st(0)
 ;Check for Loop
@@ -15,6 +15,6 @@ mov rcx,8 ;Members of CustomPoint Structure
  add rdx,4
  dec rcx
  cmp rcx,0
- jg .GasketCalcX87
+ jg .SpongeCalcX87
 
-jmp .GasketDraw
+jmp .SpongeDraw

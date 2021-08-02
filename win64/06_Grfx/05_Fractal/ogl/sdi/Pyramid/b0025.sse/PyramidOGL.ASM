@@ -1,8 +1,10 @@
 format PE64 GUI 6.0
 entry start
 
-include '..\INCLUDE\win64a.inc'
-include '..\EXAMPLES\OPENGL\opengl.inc'
+;include '..\INCLUDE\win64a.inc'
+include 'F:\bin\dev\asm\fasmw17164\INCLUDE\win64a.inc'
+;include '..\EXAMPLES\OPENGL\opengl.inc'
+include 'F:\bin\dev\asm\fasmw17164\EXAMPLES\OPENGL\opengl.inc'
 
 struc CustomPoint x,y,z,t,r,g,b,a
  {
@@ -138,8 +140,8 @@ proc WindowProc uses rbx rsi rdi, hwnd,wmsg,wparam,lparam
 ;jmp lblPyramidCalcMode
  ;include 'PyramidFMA.asm'
  ;include 'PyramidAVX.asm'
- ;include 'PyramidSSE.asm'
- include 'PyramidX87.asm'
+ include 'PyramidSSE.asm'
+ ;include 'PyramidX87.asm'
 
 
 .PyramidDraw:

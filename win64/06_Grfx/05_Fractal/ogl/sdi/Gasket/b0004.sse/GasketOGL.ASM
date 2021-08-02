@@ -114,41 +114,41 @@ proc WindowProc uses rbx rsi rdi, hwnd,wmsg,wparam,lparam
  invoke glClear,GL_COLOR_BUFFER_BIT
  invoke glBegin,GL_POINTS
 
- mov [i],20 ;Number of Vertices
- mov rsi,A00 ;Attractor Base Address
-.SpongeVertex:
+ mov [i],8 ;Number of Vertices
+ mov rsi,A0 ;Attractor Base Address
+.GasketVertex:
  invoke glColor3f, float dword [rsi+10h], float dword [rsi+14h], float dword [rsi+18h]
  invoke glVertex3f, float dword [rsi+0], float dword [rsi+4], float dword [rsi+8]
  add rsi,20h ;Size of CustomPoint Structure
  dec [i]
  cmp [i],0
- jg .SpongeVertex
+ jg .GasketVertex
 
- mov [i],100000h ;Number of Points
-.SpongeNewPoint:
+ mov [i],10000h ;Number of Points
+.GasketNewPoint:
 ;P.x = (P.x + 2*N.x)/3,
 ;P.y = (P.y + 2*N.y)/3,
-;P.z = (P.z + 2*N.z)/3,
 ;where
 ;P.x,P.y,P.z - coordinates of Point
 ;N.x,N.y,N.z - coordinates of randomly selected Vertex
 
-;jmp lblSpongeRandMode
- include 'SpongeRdRand.asm'
+;jmp lblGasketRandMode
+ include 'GasketRdRand.asm'
 
-;jmp lblSpongeCalcMode
- ;include 'SpongeX87.asm'
- include 'SpongeAVX.asm'
- ;include 'SpongeFMA.asm'
+;jmp lblGasketCalcMode
+ ;include 'GasketX87.asm'
+ ;include 'GasketSSE.asm'
+ include 'GasketAVX.asm'
+ ;include 'GasketFMA.asm'
 
-.SpongeDraw:
+.GasketDraw:
  invoke glColor3f,  float dword [P.r], float dword [P.g], float dword [P.b]
  invoke glVertex3f, float dword [P.x], float dword [P.y], float dword [P.z]
 
 ;Check for Loop
  dec [i]
  cmp [i],0
- jg .SpongeNewPoint ;Loop
+ jg .GasketNewPoint ;Loop
 
  invoke glEnd
  invoke SwapBuffers,[hdc]
@@ -177,7 +177,7 @@ endp
 
 section '.data' data readable writeable
 
-_title db 'OpenGL Sierpinski Sponge',0
+_title db 'OpenGL Sierpinski Gasket',0
 _class db 'FASMOPENGL64',0
 
 wc WNDCLASS 0,WindowProc,0,0,NULL,NULL,NULL,NULL,NULL,_class
@@ -205,7 +205,7 @@ P CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
 
 section '.const' data readable
 
-include 'SpongeConst.asm'
+include 'GasketConst.asm'
 
 
 section '.idata' import data readable writeable

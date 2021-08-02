@@ -3,10 +3,11 @@
 format PE64 GUI 6.0
 entry start
 
-;include '..\INCLUDE\win64a.inc'
-include 'F:\bin\dev\asm\fasmw17164\INCLUDE\win64a.inc'
-;include '..\EXAMPLES\OPENGL\opengl.inc'
-include 'F:\bin\dev\asm\fasmw17164\EXAMPLES\OPENGL\opengl.inc'
+
+include '..\INCLUDE\win64a.inc'
+;include 'F:\bin\dev\asm\fasmw17164\INCLUDE\win64a.inc'
+include '..\EXAMPLES\OPENGL\opengl.inc'
+;include 'F:\bin\dev\asm\fasmw17164\EXAMPLES\OPENGL\opengl.inc'
 
 struc CustomPoint x,y,z,t,r,g,b,a
  {
@@ -70,6 +71,7 @@ proc WindowProc uses rbx rsi rdi, hwnd,wmsg,wparam,lparam
 .wmcreate:
  invoke GetDC,rcx
  mov [hdc],rax
+
  lea rdi,[pfd]
  mov rcx,sizeof.PIXELFORMATDESCRIPTOR shr 3
  xor eax,eax
@@ -87,11 +89,15 @@ proc WindowProc uses rbx rsi rdi, hwnd,wmsg,wparam,lparam
  invoke SetPixelFormat,[hdc],eax,pfd
  invoke wglCreateContext,[hdc]
  mov [hrc],rax
+
  invoke wglMakeCurrent,[hdc],[hrc]
  invoke GetClientRect,[hwnd],rc
  invoke glViewport,0,0,[rc.right],[rc.bottom]
 
  invoke SetTimer, [hwnd],1,0Ah,0 ;USER_TIMER_MINIMUM = 0Ah = 10 ms
+
+ include 'nGonCalcVert.asm'
+
  xor eax,eax
  jmp .finish
 
@@ -114,41 +120,36 @@ proc WindowProc uses rbx rsi rdi, hwnd,wmsg,wparam,lparam
  invoke glClear,GL_COLOR_BUFFER_BIT
  invoke glBegin,GL_POINTS
 
- mov [i],8 ;Number of Vertices
- mov rsi,A0 ;Attractor Base Address
-.GasketVertex:
- invoke glColor3f, float dword [rsi+10h], float dword [rsi+14h], float dword [rsi+18h]
- invoke glVertex3f, float dword [rsi+0], float dword [rsi+4], float dword [rsi+8]
- add rsi,20h ;Size of CustomPoint Structure
- dec [i]
- cmp [i],0
- jg .GasketVertex
+ include 'nGonDrawVert.asm'
 
- mov [i],100000h ;Number of Points
-.GasketNewPoint:
-;P.x = (P.x + 2*N.x)/3,
-;P.y = (P.y + 2*N.y)/3,
+ mov [i],10000h ;Number of Points
+.nGonNewPoint:
+;P.x = (P.x + q1*N.x)/q2,
+;P.y = (P.y + q1*N.y)/q2,
+;P.z = (P.z + q1*N.z)/q2,
 ;where
 ;P.x,P.y,P.z - coordinates of Point
 ;N.x,N.y,N.z - coordinates of randomly selected Vertex
+;q2 - number of vertices
+;q1 = q2-1
 
-;jmp lblGasketRandMode
- include 'GasketRdRand.asm'
+;jmp lblnGonRandMode
+ include 'nGonRdRand.asm'
 
-;jmp lblGasketCalcMode
- ;include 'GasketX87.asm'
- ;include 'GasketSSE.asm'
- include 'GasketAVX.asm'
- ;include 'GasketFMA.asm'
+;jmp lblnGonCalcMode
+ ;include 'nGonX87.asm'
+ include 'nGonSSE.asm'
+ ;include 'nGonAVX.asm'
+ ;include 'nGonFMA.asm'
 
-.GasketDraw:
+.nGonDraw:
  invoke glColor3f,  float dword [P.r], float dword [P.g], float dword [P.b]
  invoke glVertex3f, float dword [P.x], float dword [P.y], float dword [P.z]
 
 ;Check for Loop
  dec [i]
  cmp [i],0
- jg .GasketNewPoint ;Loop
+ jg .nGonNewPoint ;Loop
 
  invoke glEnd
  invoke SwapBuffers,[hdc]
@@ -177,7 +178,7 @@ endp
 
 section '.data' data readable writeable
 
-_title db 'OpenGL Sierpinski Gasket',0
+_title db 'OpenGL Sierpinski nGon',0
 _class db 'FASMOPENGL64',0
 
 wc WNDCLASS 0,WindowProc,0,0,NULL,NULL,NULL,NULL,NULL,_class
@@ -191,21 +192,47 @@ ps PAINTSTRUCT ;Added in Build0011
 pfd PIXELFORMATDESCRIPTOR
 
 ;clock dd ?
+i dq 0 ;Counter
 
-i dq 0 ;Vertex Counter
-j dq 0 ;Iteration Counter
+buffer0 dd 0.0
+
+;c2pi3 dd 0.0 ;2*pi/3
+;c4pi3 dd 0.0 ;4*pi/3
+;c3pi2 dd 0.0 ;3/(pi*2)
+
+n dq 12 ;Number of Vertices
+a rd 12 ;Angular Position of Vertices
+dA dd 0.0 ;AngleStep = 360/n = 2*pi/n
+dC dd 0.0 ;Color Step = 1.0/(2*pi/3)
 
 ;Rotation Angle
-aXY GLfloat 0.5
-aYZ GLfloat 0.5
-aXZ GLfloat 0.5
+aXY dd 0.5
+aYZ dd 0.5
+aXZ dd 0.5
 
-P CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+;Attractor Vertices
+ A00 CustomPoint 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0
+ A01 CustomPoint 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0
+ A02 CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0
+ A03 CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0
+ A04 CustomPoint 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0
+ A05 CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0
+ A06 CustomPoint 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0
+ A07 CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0
+ A08 CustomPoint 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0
+ A09 CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0
+ A10 CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0
+ A11 CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0
 
+ P CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+
+;Fractal quotients
+ q1 dd 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0 ;Multiplier = (n-1)
+ q2 dd 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0 ;Divisor = n
 
 section '.const' data readable
 
-include 'GasketConst.asm'
+include 'nGonConst.asm'
 
 
 section '.idata' import data readable writeable

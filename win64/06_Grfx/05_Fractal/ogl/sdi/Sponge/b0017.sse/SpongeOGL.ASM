@@ -3,9 +3,10 @@
 format PE64 GUI 6.0
 entry start
 
-
-include '..\INCLUDE\win64a.inc'
-include '..\EXAMPLES\OPENGL\opengl.inc'
+;include '..\INCLUDE\win64a.inc'
+include 'F:\bin\dev\asm\fasmw17164\INCLUDE\win64a.inc'
+;include '..\EXAMPLES\OPENGL\opengl.inc'
+include 'F:\bin\dev\asm\fasmw17164\EXAMPLES\OPENGL\opengl.inc'
 
 struc CustomPoint x,y,z,t,r,g,b,a
  {
@@ -113,33 +114,42 @@ proc WindowProc uses rbx rsi rdi, hwnd,wmsg,wparam,lparam
  invoke glClear,GL_COLOR_BUFFER_BIT
  invoke glBegin,GL_POINTS
 
- include 'nGonVert.asm'
+ mov [i],20 ;Number of Vertices
+ mov rsi,A00 ;Attractor Base Address
+.SpongeVertex:
+ invoke glColor3f, float dword [rsi+10h], float dword [rsi+14h], float dword [rsi+18h]
+ invoke glVertex3f, float dword [rsi+0], float dword [rsi+4], float dword [rsi+8]
+ add rsi,20h ;Size of CustomPoint Structure
+ dec [i]
+ cmp [i],0
+ jg .SpongeVertex
 
- mov [i],10000h ;Number of Points
-.nGonNewPoint:
-;P.x = (P.x + (n-1)*R.x)/n,
-;P.y = (P.y + (n-1)*R.y)/n,
+ mov [i],100000h ;Number of Points
+.SpongeNewPoint:
+;P.x = (P.x + 2*N.x)/3,
+;P.y = (P.y + 2*N.y)/3,
+;P.z = (P.z + 2*N.z)/3,
 ;where
 ;P.x,P.y,P.z - coordinates of Point
-;R.x,R.y,R.z - coordinates of randomly selected Vertex
+;N.x,N.y,N.z - coordinates of randomly selected Vertex
 
-;jmp lblnGonRandMode
- include 'nGonRdRand.asm'
+;jmp lblSpongeRandMode
+ include 'SpongeRdRand.asm'
 
-;jmp lblnGonCalcMode
- ;include 'nGonX87.asm'
- ;include 'nGonSSE.asm'
- ;include 'nGonAVX.asm'
- include 'nGonFMA.asm'
+;jmp lblSpongeCalcMode
+ ;include 'SpongeX87.asm'
+ include 'SpongeSSE.asm'
+ ;include 'SpongeAVX.asm'
+ ;include 'SpongeFMA.asm'
 
-.nGonDraw:
+.SpongeDraw:
  invoke glColor3f,  float dword [P.r], float dword [P.g], float dword [P.b]
  invoke glVertex3f, float dword [P.x], float dword [P.y], float dword [P.z]
 
 ;Check for Loop
  dec [i]
  cmp [i],0
- jg .nGonNewPoint ;Loop
+ jg .SpongeNewPoint ;Loop
 
  invoke glEnd
  invoke SwapBuffers,[hdc]
@@ -168,7 +178,7 @@ endp
 
 section '.data' data readable writeable
 
-_title db 'OpenGL Sierpinski nGon',0
+_title db 'OpenGL Sierpinski Sponge',0
 _class db 'FASMOPENGL64',0
 
 wc WNDCLASS 0,WindowProc,0,0,NULL,NULL,NULL,NULL,NULL,_class
@@ -183,21 +193,20 @@ pfd PIXELFORMATDESCRIPTOR
 
 ;clock dd ?
 
-n dq 5 ;Number of Vertices
-i dq 0 ;Counter
+i dq 0 ;Vertex Counter
+j dq 0 ;Iteration Counter
 
 ;Rotation Angle
-aXY dd 0.5
-aYZ dd 0.5
-aXZ dd 0.5
+aXY GLfloat 0.5
+aYZ GLfloat 0.5
+aXZ GLfloat 0.5
 
 P CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
-m dd 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ;Multiplier = (n-1)
-d dd 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ;Divisor = n
+
 
 section '.const' data readable
 
-include 'nGonConst.asm'
+include 'SpongeConst.asm'
 
 
 section '.idata' import data readable writeable
