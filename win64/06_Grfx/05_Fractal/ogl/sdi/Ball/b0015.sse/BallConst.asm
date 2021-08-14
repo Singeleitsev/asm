@@ -1,4 +1,5 @@
 ;Numeric Constants
+ sign dd 7FFFFFFFh,7FFFFFFFh,7FFFFFFFh,7FFFFFFFh,7FFFFFFFh,7FFFFFFFh,7FFFFFFFh,7FFFFFFFh
  null dd 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
  one dd 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0
  two dd 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0
@@ -21,4 +22,9 @@
  c5pi3 dd 40A78D36h ;32 bit
 
 
+ ;c1pi2 dd 1.5707963267948966 ;pi/2
+ c1pi2 dd 3FC90FDBh ;32 bit
+
+ ;c3pi2 dd 4.71238898 ;3*pi/2
+ c3pi2 dd 4096CBE4h ;32 bit
 

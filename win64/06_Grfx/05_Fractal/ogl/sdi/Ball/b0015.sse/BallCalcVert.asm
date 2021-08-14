@@ -85,12 +85,13 @@ fmul dword [zFactor] ;st0 = k*sin(a)
 fstp dword [r14] ;y[0] = sin(a)
 mov eax,dword[zPosition]
 mov dword [r15],eax
+
 ;Next Vertex
 add r12,20h ;Next Angle
 add r13,20h ;Next X
 add r14,20h ;Next Y
 add r15,20h ;Next Z
-;Next Vertex
+;Check for Loop
 dec [i]
 cmp [i],0
 jg .BallNextXY

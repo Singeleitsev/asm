@@ -96,7 +96,8 @@ proc WindowProc uses rbx rsi rdi, hwnd,wmsg,wparam,lparam
 
  invoke SetTimer, [hwnd],1,0Ah,0 ;USER_TIMER_MINIMUM = 0Ah = 10 ms
 
- include 'nGonCalcVert.asm'
+ include 'BallCalcVert.asm'
+ include 'BallCalcColor.asm'
 
  xor eax,eax
  jmp .finish
@@ -104,14 +105,14 @@ proc WindowProc uses rbx rsi rdi, hwnd,wmsg,wparam,lparam
 .wmsize:
  invoke GetClientRect,[hwnd],rc
  invoke glViewport,0,0,[rc.right],[rc.bottom]
- invoke PostMessage, [hwnd],WM_PAINT,0,0 ;Added in Build0011
+ invoke PostMessage, [hwnd],WM_PAINT,0,0
  xor eax,eax
  jmp .finish
 
 .wmpaint:
- invoke InvalidateRect,[hwnd],0,1 ;Added in Build0011
- invoke BeginPaint, [hwnd],ps ;Added in Build0011
- invoke EndPaint, [hwnd],ps ;Added in Build0011
+ invoke InvalidateRect,[hwnd],0,1
+ invoke BeginPaint, [hwnd],ps
+ invoke EndPaint, [hwnd],ps
  xor eax,eax
  jmp .finish
 
@@ -120,10 +121,10 @@ proc WindowProc uses rbx rsi rdi, hwnd,wmsg,wparam,lparam
  invoke glClear,GL_COLOR_BUFFER_BIT
  invoke glBegin,GL_POINTS
 
- include 'nGonDrawVert.asm'
+ include 'BallDrawVert.asm'
 
  mov [i],10000h ;Number of Points
-.nGonNewPoint:
+.BallNewPoint:
 ;P.x = (P.x + q1*N.x)/q2,
 ;P.y = (P.y + q1*N.y)/q2,
 ;P.z = (P.z + q1*N.z)/q2,
@@ -133,23 +134,23 @@ proc WindowProc uses rbx rsi rdi, hwnd,wmsg,wparam,lparam
 ;q2 - number of vertices
 ;q1 = q2-1
 
-;jmp lblnGonRandMode
- include 'nGonRdRand.asm'
+;jmp lblBallRandMode
+ include 'BallRdRand.asm'
 
-;jmp lblnGonCalcMode
- ;include 'nGonX87.asm'
- include 'nGonSSE.asm'
- ;include 'nGonAVX.asm'
- ;include 'nGonFMA.asm'
+;jmp lblBallCalcMode
+ ;include 'BallX87.asm'
+ include 'BallSSE.asm'
+ ;include 'BallAVX.asm'
+ ;include 'BallFMA.asm'
 
-.nGonDraw:
+.BallDraw:
  invoke glColor3f,  float dword [P.r], float dword [P.g], float dword [P.b]
  invoke glVertex3f, float dword [P.x], float dword [P.y], float dword [P.z]
 
 ;Check for Loop
  dec [i]
  cmp [i],0
- jg .nGonNewPoint ;Loop
+ jg .BallNewPoint ;Loop
 
  invoke glEnd
  invoke SwapBuffers,[hdc]
@@ -166,7 +167,7 @@ proc WindowProc uses rbx rsi rdi, hwnd,wmsg,wparam,lparam
  invoke wglDeleteContext,[hrc]
  invoke ReleaseDC,[hwnd],[hdc]
  invoke PostQuitMessage,0
- invoke KillTimer,[hwnd],1 ;Added in Build0011
+ invoke KillTimer,[hwnd],1
  xor eax,eax
 
 .finish:
@@ -178,7 +179,7 @@ endp
 
 section '.data' data readable writeable
 
-_title db 'OpenGL Sierpinski nGon',0
+_title db 'OpenGL Sierpinski Ball',0
 _class db 'FASMOPENGL64',0
 
 wc WNDCLASS 0,WindowProc,0,0,NULL,NULL,NULL,NULL,NULL,_class
@@ -188,22 +189,21 @@ hrc dq ?
 
 msg MSG
 rc RECT
-ps PAINTSTRUCT ;Added in Build0011
+ps PAINTSTRUCT
 pfd PIXELFORMATDESCRIPTOR
 
-;clock dd ?
 i dq 0 ;Counter
+j dq 0 ;Counter
 
-buffer0 dd 0.0
+n dq 8 ;Number of Vertices in a Latitudinal Section
+m dq 0 ;Number of Latitudinal Sections
+mn dq 0 ;Total Number of Vertices
 
-;c2pi3 dd 0.0 ;2*pi/3
-;c4pi3 dd 0.0 ;4*pi/3
-;c3pi2 dd 0.0 ;3/(pi*2)
-
-n dq 12 ;Number of Vertices
-a rd 12 ;Angular Position of Vertices
 dA dd 0.0 ;AngleStep = 360/n = 2*pi/n
-dC dd 0.0 ;Color Step = 1.0/(2*pi/3)
+
+zFactor dd 0.0
+zPosition dd 0.0
+buffer0 dd 0.0
 
 ;Rotation Angle
 aXY dd 0.5
@@ -211,18 +211,10 @@ aYZ dd 0.5
 aXZ dd 0.5
 
 ;Attractor Vertices
- A00 CustomPoint 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0
- A01 CustomPoint 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0
- A02 CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0
- A03 CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0
- A04 CustomPoint 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0
- A05 CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0
- A06 CustomPoint 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0
- A07 CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0
- A08 CustomPoint 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0
- A09 CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0
- A10 CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0
- A11 CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0
+;Reserve the Field for maximum of 12-side Polygons
+;Sphere consists of 5 such Polygons and 2 Poles
+;(12*5+2)*8 = 496 dwords
+ V rd 496
 
  P CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
 
@@ -232,7 +224,7 @@ aXZ dd 0.5
 
 section '.const' data readable
 
-include 'nGonConst.asm'
+include 'BallConst.asm'
 
 
 section '.idata' import data readable writeable
@@ -260,7 +252,7 @@ GetClientRect,'GetClientRect',\
 GetDC,'GetDC',\
 ReleaseDC,'ReleaseDC',\
 PostQuitMessage,'PostQuitMessage',\
-PostMessage,'PostMessageA',\ ;Added in Build0011
+PostMessage,'PostMessageA',\
 BeginPaint,'BeginPaint',\
 EndPaint,'EndPaint',\
 SetTimer,'SetTimer',\
