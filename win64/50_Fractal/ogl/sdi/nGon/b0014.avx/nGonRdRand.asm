@@ -14,7 +14,7 @@
 ;The CustomPoint Structure's size is 32 bytes
  shl rdx,5 ;Multiply the Obtained Random by 32
 ;Add Base Address to Obtained Random Shift
- add rdx,A00 ;fasm allows this
+ add rdx,V ;fasm allows this
 ;rdx = Address of a Random Point
 
 ;jmp lblGasketCalcMode

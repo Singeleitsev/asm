@@ -1,5 +1,3 @@
-;OpenGL programming example
-
 format PE64 GUI 6.0
 entry start
 
@@ -97,6 +95,7 @@ proc WindowProc uses rbx rsi rdi, hwnd,wmsg,wparam,lparam
  invoke SetTimer, [hwnd],1,0Ah,0 ;USER_TIMER_MINIMUM = 0Ah = 10 ms
 
  include 'nGonCalcVert.asm'
+ include 'nGonCalcColor.asm'
 
  xor eax,eax
  jmp .finish
@@ -196,11 +195,7 @@ i dq 0 ;Counter
 
 buffer0 dd 0.0
 
-;c2pi3 dd 0.0 ;2*pi/3
-;c4pi3 dd 0.0 ;4*pi/3
-;c3pi2 dd 0.0 ;3/(pi*2)
-
-n dq 8 ;Number of Vertices
+n dq 12 ;Number of Vertices
 dA dd 0.0 ;AngleStep = 360/n = 2*pi/n
 
 ;Rotation Angle
@@ -209,24 +204,18 @@ aYZ dd 0.5
 aXZ dd 0.5
 
 ;Attractor Vertices
- A00 CustomPoint 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0
- A01 CustomPoint 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0
- A02 CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0
- A03 CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0
- A04 CustomPoint 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0
- A05 CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0
- A06 CustomPoint 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0
- A07 CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0
- A08 CustomPoint 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0
- A09 CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0
- A10 CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0
- A11 CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0
+;Reserve the Field for maximum of 16-side Polygon
+;16*8 = 128 dwords
+ V rd 128
 
  P CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
 
 ;Fractal quotients
  q1 dd 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0 ;Multiplier = (n-1)
  q2 dd 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0 ;Divisor = n
+ ;q1 dd 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0
+ ;q2 dd 0.29289321881, 0.29289321881, 0.29289321881, 0.29289321881,\
+ ;0.29289321881, 0.29289321881, 0.29289321881, 0.29289321881 ;1 - 1/sqr(2)
 
 section '.const' data readable
 
