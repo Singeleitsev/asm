@@ -1,0 +1,234 @@
+; UIRibbon
+
+CLSID_UIRibbonFramework GUID 926749fa-2615-4987-8845-c33e65f2b957
+CLSID_UIRibbonImageFromBitmapFactory GUID 0F7434B6-59B6-4250-999E-D168D6AE4293
+
+
+IID_IUIFramework GUID F4F0385D-6872-43a8-AD09-4C339CB3F5C5
+
+UI_INVALIDATIONS_STATE		= 0x1
+UI_INVALIDATIONS_VALUE		= 0x2
+UI_INVALIDATIONS_PROPERTY	= 0x4
+UI_INVALIDATIONS_ALLPROPERTIES	= 0x8
+
+struc IUIFramework [A] { common
+  match any,A \{ virtual at 0 \}
+    . IUnknown
+    .Initialize PTR ?
+    .Destroy PTR ?
+    .LoadUI PTR ?
+    .GetView PTR ?
+    .GetUICommandProperty PTR ?
+    .SetUICommandProperty PTR ?
+    .InvalidateUICommand PTR ?
+    .FlushPendingInvalidations PTR ?
+    .SetModes PTR ?
+  match any,A \{ end virtual
+    . A
+  \}
+}
+
+
+
+IID_IUIRibbon GUID 803982ab-370a-4f7e-a9e7-8784036a6e26
+
+struc IUIRibbon [A] { common
+  match any,A \{ virtual at 0 \}
+    . IUnknown
+    .GetHeight PTR ?
+    .LoadSettingsFromStream PTR ?
+    .SaveSettingsToStream PTR ?
+  match any,A \{ end virtual
+    . A
+  \}
+}
+
+
+IID_IUIContextualUI GUID EEA11F37-7C46-437c-8E55-B52122B29293
+
+struc IUIContextualUI [A] { common
+  match any,A \{ virtual at 0 \}
+    . IUnknown
+    .ShowAtLocation PTR ?
+  match any,A \{ end virtual
+    . A
+  \}
+}
+
+
+
+IID_IUICollection GUID DF4F45BF-6F9D-4dd7-9D68-D8F9CD18C4DB
+
+struc IUICollection [A] { common
+  match any,A \{ virtual at 0 \}
+    . IUnknown
+    .GetCount PTR ?
+    .GetItem PTR ?
+    .Add PTR ?
+    .Insert PTR ?
+    .RemoveAt PTR ?
+    .Replace PTR ?
+    .Clear PTR ?
+  match any,A \{ end virtual
+    . A
+  \}
+}
+
+
+
+IID_IUISimplePropertySet GUID c205bb48-5b1c-4219-a106-15bd0a5f24e2
+
+struc IUISimplePropertySet [A] { common
+  match any,A \{ virtual at 0 \}
+    . IUnknown
+    .GetValue PTR ?
+  match any,A \{ end virtual
+    . A
+  \}
+}
+
+
+
+IID_IUIImage GUID 23c8c838-4de6-436b-ab01-5554bb7c30dd
+
+struc IUIImage [A] { common
+  match any,A \{ virtual at 0 \}
+    . IUnknown
+    .GetBitmap PTR ?
+  match any,A \{ end virtual
+    . A
+  \}
+}
+
+IID_IUIImageFromBitmap GUID 18aba7f3-4c1c-4ba2-bf6c-f5c3326fa816
+
+UI_OWNERSHIP_TRANSFER = 0
+UI_OWNERSHIP_COPY     = 1
+
+struc IUIImageFromBitmap [A] { common
+  match any,A \{ virtual at 0 \}
+    . IUnknown
+    .CreateImage PTR ?
+  match any,A \{ end virtual
+    . A
+  \}
+}
+
+
+
+IID_IUIEventLogger GUID ec3e1034-dbf4-41a1-95d5-03e0f1026e05
+
+struc UI_EVENTPARAMS_COMMAND [A] { common
+  match any,A \{ virtual at 0 \}
+    .:
+    .CommandID UINT ? ;
+    .CommandName PTR ?
+    .ParentCommandID UINT ? ;
+    .ParentCommandName PTR ?
+    .SelectionIndex UINT ? ;
+    .Location UI_EVENTLOCATION ? ;
+  match any,A \{ end virtual
+    . A
+  \}
+}
+
+struc IUIEventLogger [A] { common
+  match any,A \{ virtual at 0 \}
+    . IUnknown
+    .OnUIEvent PTR ?
+  match any,A \{ end virtual
+    . A
+  \}
+}
+
+
+
+IID_IUIEventingManager GUID 3BE6EA7F-9A9B-4198-9368-9B0F923BD534
+
+struc IUIEventingManager [A] { common
+  match any,A \{ virtual at 0 \}
+    . IUnknown
+    .SetEventLogger PTR ?
+  match any,A \{ end virtual
+    . A
+  \}
+}
+
+
+
+;###############################################################################
+; HOST INTERFACE DEFINITIONS EXPECTED BY RIBBON FRAMEWORK
+IID_IUIApplication GUID D428903C-729A-491d-910D-682A08FF2522
+
+UI_VIEWTYPE_RIBBON = 1
+
+UI_VIEWVERB_CREATE  = 0
+UI_VIEWVERB_DESTROY = 1
+UI_VIEWVERB_SIZE    = 2
+UI_VIEWVERB_ERROR   = 3
+
+UI_COMMANDTYPE_UNKNOWN		 = 0
+UI_COMMANDTYPE_GROUP		 = 1
+UI_COMMANDTYPE_ACTION		 = 2
+UI_COMMANDTYPE_ANCHOR		 = 3
+UI_COMMANDTYPE_CONTEXT		 = 4
+UI_COMMANDTYPE_COLLECTION	 = 5
+UI_COMMANDTYPE_COMMANDCOLLECTION = 6
+UI_COMMANDTYPE_DECIMAL		 = 7
+UI_COMMANDTYPE_BOOLEAN		 = 8
+UI_COMMANDTYPE_FONT		 = 9
+UI_COMMANDTYPE_RECENTITEMS	 = 10
+UI_COMMANDTYPE_COLORANCHOR	 = 11
+UI_COMMANDTYPE_COLORCOLLECTION	 = 12
+
+struc IUIApplication [A] { common
+  match any,A \{ virtual at 0 \}
+    . IUnknown
+    .OnViewChanged PTR ?
+    .OnCreateUICommand PTR ?
+    .OnDestroyUICommand PTR ?
+  match any,A \{ end virtual
+    . A
+  \}
+}
+
+
+
+IID_IUICommandHandler GUID 75ae0a2d-dc03-4c9f-8883-069660d0beb6
+
+UI_EXECUTIONVERB_EXECUTE	= 0
+UI_EXECUTIONVERB_PREVIEW	= 1
+UI_EXECUTIONVERB_CANCELPREVIEW	= 2
+
+struc IUICommandHandler [A] { common
+  match any,A \{ virtual at 0 \}
+    . IUnknown
+    .Execute PTR ?
+    .UpdateProperty PTR ?
+  match any,A \{ end virtual
+    . A
+  \}
+}
+
+
+
+IID_IUICollectionChangedEvent GUID 6502AE91-A14D-44b5-BBD0-62AACC581D52
+
+UI_COLLECTIONCHANGE_INSERT  = 0
+UI_COLLECTIONCHANGE_REMOVE  = 1
+UI_COLLECTIONCHANGE_REPLACE = 2
+UI_COLLECTIONCHANGE_RESET   = 3
+
+UI_COLLECTION_INVALIDINDEX  = $FFFFFFFF
+
+struc IUICollectionChangedEvent [A] { common
+  match any,A \{ virtual at 0 \}
+    . IUnknown
+    .OnChanged PTR ?
+  match any,A \{ end virtual
+    . A
+  \}
+}
+
+
+

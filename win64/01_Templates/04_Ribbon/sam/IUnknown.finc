@@ -1,0 +1,37 @@
+; Component Object Model (COM)
+; base definitions and support macros
+
+
+
+struc GUID num {
+  ; should store a list and output an aggregate aligned constant data block
+  match A-B-C-D-E,num \{
+    if used .
+      . dq $\#C\#B\#A
+      db $\#D shr 8,$\#D and $FF
+      db $\#E shr 40,$\#E shr 32 and $FF,$\#E shr 24 and $FF,$\#E shr 16 and $FF,$\#E shr 8 and $FF,$\#E and $FF
+    end if
+  \}
+}
+
+macro GUID.CMP A,B {
+  local ..NZ
+  mov rax,[A]
+  cmp rax,[B]
+  jnz ..NZ
+  mov rax,[A+8]
+  cmp rax,[B+8]
+  ..NZ:
+}
+
+
+
+IID_IUnknown GUID 00000000-0000-0000-C000-000000000046
+
+struc IUnknown {
+. equ
+restore .
+.QueryInterface PTR ?
+.AddRef PTR ?
+.Release PTR ?
+}

@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29503.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ml64_tpl_01", "ml64_tpl_01\ml64_tpl_01.vcxproj", "{4787735E-BCC7-4F85-8245-04F694F10E55}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		MASM64|x64 = MASM64|x64
+		MASM64|x86 = MASM64|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4787735E-BCC7-4F85-8245-04F694F10E55}.Debug|x64.ActiveCfg = Debug|x64
+		{4787735E-BCC7-4F85-8245-04F694F10E55}.Debug|x64.Build.0 = Debug|x64
+		{4787735E-BCC7-4F85-8245-04F694F10E55}.Debug|x86.ActiveCfg = Debug|Win32
+		{4787735E-BCC7-4F85-8245-04F694F10E55}.Debug|x86.Build.0 = Debug|Win32
+		{4787735E-BCC7-4F85-8245-04F694F10E55}.MASM64|x64.ActiveCfg = MASM64|x64
+		{4787735E-BCC7-4F85-8245-04F694F10E55}.MASM64|x64.Build.0 = MASM64|x64
+		{4787735E-BCC7-4F85-8245-04F694F10E55}.MASM64|x86.ActiveCfg = MASM64|Win32
+		{4787735E-BCC7-4F85-8245-04F694F10E55}.MASM64|x86.Build.0 = MASM64|Win32
+		{4787735E-BCC7-4F85-8245-04F694F10E55}.Release|x64.ActiveCfg = Release|x64
+		{4787735E-BCC7-4F85-8245-04F694F10E55}.Release|x64.Build.0 = Release|x64
+		{4787735E-BCC7-4F85-8245-04F694F10E55}.Release|x86.ActiveCfg = Release|Win32
+		{4787735E-BCC7-4F85-8245-04F694F10E55}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {60340E2A-9199-4D92-AE01-A2240CCA0C7A}
+	EndGlobalSection
+EndGlobal

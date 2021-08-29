@@ -1,0 +1,123 @@
+
+    align 64
+IApplication dq IApplication.vtbl
+
+.objects \
+    dd 1 ; fake first instance
+    dd 'FASM'
+
+.vtbl dq \
+    .QueryInterface,\
+    .AddRef,\
+    .Release,\
+    .OnViewChanged,\
+    .OnCreateUICommand,\
+    .OnDestroyUICommand
+
+    align 64
+.QueryInterface:
+    test r8,r8
+    jz .E_POINTER
+
+    ; compare IIDs to those supported
+    GUID.CMP rdx,IID_IUIApplication
+    jz @F
+    GUID.CMP rdx,IID_IUnknown
+    jz @F
+    mov eax,$80004002 ; E_NOINTERFACE
+    retn
+
+@@: mov [r8],rcx
+    mov rax,[rcx]
+    call [rax+g_pApplication.AddRef]
+    xor eax,eax
+    retn
+
+.E_POINTER:
+    mov eax,$80004003 ; E_POINTER
+    retn
+
+.AddRef:
+    mov eax,1
+    lock xadd [.objects],eax
+    add eax,1
+    retn
+
+
+.Release:
+    or eax,-1
+    lock xadd [.objects],eax
+    sub eax,1
+
+    ; free global resources if zero
+
+    retn
+
+;-------------------------------------------------------------------------------
+
+IApplication.OnViewChanged:
+    virtual at rbp-.frame
+		       rq 4
+	.4	       rq 1
+	.5	       rq 1
+	.pRibbon       rq 1
+	    virtual at 0
+	      .pRibbon IUIRibbon
+	    end virtual
+	.uRibbonHeight rd 1
+	.frame = NOT 15 AND ($-$$+15)
+		rb $$+.frame-$ ; stack alignment
+	.RBP	       rq 1
+	.ret	       rq 1
+	.this	       rq 1 ;*IApplication  rcx
+	.viewId        rq 1 ; UINT32	    rdx
+	.typeID        rq 1 ; UI_VIEWTYPE   r8
+	.view	       rq 1 ;*IUnknown	    r9
+	.verb	       rd 2 ; UI_VIEWVERB
+	.uReasonCode   rd 2 ; INT32
+    end virtual
+    enter .frame,0
+    mov eax,$80004001 ; E_NOTIMPL
+    sub r8,1 ; UI_VIEWTYPE_RIBBON
+    jnz @F
+    cmp [.verb],UI_VIEWVERB_SIZE
+    jz .SIZE
+    cmp [.verb],UI_VIEWVERB_DESTROY
+    jz .DESTROY
+    cmp [.verb],UI_VIEWVERB_CREATE
+    jnz @F
+.CREATE:
+.DESTROY:
+    xor eax,eax ; S_OK
+@@: leave
+    retn
+
+.SIZE:
+    mov rcx,[r9]
+    mov rax,[rcx]
+    lea edx,[IID_IUIRibbon]
+    lea r8,[.pRibbon]
+    call [rax+.pRibbon.QueryInterface]
+    test eax,eax
+    js @B
+    lea rdx,[.uRibbonHeight]
+    call [rax+.pRibbon.GetHeight]
+    test eax,eax
+    js @B
+
+    ; update client relative to new size
+@@:
+    call [rax+.pRibbon.Release]
+    xor eax,eax ; S_OK
+    retn
+
+
+
+IApplication.OnCreateUICommand:
+    mov eax,$80004001 ; E_NOTIMPL
+    retn
+
+
+IApplication.OnDestroyUICommand:
+    mov eax,$80004001 ; E_NOTIMPL
+    retn

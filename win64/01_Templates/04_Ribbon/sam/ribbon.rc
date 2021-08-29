@@ -1,0 +1,193 @@
+// ******************************************************************************
+// * This is an automatically generated file containing the ribbon resource for *
+// * your application.                                                          *
+// ******************************************************************************
+
+#include ".\ribbon.h"
+
+STRINGTABLE 
+BEGIN
+    a_LabelTitle_RESID L"Home" /* LabelTitle a_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    b_LabelTitle_RESID L"Edit" /* LabelTitle b_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    c_LabelTitle_RESID L"View" /* LabelTitle c_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    d_LabelTitle_RESID L"Build" /* LabelTitle d_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    e_LabelTitle_RESID L"Help" /* LabelTitle e_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    f_LabelTitle_RESID L"Design" /* LabelTitle f_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    g_LabelTitle_RESID L"Layout" /* LabelTitle g_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    h_LabelTitle_RESID L"Project Tools" /* LabelTitle h_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    X_LabelTitle_RESID L"Some Familiar List..." /* LabelTitle X_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    FileMenu_LabelTitle_RESID L"Label:FileMenu" /* LabelTitle FileMenu_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    New_LabelTitle_RESID L"Label:New" /* LabelTitle New_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    OpenFile_LabelTitle_RESID L"Label:OpenFile" /* LabelTitle OpenFile_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    OpenAs_LabelTitle_RESID L"Label:OpenAs" /* LabelTitle OpenAs_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    Save_LabelTitle_RESID L"Label:Save" /* LabelTitle Save_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    SaveAs_LabelTitle_RESID L"Label:SaveAs" /* LabelTitle SaveAs_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    cmdButtonGroup_LabelTitle_RESID L"Label:cmdButtonGroup" /* LabelTitle cmdButtonGroup_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    cmdButton1_LabelTitle_RESID L"Label:cmdButton1" /* LabelTitle cmdButton1_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    cmdButton2_LabelTitle_RESID L"Label:cmdButton2" /* LabelTitle cmdButton2_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    cmdButton3_LabelTitle_RESID L"Label:cmdButton3" /* LabelTitle cmdButton3_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    cmdDropDownButtonGroup_LabelTitle_RESID L"Label:cmdDropDownButtonGroup" /* LabelTitle cmdDropDownButtonGroup_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    cmdDropDownButton_LabelTitle_RESID L"Label:cmdDropDownButton" /* LabelTitle cmdDropDownButton_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    cmdDDBButton1_LabelTitle_RESID L"Label:cmdDDBButton1" /* LabelTitle cmdDDBButton1_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    cmdDDBColorPicker_LabelTitle_RESID L"Label:cmdDDBColorPicker" /* LabelTitle cmdDDBColorPicker_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    cmdThemeColors_LabelTitle_RESID L"Label:cmdThemeColors" /* LabelTitle cmdThemeColors_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    cmdStandardColors_LabelTitle_RESID L"Label:cmdStandardColors" /* LabelTitle cmdStandardColors_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    cmdHighlightColors_LabelTitle_RESID L"Label:cmdHighlightColors" /* LabelTitle cmdHighlightColors_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    GroupSpinner_LabelTitle_RESID L"Label:GroupSpinner" /* LabelTitle GroupSpinner_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    cmdCheckBox_LabelTitle_RESID L"Label:cmdCheckBox" /* LabelTitle cmdCheckBox_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    Spinner_Size_LabelTitle_RESID L"Label:Spinner_Size" /* LabelTitle Spinner_Size_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    Ghost_Font_LabelTitle_RESID L"Label:Ghost_Font" /* LabelTitle Ghost_Font_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    cmdSplitButtonGroup_LabelTitle_RESID L"Label:cmdSplitButtonGroup" /* LabelTitle cmdSplitButtonGroup_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    cmdSplitButton_LabelTitle_RESID L"Label:cmdSplitButton" /* LabelTitle cmdSplitButton_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    cmdSBButtonItem_LabelTitle_RESID L"Label:cmdSBButtonItem" /* LabelTitle cmdSBButtonItem_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    cmdSBMajorItems_LabelTitle_RESID L"Label:cmdSBMajorItems" /* LabelTitle cmdSBMajorItems_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    cmdSBButton1_LabelTitle_RESID L"Label:cmdSBButton1" /* LabelTitle cmdSBButton1_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    cmdSBStandardItems_LabelTitle_RESID L"Label:cmdSBStandardItems" /* LabelTitle cmdSBStandardItems_LabelTitle_RESID: (null) */
+END
+
+STRINGTABLE 
+BEGIN
+    InternalCmd2_LabelTitle_RESID L"Label:InternalCmd2" /* LabelTitle InternalCmd2_LabelTitle_RESID: (null) */
+END
+
+FASM_RIBBON    UIFILE    "ribbon.bml"

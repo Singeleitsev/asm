@@ -1,0 +1,8 @@
+#define	MYMENU 	999
+#define	IDM_DRAWTEXT	100
+#define	IDM_TEXTOUT	101
+#define	IDM_LENGTH	102
+#define	IDM_RECTANGLE	103
+#define	IDM_PEACOCK	104
+#define	IDM_LACES	105
+#define	IDM_ABOUT	106

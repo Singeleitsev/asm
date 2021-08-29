@@ -1,0 +1,132 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Application xmlns='http://schemas.microsoft.com/windows/2009/Ribbon'>
+  <Application.Commands>
+    <Command Name="a" Id="256"  LabelTitle="Home"/>
+    <Command Name="b" Id="257"  LabelTitle="Edit"/>
+    <Command Name="c" Id="258"  LabelTitle="View"/>
+    <Command Name="d" Id="259"  LabelTitle="Build"/>
+    <Command Name="e" Id="260"  LabelTitle="Help"/>
+    <Command Name="f" Id="261"  LabelTitle="Design"/>
+    <Command Name="g" Id="262"  LabelTitle="Layout"/>
+
+    <Command Name="h" Id="4096"  LabelTitle="Project Tools"/>
+
+    <Command Name="Z" Id="2"/>
+    <Command Name="Y" Id="3"/>
+    <Command Name="X" Id="4" LabelTitle="Some Familiar List..."/>
+</Application.Commands>
+
+  <Application.Views>
+    <Ribbon>
+
+      <!-- Default Definition -->
+      <Ribbon.QuickAccessToolbar>
+	<QuickAccessToolbar CommandName="2"/>
+      </Ribbon.QuickAccessToolbar>
+
+      <!-- Application Menu -->
+      <Ribbon.ApplicationMenu>
+	<ApplicationMenu CommandName="FileMenu">
+	  <ApplicationMenu.RecentItems>
+	    <RecentItems CommandName="4" MaxCount="16" EnablePinning="true"/>
+	  </ApplicationMenu.RecentItems>
+	  <MenuGroup Class="MajorItems">
+	    <Button CommandName="New"/>
+	    <SplitButton>
+	      <SplitButton.MenuGroups>
+		<MenuGroup Class="MajorItems">
+		  <Button CommandName="OpenFile"/>
+		  <Button CommandName="OpenAs"/>
+		</MenuGroup>
+	      </SplitButton.MenuGroups>
+	    </SplitButton>
+	    <Button CommandName="Save"/>
+	    <Button CommandName="SaveAs"/>
+	  </MenuGroup>
+	</ApplicationMenu>
+      </Ribbon.ApplicationMenu>
+
+      <Ribbon.HelpButton>
+        <HelpButton CommandName="3"/>
+      </Ribbon.HelpButton>
+
+      <Ribbon.Tabs>
+	<Tab CommandName="256">
+          <Group CommandName="cmdButtonGroup" SizeDefinition="ThreeButtons">
+            <Button CommandName="cmdButton1"></Button>
+            <Button CommandName="cmdButton2"></Button>
+            <Button CommandName="cmdButton3"></Button>
+          </Group>
+<Group CommandName="cmdDropDownButtonGroup">
+  <DropDownButton CommandName="cmdDropDownButton">
+    <MenuGroup>
+      <Button CommandName="cmdDDBButton1"/>
+      <DropDownColorPicker CommandName="cmdDDBColorPicker"/>
+    </MenuGroup>
+  </DropDownButton>
+</Group>
+        </Tab>
+	<Tab CommandName="257">
+          <Group CommandName="4097" SizeDefinition="ThreeButtons">
+            <DropDownColorPicker
+              CommandName="cmdThemeColors"
+              ColorTemplate="ThemeColors"/>
+            <DropDownColorPicker
+              CommandName="cmdStandardColors"
+              ColorTemplate="StandardColors"/>
+            <DropDownColorPicker
+              CommandName="cmdHighlightColors"
+              ColorTemplate="HighlightColors"
+              StandardColorGridRows="3"/>
+          </Group>
+	</Tab>
+	<Tab CommandName="258">
+          <Group CommandName="GroupSpinner">
+            <CheckBox CommandName="cmdCheckBox"/>
+            <Spinner CommandName="Spinner_Size"/>
+          </Group>
+	</Tab>
+	<Tab CommandName="259">
+	  <Group CommandName="Ghost_Font" SizeDefinition="OneFontControl">
+	    <FontControl
+                CommandName="280"
+		FontType="RichFont"
+		ShowVerticalFonts="false"/>
+	  </Group>
+	</Tab>
+	<Tab CommandName="260">
+<Group CommandName="cmdSplitButtonGroup">
+  <SplitButton CommandName="cmdSplitButton">
+    <SplitButton.ButtonItem>
+      <Button CommandName="cmdSBButtonItem"/>
+    </SplitButton.ButtonItem>
+    <SplitButton.MenuGroups>
+      <MenuGroup CommandName="cmdSBMajorItems" 
+                 Class="MajorItems">
+        <Button CommandName="cmdSBButton1"/>
+        <Button CommandName="cmdSBButton1"/>
+      </MenuGroup>
+      <MenuGroup CommandName="cmdSBStandardItems"
+                 Class="StandardItems">
+        <Button CommandName="cmdSBButton1"/>
+        <Button CommandName="cmdSBButton1"/>
+      </MenuGroup>
+      <MenuGroup Class="StandardItems">
+        <Button CommandName="cmdSBButton1"/>
+        <Button CommandName="cmdSBButton1"/>
+      </MenuGroup>
+    </SplitButton.MenuGroups>
+  </SplitButton>
+</Group>
+	</Tab>
+      </Ribbon.Tabs>
+
+      <Ribbon.ContextualTabs>
+	<TabGroup CommandName="4096">
+          <Tab CommandName="261">	  </Tab>
+	  <Tab CommandName="262">	  </Tab>
+        </TabGroup>
+      </Ribbon.ContextualTabs>
+    </Ribbon>
+   </Application.Views>
+</Application>

@@ -1,0 +1,165 @@
+include 'main.finc'
+
+@Welcome...: entry $
+    push 8				; INITCOMMONCONTROLSEX
+    mov ecx,esp 			; #32#
+    mov dword [rcx+4],$80003FFF 	; init all the things
+    push rcx rcx rcx rcx		; the shadow knows ;)
+    call [comctl32.InitCommonControlsEx]
+
+    xor ecx,ecx
+    mov edx,1010b			; COINIT_APARTMENTTHREADED or COINIT_SPEED_OVER_MEMORY
+    call [ole32.CoInitializeEx]
+
+    mov ecx,HINSTANCE			; #32#
+    mov edx,1				; IDD_DIALOG
+    xor r8,r8				; HWND_DESKTOP
+    lea r9,[DialogFunc]
+    call [user32.DialogBoxParamW]
+
+    call [ole32.CoUninitialize]
+    xor eax,eax
+    call [kernel32.ExitProcess]
+    int3
+
+
+
+DialogFunc: ;hwndDlg,uMsg,wParam,lParam
+;    cmp edx,WM_COMMAND
+;    jz .WM_COMMAND
+    cmp edx,WM_CLOSE
+    jz .WM_CLOSE
+    cmp edx,WM_INITDIALOG
+    jz .WM_INITDIALOG
+    ; not processed
+    xor eax,eax
+    retn
+
+    virtual at rbp-.frame
+		 rq 4
+	.4	 rq 1
+	.5	 rq 1
+	.6	 rq 1
+	.7	 rq 1
+	.frame = NOT 15 AND ($-$$+15)
+		 rb $$+.frame-$ ; stack alignment
+	.RBP	 rq 1
+	.ret	 rq 1
+	.hwndDlg rq 1
+	.uMsg	 rq 1
+	.wParam  rq 1
+	.lParam  rq 1
+    end virtual
+
+.WM_CLOSE: ; Window close icon, SysMenu Close, or Alt-F4
+    enter .frame,0
+    mov [.hwndDlg],rcx
+
+    mov rcx,[g_pFramework]
+    mov rax,[rcx]
+    call [rax+g_pFramework.Destroy]
+
+    mov rcx,[g_pFramework]
+    mov rax,[rcx]
+    call [rax+g_pFramework.Release]
+
+    mov rcx,[g_pApplication]
+    mov rax,[rcx]
+    call [rax+g_pApplication.Release]
+
+    mov rcx,[.hwndDlg]
+    xor edx,edx
+    call [user32.EndDialog]
+    ; forward return
+    leave
+    retn
+
+.WM_INITDIALOG:
+    enter .frame,0
+    mov [.hwndDlg],rcx
+;   mov [.uMsg],rdx
+    mov [.wParam],r8
+;   mov [.lParam],r9
+;-------------------------------------------------------------------------------
+
+    ; create application instance, advance ref count
+;    lea ecx,[g_pApplication] ; #32#
+;    lea edx,[IID_IUIApplication] ; #32#
+;    lea r8,[g_pApplication]
+;    call IApplication.QueryInterface
+
+    ; create ribbon framework
+    lea eax,[g_pFramework] ; #32#
+    lea ecx,[CLSID_UIRibbonFramework] ; #32#
+    xor edx,edx
+    lea r8d,[rdx+1] ; CLSCTX_INPROC_SERVER
+    lea r9,[IID_IUIFramework]
+    mov [.4],rax
+    call [ole32.CoCreateInstance]
+    test eax,eax
+    js @F
+
+    ; instantiate framework, pass hWnd and IUIApplication
+    mov rcx,[g_pFramework]
+    mov rdx,[.hwndDlg]
+    mov r8,[g_pApplication]
+    mov rax,[rcx]
+    call [rax+g_pFramework.Initialize]
+    test eax,eax
+    js @F
+
+    mov rcx,[g_pFramework]
+    mov edx,HINSTANCE	  ; #32#
+    lea r8,[FASM_RIBBON]
+    mov rax,[rcx]
+    call [rax+g_pFramework.LoadUI]
+    test eax,eax
+    js @F
+
+;-------------------------------------------------------------------------------
+@@:
+    push 1 ; set focus to r8w
+    pop rax
+    leave
+    retn
+
+.WM_COMMAND:
+    retn
+
+
+
+
+    align 64
+
+g_pApplication dq IApplication
+  virtual at 0
+    g_pApplication IUIApplication
+  end virtual
+
+g_pFramework dq ?
+  virtual at 0
+    g_pFramework IUIFramework
+  end virtual
+
+FASM_RIBBON du "FASM_RIBBON",0
+
+
+
+import\
+    comctl32,<\
+	InitCommonControlsEx\
+    >,\
+    kernel32,<\
+	ExitProcess\
+    >,\
+    ole32,<\
+	CoCreateInstance,\
+	CoInitializeEx,\
+	CoUninitialize\
+    >,\
+    user32,<\
+	DialogBoxParamW,\
+	EndDialog,\
+	wsprintfA\
+    >
+section '.rsrc' data readable resource from 'main.res'

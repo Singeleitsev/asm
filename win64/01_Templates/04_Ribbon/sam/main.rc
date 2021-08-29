@@ -1,0 +1,22 @@
+
+#include "..\..\..\TOOLS\RESOURCE.H"
+
+#include "ribbon.rc"
+
+
+
+1 DIALOGEX 0, 0, 363, 243
+STYLE DS_CENTERMOUSE | WS_CAPTION | WS_POPUP | WS_THICKFRAME | WS_SYSMENU
+CAPTION "Ribbon Caption"
+FONT 9, "Segoe UI", 400, 0, 0
+BEGIN
+    CONTROL	    "", 1543, "SysListView32", WS_TABSTOP | WS_BORDER | LVS_ALIGNLEFT | LVS_SHOWSELALWAYS | LVS_OWNERDATA | LVS_SINGLESEL | LVS_REPORT, 7, 107, 349, 110
+    PUSHBUTTON	    "&New...", 1542, 7, 222, 50, 14
+    PUSHBUTTON	    "&Edit...", 1596, 63, 222, 50, 14, WS_DISABLED
+    PUSHBUTTON	    "&Remove", 1597, 119, 222, 50, 14, WS_DISABLED
+    DEFPUSHBUTTON   "&OK", 1, 196, 222, 50, 14
+    PUSHBUTTON	    "Cancel", 2, 251, 222, 50, 14
+    PUSHBUTTON	    "Help", 9, 306, 222, 50, 14
+END
+
+1		   RT_MANIFEST	  ".\\manifest.xml"

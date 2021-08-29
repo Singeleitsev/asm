@@ -1,6 +1,0 @@
-	cl -FA -c -DSTRICT -G3 -Ow -W3 -Zp -Tp  prg19_1.cpp
-prg19_1.cpp
-	link -SUBSYSTEM:windows -OUT:prg19_1.exe prg19_1.obj -DEFAULTLIB:user32.lib gdi32.lib winmm.lib comdlg32.lib comctl32.lib
-Microsoft (R) 32-Bit Incremental Linker Version 4.20.6164
-Copyright (C) Microsoft Corp 1992-1996. All rights reserved.
-
