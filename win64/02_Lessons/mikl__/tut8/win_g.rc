@@ -1,0 +1,16 @@
+#define ZZZ_TEST 0
+#define ZZZ_OPEN 1
+#define ZZZ_SAVE 2
+#define ZZZ_EXIT 3
+
+ZZZ_Menu MENU 
+{
+	POPUP "&File"
+	{       MENUITEM "&Test",ZZZ_TEST
+		MENUITEM "&Open",ZZZ_OPEN
+		MENUITEM "&Save",ZZZ_SAVE
+                MENUITEM SEPARATOR
+		MENUITEM "&Exit",ZZZ_EXIT
+	}
+	MENUITEM "&Exit",ZZZ_EXIT
+}
