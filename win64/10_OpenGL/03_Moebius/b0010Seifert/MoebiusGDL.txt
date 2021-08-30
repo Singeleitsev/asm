@@ -1,0 +1,75 @@
+n = 12
+dA = 360/n
+r1 = 1
+r2 = 0.1
+
+PEN 1
+Alpha = 0
+Beta = 0
+x1 = 1
+y1 = 0
+z1 = 0
+x2 = 1
+y2 = 0
+z2 = 0
+
+FOR i = 0 to 11
+ Alpha = Alpha+dA
+ Beta = Alpha/2
+ r1cosA = r1*COS(Alpha)
+ r1sinA = r1*SIN(Alpha)
+ r2cosB = r2*COS(Beta)
+ r2sinB = r2*SIN(Beta)
+
+ x1 = r1cosA+r2cosB
+ y1 = r1sinA
+ z1 = r2sinB
+ x2 = r1cosA-r2cosB
+ y2 = r1sinA
+ z2 = -r2sinB
+ LIN_ x1,y1,z1, x2,y2,z2
+NEXT i
+
+PEN 4
+Alpha = 0
+Beta = 0
+x1 = 1
+y1 = 0
+z1 = 0
+x2 = 1
+y2 = 0
+z2 = 0
+
+FOR i = 0 to 11
+ x1 = r1*COS(Alpha)+r2*COS(Beta)
+ y1 = r1*SIN(Alpha)
+ z1 = r2*SIN(Beta)
+ Alpha = Alpha+dA
+ Beta = Alpha/2
+ x2 = r1*COS(Alpha)+r2*COS(Beta)
+ y2 = r1*SIN(Alpha)
+ z2 = r2*SIN(Beta)
+ LIN_ x1,y1,z1, x2,y2,z2
+NEXT i
+
+PEN 20
+Alpha = 0
+Beta = 0
+x1 = 1
+y1 = 0
+z1 = 0
+x2 = 1
+y2 = 0
+z2 = 0
+
+FOR i = 0 to 11
+ x1 = r1*COS(Alpha)-r2*COS(Beta)
+ y1 = r1*SIN(Alpha)
+ z1 = -r2*SIN(Beta)
+ Alpha = Alpha+dA
+ Beta = Alpha/2
+ x2 = r1*COS(Alpha)-r2*COS(Beta)
+ y2 = r1*SIN(Alpha)
+ z2 = -r2*SIN(Beta)
+ LIN_ x1,y1,z1, x2,y2,z2
+NEXT i
