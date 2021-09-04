@@ -1,10 +1,10 @@
 format PE64 GUI 6.0
 entry start
 
-
 ;include '..\INCLUDE\win64a.inc'
-include 'F:\bin\dev\asm\fasmw17164\INCLUDE\win64a.inc'
 ;include '..\EXAMPLES\OPENGL\opengl.inc'
+
+include 'F:\bin\dev\asm\fasmw17164\INCLUDE\win64a.inc'
 include 'F:\bin\dev\asm\fasmw17164\EXAMPLES\OPENGL\opengl.inc'
 
 struc CustomPoint x,y,z,t,r,g,b,a
@@ -115,7 +115,8 @@ proc WindowProc uses rbx rsi rdi, hwnd,wmsg,wparam,lparam
  invoke glRotatef, float [aXY],float [aXZ], float [aYZ], float dword 1.0
  invoke glClear,GL_COLOR_BUFFER_BIT
 
- include 'MoebiusDraw.asm'
+ mov [Alpha],0
+ include 'TrefoilDraw.asm'
 
  invoke SwapBuffers,[hdc]
 
@@ -144,7 +145,7 @@ endp
 
 section '.data' data readable writeable
 
-_title db 'OpenGL Moebius Ribbon',0
+_title db 'OpenGL Trefoil Ribbon',0
 _class db 'FASMOPENGL64',0
 
 wc WNDCLASS 0,WindowProc,0,0,NULL,NULL,NULL,NULL,NULL,_class
@@ -164,19 +165,21 @@ i dq 0
 n dq 128 ;Pairs of Vertices
 
 ;Radii
-r1 dd 0.5 ;Orbit Radius
-r2 dd 0.25 ;Planet Radius
+r1 dd 0.25 ;Orbit Radius
+r2 dd 0.075 ;Planet Radius
 
 ;Angles
 Alpha dd 0.0
 dA dd 0.0 ;AngleStep = 360/n = 2*pi/n
-Beta dd 0.0
 
 ;Addendums
-r1cosA dd 0.0
-r1sinA dd 0.0
-r2cosB dd 0.0
-r2sinB dd 0.0
+cosT dd 0.0
+sinT dd 0.0
+v2cos2T dd 0.0
+v2sin2T dd 0.0
+v_sin3T dd 0.0
+r2cos3T2 dd 0.0
+r2sin3T2 dd 0.0
 
 ;Vertices Buffer
 p1 CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
@@ -189,7 +192,7 @@ aXZ dd 0.5
 
 section '.const' data readable
 
-include 'MoebiusConst.asm'
+include 'TrefoilConst.asm'
 
 
 section '.idata' import data readable writeable
@@ -222,7 +225,8 @@ BeginPaint,'BeginPaint',\
 EndPaint,'EndPaint',\
 SetTimer,'SetTimer',\
 KillTimer,'KillTimer',\
-InvalidateRect,'InvalidateRect'
+InvalidateRect,'InvalidateRect',\
+MessageBox,'MessageBoxA'
 
 import gdi,\
 ChoosePixelFormat,'ChoosePixelFormat',\
