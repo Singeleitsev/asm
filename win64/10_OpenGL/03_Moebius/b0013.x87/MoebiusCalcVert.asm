@@ -7,7 +7,7 @@ fstp dword [p2.a] ;a2
 
 ;Beta = Alpha/2
 fld dword [Alpha]
-fmul dword [c1_5] ;<-- Spin
+fdiv dword [two] ;<-- Spin
 fstp dword [Beta]
 
 ;r1cosA, r1sinA

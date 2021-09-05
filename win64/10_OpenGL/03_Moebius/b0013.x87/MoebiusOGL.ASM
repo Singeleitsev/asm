@@ -183,7 +183,7 @@ r2sinB dd 0.0
 p1 CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
 p2 CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
 
-;Rotation Angle
+;Demo Rotation Angle
 aXY dd 0.5
 aYZ dd 0.5
 aXZ dd 0.5
