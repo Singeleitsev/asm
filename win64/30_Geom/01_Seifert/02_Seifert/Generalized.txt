@@ -1,0 +1,5 @@
+;https://mathcurve.com/courbes3d.gb/noeuds/noeuddetrefle.shtml
+
+;x=cos(t)+2*cos(n-1)*t
+;y=sin(t)-2*sin(n-1)*t
+;z=2*sin(n*t)
