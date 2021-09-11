@@ -1,5 +1,11 @@
 ;https://mathcurve.com/courbes3d.gb/noeuds/noeuddetrefle.shtml
 
-;x=cos(t)+2*cos(n-1)*t
-;y=sin(t)-2*sin(n-1)*t
-;z=2*sin(n*t)
+;Beta = n*Alpha/2
+
+;x = COS(t) + 2*COS((n-1)*t)
+;y = SIN(t) - 2*SIN((n-1)*t)
+;z = 2*SIN(n*t)
+
+;x = r2*COS(Beta)
+;z = r2*SIN(Beta)
+

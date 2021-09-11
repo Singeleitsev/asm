@@ -1,0 +1,90 @@
+n = 120
+m = n-1
+
+r1 = 0.25
+r2 = 0.25
+r3 = 0.05
+
+dA = 0.1
+
+310:
+t = 0
+GOSUB "Seifert"
+
+PEN 20
+MATERIAL 19
+FOR t = 0 TO 120 STEP dA
+ GOSUB "NextSeifert"
+NEXT t
+
+PEN 4
+MATERIAL 76
+FOR t = 120 TO 240 STEP dA
+ GOSUB "NextSeifert"
+NEXT t
+
+PEN 5
+MATERIAL 48
+FOR t = 240 TO 360+dA STEP dA
+ GOSUB "NextSeifert"
+NEXT t
+
+GOSUB 399
+
+"Seifert":
+ r1cosT = r1*COS(t)
+ r1sinT = r1*SIN(t)
+
+ r2x2cosMT = r2*2*COS(m*t)
+ r2x2sinMT = r2*2*SIN(m*t)
+
+ r2x2sinNT = r2*2*SIN(n*t)
+
+ Beta = n*t/2
+ r3cosB = r3*COS(Beta)
+ r3sinB = r3*SIN(Beta)
+
+ x1 = r1cosT + r2x2cosMT
+ y1 = r1sinT - r2x2sinMT
+ z1 = r2x2sinNT
+
+! x1L = x1 - r3cosB
+! y1L = y1
+! z1L = z1 - r3sinB
+
+! x1R = x1 + r3cosB
+! y1R = y1
+! z1R = z1 + r3sinB
+RETURN
+
+"NextSeifert":
+ x0 = x1
+ y0 = y1
+ z0 = z1
+! x0L = x1L
+! y0L = y1L
+! z0L = z1L
+! x0R = x1R
+! y0R = y1R
+! z0R = z1R
+
+ GOSUB "Seifert"
+
+ LIN_ x0,y0,z0, x1,y1,z1
+! LIN_ x0L,y0L,z0L, x1L,y1L,z1L
+! LIN_ x0R,y0R,z0R, x1R,y1R,z1R
+
+! PLANE 3,
+!  x0R,y0R,z0R,
+!  x0L,y0L,z0L,
+!  x1R,y1R,z1R
+! PLANE 3,
+!  x0L,y0L,z0L,
+!  x1L,y1L,z1L,
+!  x1R,y1R,z1R
+RETURN
+
+399:
+DEL TOP
+HOTSPOT 0,0,0
+

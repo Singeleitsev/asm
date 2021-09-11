@@ -1,15 +1,3 @@
-;Alpha = Alpha+dA
-fld dword [Alpha] ;st0 = Alpha
-fadd dword [dA] ;st0 = Alpha+dA
-fst dword [Alpha]
-fst dword [p1.a] ;a1
-fstp dword [p2.a] ;a2
-
-;Beta = Alpha/2
-fld dword [Alpha]
-fdiv dword [two] ;<-- Spin
-fstp dword [Beta]
-
 ;r1cosA, r1sinA
 fld dword [Alpha]
 fsincos ;st0 = cos(a) ;st1 = sin(a)
@@ -17,6 +5,11 @@ fmul dword [r1] ;st0 = r1*cos(a)
 fstp dword [r1cosA]
 fmul dword [r1] ;st0 = r1*sin(a)
 fstp dword [r1sinA]
+
+;Beta = Alpha/2
+fld dword [Alpha]
+fdiv dword [two] ;<-- Spin
+fstp dword [Beta]
 
 ;r2cosB, r2sinB
 fld dword [Beta]

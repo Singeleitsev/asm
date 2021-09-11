@@ -1,10 +1,10 @@
 ;Numeric Constants
- sign dd 7FFFFFFFh
+ ;sign dd 7FFFFFFFh
  ;null dd 0.0
- half dd 0.5
- one dd 1.0
+ ;half dd 0.5
+ ;one dd 1.0
  two dd 2.0
- three dd 3.0
+ ;three dd 3.0
  ;four dd 4.0
  ;five dd 5.0
  ;six dd 6.0
@@ -30,5 +30,4 @@
  ;c3pi2 dd 4.71238898 ;3*pi/2
  c3pi2 dd 4096CBE4h ;32 bit
 
- c1_5 dd 1.5
 

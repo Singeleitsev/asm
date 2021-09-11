@@ -94,6 +94,14 @@ proc WindowProc uses rbx rsi rdi, hwnd,wmsg,wparam,lparam
 
  invoke SetTimer, [hwnd],1,0Ah,0 ;USER_TIMER_MINIMUM = 0Ah = 10 ms
 
+;AngleStep = 360/n = 2*pi/n
+ finit
+ fldpi ;st0 = pi
+ fmul dword [two] ;st0 = 2*pi
+ ;fidiv because n is an integer
+ fidiv dword [resol] ;st0 = 2*pi/n
+ fstp dword [dA] ;dA = st0
+
  xor eax,eax
  jmp .finish
 
@@ -115,7 +123,6 @@ proc WindowProc uses rbx rsi rdi, hwnd,wmsg,wparam,lparam
  invoke glRotatef, float [aXY],float [aXZ], float [aYZ], float dword 1.0
  invoke glClear,GL_COLOR_BUFFER_BIT
 
- mov [Alpha],0
  include 'MoebiusDraw.asm'
 
  invoke SwapBuffers,[hdc]
@@ -159,10 +166,10 @@ ps PAINTSTRUCT
 pfd PIXELFORMATDESCRIPTOR
 
 ;Counters
-i dq 0
+i dd 0
 
 ;Number of Vertices
-n dq 128 ;Pairs of Vertices
+resol dd 128 ;Pairs of Vertices
 
 ;Radii
 r1 dd 0.5 ;Orbit Radius
