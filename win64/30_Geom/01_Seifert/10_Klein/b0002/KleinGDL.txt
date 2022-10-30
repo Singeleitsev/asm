@@ -1,0 +1,74 @@
+dU = 10
+dV = 2
+
+MATERIAL txrGlass
+
+FOR v = dV TO 360 STEP dV
+ FOR u = dU TO 360 STEP dU
+
+  u = u-dU !Left
+  GOSUB "Klein"
+  x1 = x
+  y1 = y
+  z1 = z
+
+  v = v-dV !Down
+  GOSUB "Klein"
+  x2 = x
+  y2 = y
+  z2 = z
+
+  u = u+dU !Right
+  GOSUB "Klein"
+  x4 = x
+  y4 = y
+  z4 = z
+
+  v = v+dV !Up
+  GOSUB "Klein"
+  x3 = x
+  y3 = y
+  z3 = z
+
+  GOSUB "DrawPlane"
+
+ NEXT u
+NEXT v
+
+
+GOSUB 399
+
+
+"Klein":
+ cosV = COS(v)
+ sinV = SIN(v)
+
+ v4x1cosV2 = 4*(1-(cosV/2))
+
+ cosV2pi4 = COS(v/2+45)
+ sinV2pi4 = SIN(v/2+45)
+
+ cosU = COS(u)
+ sinU = SIN(u)
+
+ x = 6*cosV*(1+sinV) + v4x1cosV2*cosU*cosV2pi4
+ y = v4x1cosV2*sinU
+ z = -(16*sinV + v4x1cosV2*sinV2pi4*cosU)
+RETURN
+
+"DrawPlane":
+ PLANE 3,
+  x1,y1,z1,
+  x2,y2,z2,
+  x3,y3,z3
+ PLANE 3,
+  x2,y2,z2,
+  x3,y3,z3,
+  x4,y4,z4
+RETURN
+
+
+399:
+DEL TOP
+HOTSPOT 0,0,0
+

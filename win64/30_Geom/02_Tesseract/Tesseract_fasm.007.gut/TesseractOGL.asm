@@ -1,11 +1,8 @@
 format PE64 GUI 6.0
 entry start
 
-;include '..\INCLUDE\win64a.inc'
-;include '..\EXAMPLES\OPENGL\opengl.inc'
-
-include 'F:\bin\dev\asm\fasmw17164\INCLUDE\win64a.inc'
-include 'F:\bin\dev\asm\fasmw17164\EXAMPLES\OPENGL\opengl.inc'
+include 'D:\bin\dev\asm\fasmw17330\INCLUDE\win64a.inc'
+include 'D:\bin\dev\asm\fasmw17330\EXAMPLES\OPENGL\opengl.inc'
 
 struc CustomPoint x,y,z,t,r,g,b,a
  {
@@ -94,21 +91,8 @@ proc WindowProc uses rbx rsi rdi, hwnd,wmsg,wparam,lparam
 
  invoke SetTimer, [hwnd],1,0Ah,0 ;USER_TIMER_MINIMUM = 0Ah = 10 ms
 
- ;AngleStep = 360/rU = 2*pi/rU
- finit
- fldpi ;st0 = pi
- fmul dword [two] ;st0 = 2*pi
- ;fidiv because rU is an integer
- fidiv dword [rU] ;st0 = 2*pi/rU
- fstp dword [dU_] ;dU = st0
-
- ;AngleStep = 360/rV = 2*pi/rV
- finit
- fldpi ;st0 = pi
- fmul dword [two] ;st0 = 2*pi
- ;fidiv because rU is an integer
- fidiv dword [rV] ;st0 = 2*pi/rV
- fstp dword [dV] ;dU = st0
+include 'TesseractInitVert.asm'
+;include 'TesseractCalcColor.asm'
 
  xor eax,eax
  jmp .finish
@@ -131,12 +115,14 @@ proc WindowProc uses rbx rsi rdi, hwnd,wmsg,wparam,lparam
  invoke glRotatef, float [aXY],float [aXZ], float [aYZ], float dword 1.0
  invoke glClear,GL_COLOR_BUFFER_BIT
 
- include 'KleinDraw.asm'
+ include 'TesseractCalcVert.asm'
+ include 'TesseractDraw.asm'
 
  invoke SwapBuffers,[hdc]
 
  xor eax,eax
  jmp .finish
+
 
 .wmkeydown:
  cmp r8d,VK_ESCAPE
@@ -159,59 +145,45 @@ endp
 
 section '.data' data readable writeable
 
-_title db 'OpenGL Klein Ribbon',0
-_class db 'FASMOPENGL64',0
+  _title db 'OpenGL Tesseract',0
+  _class db 'FASMOPENGL64',0
 
 wc WNDCLASS 0,WindowProc,0,0,NULL,NULL,NULL,NULL,NULL,_class
 
+;Handles
 hdc dq ?
 hrc dq ?
 
+;Structures
 msg MSG
 rc RECT
 ps PAINTSTRUCT
 pfd PIXELFORMATDESCRIPTOR
 
 ;Counters
-i dd 0
-j dd 0
+i0 dd 0
+i1 dd 0
+i2 dd 0
 
-;Resolution
-rU dd 360 ;Horizontal
-rV dd 360 ;Vertical
-
-;Radii
-r1 dd 0.25 ;Orbit Radius
-r2 dd 0.25 ;Knot Radius
-r3 dd 0.05 ;Planet Radius
-
-;Angles
-u dd 0.0
-dU_ dd 0.0 ;AngleStep = 360/resol = 2*pi/resol
-v dd 0.0
-dV dd 0.0
-
-;Addendums
- cosU dd 0.0
- sinU dd 0.0
- v4x1cosU2 dd 0.0
- cosU2pi4 dd 0.0
- sinU2pi4 dd 0.0
- cosV dd 0.0
- sinV dd 0.0
+;Affected Vertices
+v1 dd 64 dup (0) ;Back Buffer
+v2 dd 64 dup (0) ;Front Buffer
 
 ;Vertices Buffer
 p1 CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
 p2 CustomPoint 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
 
-;Rotation Angle
+;Demo Rotation Angle
 aXY dd 0.5
-aXZ dd 0.5
 aYZ dd 0.5
+aXZ dd 0.5
+
+
 
 section '.const' data readable
 
-include 'KleinConst.asm'
+include 'TesseractConst.asm'
+
 
 
 section '.idata' import data readable writeable
@@ -244,8 +216,7 @@ BeginPaint,'BeginPaint',\
 EndPaint,'EndPaint',\
 SetTimer,'SetTimer',\
 KillTimer,'KillTimer',\
-InvalidateRect,'InvalidateRect',\
-MessageBox,'MessageBoxA'
+InvalidateRect,'InvalidateRect'
 
 import gdi,\
 ChoosePixelFormat,'ChoosePixelFormat',\
@@ -256,9 +227,11 @@ import opengl,\
 glBegin,'glBegin',\
 glClear,'glClear',\
 glColor3f,'glColor3f',\
+glColor3d,'glColor3d',\
 glEnd,'glEnd',\
 glRotatef,'glRotatef',\
 glVertex3f,'glVertex3f',\
+glVertex3d,'glVertex3d',\
 glViewport,'glViewport',\
 wglCreateContext,'wglCreateContext',\
 wglDeleteContext,'wglDeleteContext',\

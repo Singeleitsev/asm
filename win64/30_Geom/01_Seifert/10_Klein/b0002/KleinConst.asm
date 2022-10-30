@@ -1,0 +1,55 @@
+;Numeric Constants
+;sign dd 7FFFFFFFh
+;null dd 0.0
+;half dd 0.5
+one dd 1.0
+two dd 2.0
+;three dd 3.0
+four dd 4.0
+;five dd 5.0
+six dd 6.0
+c16 dd 16.0
+
+
+;c2pi dd 6.283185307179586476925286766559 ;2*pi
+c2pi dd 40C90FDBh
+
+;c4pi dd 12.566370614359172953850573533118 ;4*pi
+c4pi dd 41490FDBh
+
+
+;c1pi2 dd 1.5707963267948966 ;pi/2
+c1pi2 dd 3FC90FDBh ;32 bit
+
+;c3pi2 dd 4.71238898 ;3*pi/2
+c3pi2 dd 4096CBE4h ;32 bit
+
+
+;c1pi3 dd 1.047197551196597746 ;pi/3
+c1pi3 dd 3F860A92h ;32 bit
+
+;c2pi3 dd 2.094395102393195492 ;2*pi/3
+c2pi3 dd 40060A92h ;32 bit
+
+;c4pi3 dd 4.188790204786390984 ;4*pi/3
+c4pi3 dd 40860A92h ;32 bit
+
+;c5pi3 dd 5.23598775598298873 ;5*pi/3
+c5pi3 dd 40A78D36h ;32 bit
+
+
+;c1pi4 dd 0.78539816339744830961566084581988 ;pi/4
+c1pi4 dd 3F490FDBh ;32 bit
+
+;c3pi4 dd 2.3561944901923449288469825374596 ;3*pi/4
+c3pi4 dd 4016CBE4h ;32 bit
+
+
+;c8pi15 dd 1.6755160819145563938467431377491 ;96 deg
+c8pi15 dd 3FD67750h ;32 bit
+
+
+;m1pi2 dd -1.5707963267948966192313216916398 ;-pi/2
+m1pi2 dd 0BFC90FDBh
+
+
