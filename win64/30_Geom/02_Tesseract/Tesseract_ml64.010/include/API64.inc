@@ -4,22 +4,26 @@
 
 ;gdi32.inc
 
+ChoosePixelFormat PROTO :QWORD,:QWORD
 CreateSolidBrush PROTO :QWORD
 DeleteObject PROTO :QWORD
 Rectangle PROTO :QWORD,:QWORD,:QWORD,:QWORD,:QWORD
 SelectObject PROTO :QWORD,:QWORD
 SetTextColor PROTO :QWORD,:QWORD
 SetPixel PROTO :QWORD,:QWORD,:QWORD,:QWORD
+SetPixelFormat PROTO :QWORD,:QWORD,:QWORD
+SwapBuffers PROTO :QWORD
 
 
 
 ;kernel32.inc
 
-FatalExit PROTO :QWORD
+ExitProcess PROTO :QWORD
 GetLastError PROTO
 GetModuleHandleA PROTO :QWORD
 GetProcessHeap PROTO
 GetStockObject PROTO :QWORD
+GetTickCount PROTO
 HeapAlloc PROTO :QWORD,:QWORD,:QWORD
 HeapFree PROTO :QWORD,:QWORD,:QWORD
 

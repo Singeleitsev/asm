@@ -52,10 +52,10 @@ CLIENTCREATESTRUCT64 STRUCT
 CLIENTCREATESTRUCT64 ENDS
 
 RECT64 STRUCT
-    left dd ?
-    top dd ?
-    right dd ?
-    bottom dd ?
+	left dd ?
+	top dd ?
+	right dd ?
+	bottom dd ?
 RECT64 ENDS
 
 PAINTSTRUCT64 STRUC
@@ -67,3 +67,35 @@ PAINTSTRUCT64 STRUC
 	fIncUpdate dd ?
 	rgbReserved db 32 dup(?)
 PAINTSTRUCT64 ENDS
+
+
+
+;F:\bin\dev\fasmw17164\INCLUDE\EQUATES\GDI64.INC
+PIXELFORMATDESCRIPTOR64 STRUC
+	nSize dw ?
+	nVersion dw ?
+	dwFlags dd ?
+	iPixelType db ?
+	cColorBits db ?
+	cRedBits db ?
+	cRedShift db ?
+	cGreenBits db ?
+	cGreenShift db ?
+	cBlueBits db ?
+	cBlueShift db ?
+	cAlphaBits db ?
+	cAlphaShift db ?
+	cAccumBits db ?
+	cAccumRedBits db ?
+	cAccumGreenBits db ?
+	cAccumBlueBits db ?
+	cAccumAlphaBits db ?
+	cDepthBits db ?
+	cStencilBits db ?
+	cAuxBuffers db ?
+	iLayerType db ?
+	bReserved db ?
+	dwLayerMask dd ?
+	dwVisibleMask dd ?
+	dwDamageMask dd ?
+PIXELFORMATDESCRIPTOR64 ENDS

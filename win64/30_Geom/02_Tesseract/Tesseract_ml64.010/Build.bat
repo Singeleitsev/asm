@@ -1,8 +1,8 @@
 @echo off
 
-set AsmName=000_Integrator
-set AppName=SDI64MASM
-set BinPath=D:\bin\dev\ml64\VS2019\bin
+set AsmName=OGL_fasm2ml64
+set AppName=OGL_fasm2ml64
+set BinPath=D:\bin\dev\asm\ml64\VS2019\bin
 
 if exist %AppName%.obj del %AppName%.obj
 if exist %AppName%.exe del %AppName%.exe
