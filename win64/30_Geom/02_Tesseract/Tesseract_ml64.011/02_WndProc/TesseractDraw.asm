@@ -5,7 +5,7 @@ lea rsi,f0 ;Face 0 Vertex 0
 mov i0,0
 
 lblDrawFace:
-mov rcx,GL_QUADS
+mov rcx,7 ;GL_QUADS
 call glBegin
 
 ;Get Face Colors
@@ -15,9 +15,9 @@ mov bl,byte ptr i0
 shl rbx,4 ;Multiply by 16 bytes because Color has 4 RGBA Components
 add rdi,rbx
 
-movd xmm0,dword [rdi+00]
-movd xmm1,dword [rdi+04]
-movd xmm2,dword [rdi+08]
+movd xmm0,dword ptr [rdi+00]
+movd xmm1,dword ptr [rdi+04]
+movd xmm2,dword ptr [rdi+08]
 call glColor3f
 
 ;Set Vertex Counter
@@ -31,9 +31,9 @@ mov bl,byte ptr [rsi]
 shl rbx,4 ;Multiply by 16 bytes because Face has 4 Vertices
 add rdi,rbx
 
-movd xmm0,dword [rdi+00]
-movd xmm1,dword [rdi+04]
-movd xmm2,dword [rdi+08]
+movd xmm0,dword ptr [rdi+00]
+movd xmm1,dword ptr [rdi+04]
+movd xmm2,dword ptr [rdi+08]
 call glVertex3f
 
 inc rsi ;Next Face

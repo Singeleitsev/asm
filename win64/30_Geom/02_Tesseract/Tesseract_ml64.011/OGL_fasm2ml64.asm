@@ -21,10 +21,6 @@ include TesseractConst.asm
  _title db 'OpenGL example',0
  _class db 'MASMOPENGL64',0
 
- aYZ dd 0.3
- aXZ dd 0.4
- aXY dd 0.5
-
  wc WNDCLASSEX64 <>
 
  hdc dq ?
@@ -35,6 +31,30 @@ include TesseractConst.asm
  pfd PIXELFORMATDESCRIPTOR64 <>
 
  clock dd ?
+
+;Counters
+i0 dd 0
+i1 dd 0
+i2 dd 0
+
+;Affected Vertices
+
+;4-Buffer
+;is used to compute 4D-Vertices
+;affected by 4D-Rotation
+v1 dd 64 dup (0)
+
+;3-Buffer
+;is used to compute 3D-Vertices
+;projected from 4D-Space
+v2 dd 64 dup (0)
+
+;Demo Rotation Angle
+ aYZ dd 0.3
+ aXZ dd 0.4
+ aXY dd 0.5
+
+Scale dd 1.0
 
 .data?
 ;Temporarily Empty
