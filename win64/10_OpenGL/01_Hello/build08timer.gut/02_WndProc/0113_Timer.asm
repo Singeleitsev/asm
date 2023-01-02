@@ -14,8 +14,8 @@ call glRotatef
 mov rcx,4000h ;GL_COLOR_BUFFER_BIT
 call glClear
 
-include TesseractCalcVert.asm
-include TesseractDraw.asm
+include OGLCalcVert.asm
+include OGLDraw.asm
 
 mov rcx,hdc
 xor rdx,rdx

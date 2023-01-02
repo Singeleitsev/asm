@@ -18,19 +18,19 @@ include TesseractConst.asm
 
 .data
 
- _title db 'OpenGL example',0
- _class db 'MASMOPENGL64',0
+_title db 'OpenGL example',0
+_class db 'MASMOPENGL64',0
 
- wc WNDCLASSEX64 <>
+wc WNDCLASSEX64 <>
 
- hdc dq ?
- hrc dq ?
+hdc dq 0
+hrc dq 0
 
- msg MSG64 <>
- rc RECT64 <>
- pfd PIXELFORMATDESCRIPTOR64 <>
+msg MSG64 <>
+rc RECT64 <>
+pfd PIXELFORMATDESCRIPTOR64 <>
 
- clock dd ?
+clock dd 00
 
 ;Counters
 i0 dd 0

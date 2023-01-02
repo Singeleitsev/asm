@@ -1,11 +1,10 @@
 WinMain proc
 
 sub rsp,8
+sub rsp,100h ;Frame
 
-sub rsp,20h
 mov rcx,0
 call GetModuleHandleA
-add rsp,20h
 mov wc.hInstance,rax
 
 ;Register Class
@@ -16,27 +15,20 @@ mov wc.hInstance,rax
  lea rax,_class
  mov wc.lpszClassName,rax
 ;Load Icon
- sub rsp,20h
  mov rcx,0
  mov rdx,7F00h ;hIcon = IDI_APPLICATION = 32512 = 7F00h
  call LoadIconA
- add rsp,20h
  mov wc.hIcon,rax
 ;Load Cursor
- sub rsp,20h
  mov rcx,0
  mov rdx,7F00h ;hCursor = IDC_ARROW = 32512 = 7F00h
  call LoadCursorA
- add rsp,20h
  mov wc.hCursor,rax
 ;Now call the Function
- sub rsp,20h
  lea rcx,wc
  call RegisterClassExA
- add rsp,20h
 
 ;Create the Window
- sub rsp,60h
  mov rcx,0 ;dwExStyle
  lea rdx,_class
  lea r8,_title
@@ -51,35 +43,28 @@ mov wc.hInstance,rax
  mov qword ptr [rsp+50h],rax
  mov qword ptr [rsp+58h],0
  call CreateWindowExA
- add rsp,60h
 
 ;Store the Handle
 ;mov hWndMain,rax
 
 msg_loop:
- sub rsp,20h
  lea rcx,msg
- mov rdx,0
- mov r8,0
- mov r9,0
+ xor rdx,rdx
+ xor r8,r8
+ xor r9,r9
  call GetMessageA
- add rsp,20h
  cmp eax,1
  jb end_loop
  jne msg_loop
- sub rsp,20h
  lea rcx,msg
  call TranslateMessage
- add rsp,20h
- sub rsp,20h
  lea rcx,msg
  call DispatchMessageA
- add rsp,20h
  jmp msg_loop
 end_loop:
- sub rsp,20h
  mov rcx,msg.wParam
  call ExitProcess
- add rsp,20h
+
+ add rsp,100h
 
 WinMain endp

@@ -12,7 +12,7 @@ sub rsp,8
 
 mov hwnd,rcx
 
-sub rsp,20h ;frame
+sub rsp,100h ;frame
 
 cmp edx,100h
 je lbl_wmkeydown
@@ -36,7 +36,7 @@ include 0100_KeyDown.asm
 include 0113_Timer.asm
  
 lbl_finish:
-add rsp,20h
+add rsp,100h
 ;pop rdi
 ;pop rsi
 ;pop rbx

@@ -1,7 +1,7 @@
 @echo off
 
-set AsmName=OGL_fasm2ml64
-set AppName=OGL_fasm2ml64
+set AsmName=Tesseract
+set AppName=Tesseract
 set BinPath=D:\bin\dev\asm\ml64\VS2019\bin
 
 if exist %AppName%.obj del %AppName%.obj

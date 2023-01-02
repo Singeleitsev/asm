@@ -1,20 +1,20 @@
 ;Numeric Constants
-;sign dd 7FFFFFFFh
-;null dd 0.0
-tenth dd 0.1
-quarter dd 0.25
-half dd 0.5
-;one dd 1.0
-two dd 2.0
+;SIGN dd 7FFFFFFFh
+;NULL dd 0.0
+;TENTH dd 0.1
+;QUARTER dd 0.25
+;HALF dd 0.5
+;ONE dd 1.0
+;TWO dd 2.0
 
 ;Tesseract entity definition
-;   7--------6   15------14
-;  /|       /|  /|       /|
-; 4--------5 | 12------13 | z
-; | |      | | | |      | | |  y
-; | 3------|-2 | 11-----|10 | /
-; |/       |/  |/       |/  |/
-; 0--------1   8--------9   0-------x
+;   3--------2   11------10
+;  /|       /|  /|       /|   y
+; 7--------6 | 15------14 |   |
+; | |      | | | |      | |   |
+; | 0------|-1 | 8------|-9   0-----x
+; |/       |/  |/       |/   /
+; 4--------5   12------13   z
 
 ;Tesseract consists of
 ;16 Vertices

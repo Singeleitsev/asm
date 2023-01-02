@@ -7,14 +7,14 @@
 lea rsi,v0
 lea rdi,v2
 mov cx,64 ;16 Vertices * 4 Coordinates
-lblLoadBuffer:
+lbl_LoadBuffer:
 mov eax, dword ptr [rsi]
 mov dword ptr [rdi],eax
 add rsi,4
 add rdi,4
 dec rcx
 cmp cx,0
-jg lblLoadBuffer
+jg lbl_LoadBuffer
 
 ;Scale
 ;lea rdi,[v2] ;v2[0].x
