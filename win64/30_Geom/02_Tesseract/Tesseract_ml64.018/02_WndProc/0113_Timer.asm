@@ -5,14 +5,16 @@ lbl_wmtimer:
 ;xor r8,r8
 ;xor r9,r9
 
-movd xmm0,aYZ
-movd xmm1,aXZ
-movd xmm2,aXY
 mov eax,3F800000h ;1.0f
-movd xmm3,eax
+movd xmm0,eax ;Angle
+movd xmm1,aYZ
+movd xmm2,aXZ
+movd xmm3,aXY
 call glRotatef
 
-mov rcx,4000h ;GL_COLOR_BUFFER_BIT
+;GL_COLOR_BUFFER_BIT = 4000h
+;GL_DEPTH_BUFFER_BIT = 100h
+mov rcx,4100h 
 call glClear
 
 include TesseractCalcVert.asm

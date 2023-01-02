@@ -46,6 +46,9 @@ mov r8d,rc.right
 mov r9d,rc.bottom
 call glViewport
 
+mov rcx,0B71h ;GL_DEPTH_TEST
+call glEnable
+
 mov rcx,hwnd
 mov rdx,1
 mov r8,0Ah ;USER_TIMER_MINIMUM = 0Ah = 10 ms
