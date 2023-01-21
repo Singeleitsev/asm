@@ -45,7 +45,7 @@ call Rot4D_Proc
 xor rcx,rcx ;[x0] = [v1]+0
 mov rdx,80h ;[z0] = [v1]+80h
 lea r8,dword ptr [dA_R4_YW] ;Angle
-call Rot4D_Proc
+;call Rot4D_Proc
 
 ;yz-axis rotation
 ;x1 = x0*cosA-w0*sinA
@@ -56,7 +56,7 @@ call Rot4D_Proc
 xor rcx,rcx ;[x0] = [v1]+0
 mov rdx,0C0h ;[w0] = [v1]+0Ch
 lea r8,dword ptr [dA_R4_YZ] ;Angle
-call Rot4D_Proc
+;call Rot4D_Proc
 
 ;xw-axis rotation
 ;x1 = x0
@@ -67,7 +67,7 @@ call Rot4D_Proc
 mov rcx,40h ;[y0] = [v1]+40h
 mov rdx,80h ;[z0] = [v1]+80h
 lea r8,dword ptr [dA_R4_XW] ;Angle
-call Rot4D_Proc
+;call Rot4D_Proc
 
 ;xz-axis rotation
 ;x1 = x0
@@ -78,7 +78,7 @@ call Rot4D_Proc
 mov rcx,40h ;[y0] = [v1]+40h
 mov rdx,0C0h ;[w0] = [v1]+0Ch
 lea r8,dword ptr [dA_R4_XZ] ;Angle
-call Rot4D_Proc
+;call Rot4D_Proc
 
 ;xy-axis rotation
 ;x1 = x0
@@ -89,7 +89,7 @@ call Rot4D_Proc
 mov rcx,80h ;[z0] = [v1]+80h
 mov rdx,0C0h ;[w0] = [v1]+0C0h
 lea r8,dword ptr [dA_R4_XY] ;Angle
-call Rot4D_Proc
+;call Rot4D_Proc
 
 ;pop rdi
 ;pop rsi
