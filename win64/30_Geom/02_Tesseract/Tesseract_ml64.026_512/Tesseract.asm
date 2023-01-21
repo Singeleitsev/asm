@@ -91,7 +91,7 @@ sinA dd ?
 
 include 01_WinMain\0000_WinMain.asm
 include 02_WndProc\0000_WndProc.asm
-include 02_WndProc\Rot4D_Proc.asm
+include 03_Rot4D_Proc\Rot4D_Proc.asm
 
 end
 
