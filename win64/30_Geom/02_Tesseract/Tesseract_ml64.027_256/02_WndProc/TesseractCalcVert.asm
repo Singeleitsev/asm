@@ -34,7 +34,7 @@ jg lbl_StoreBuffer
 xor rcx,rcx ;[x0] = [v1]+0
 mov rdx,40h ;[y0] = [v1]+40h
 lea r8,dword ptr [dA_R4_ZW] ;Angle
-call Rot4D_Proc
+;call Rot4D_Proc
 
 ;yw-axis rotation
 ;x1 = x0*cosA-z0*sinA
@@ -56,7 +56,7 @@ lea r8,dword ptr [dA_R4_YW] ;Angle
 xor rcx,rcx ;[x0] = [v1]+0
 mov rdx,0C0h ;[w0] = [v1]+0Ch
 lea r8,dword ptr [dA_R4_YZ] ;Angle
-;call Rot4D_Proc
+call Rot4D_Proc
 
 ;xw-axis rotation
 ;x1 = x0

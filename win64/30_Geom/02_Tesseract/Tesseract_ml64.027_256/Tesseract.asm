@@ -1,17 +1,17 @@
 option casemap:none
 ;Standard Libraries
-	includelib D:\bin\dev\asm\ml64\VS2019\lib\user32.lib
-	includelib D:\bin\dev\asm\ml64\VS2019\lib\kernel32.lib
-	includelib D:\bin\dev\asm\ml64\VS2019\lib\gdi32.lib
-	includelib D:\bin\dev\asm\ml64\VS2019\lib\OpenGL32.lib
+        includelib D:\bin\dev\asm\ml64\VS2019\lib\user32.lib
+        includelib D:\bin\dev\asm\ml64\VS2019\lib\kernel32.lib
+        includelib D:\bin\dev\asm\ml64\VS2019\lib\gdi32.lib
+        includelib D:\bin\dev\asm\ml64\VS2019\lib\OpenGL32.lib
 
 ;Custom Includes
-	include include\API64.inc
-	include include\Call.inc
-	include include\Mem.inc
-	include include\OpenGL64.inc
-	include include\Spell.inc
-	include include\struct64.inc
+        include include\API64.inc
+        include include\Call.inc
+        include include\Mem.inc
+        include include\OpenGL64.inc
+        include include\Spell.inc
+        include include\struct64.inc
 
 .const
 include NumericConst.asm
@@ -91,7 +91,7 @@ sinA dd ?
 
 include 01_WinMain\0000_WinMain.asm
 include 02_WndProc\0000_WndProc.asm
-include 03_Rot4D_Proc\Rot4D_Proc.asm
+include 02_WndProc\Rot4D_Proc.asm
 
 end
 

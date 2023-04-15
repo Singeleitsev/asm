@@ -33,55 +33,43 @@ lea r10,v1
 add r10,rcx ;Load First Coordinate
 
 vbroadcastss zmm0, dword ptr [cosA]
-vmovups zmm1, zmmword ptr [r10] ;x0...x7
+vmovups zmm1, zmmword ptr [r10] ;x0...x15
 vmulps zmm2,zmm1,zmm0 ;xi*cosA
-;vmovups ymm3, ymmword ptr [r10+20h] ;x8...x15
-;vmulps ymm4,ymm3,ymm0 ;xi*cosA
 
 lea r11,v1
 add r11,rdx ;Load Second Coordinate
 
-vbroadcastss zmm5, dword ptr [sinA]
-vmovups zmm6, zmmword ptr [r11] ;y0...y7
-vmulps zmm7,zmm6,zmm5 ;yi*sinA
-;vmovups ymm8, ymmword ptr [r11+20h] ;y8...y15
-;vmulps ymm9,ymm8,ymm5 ;yi*sinA
+vbroadcastss zmm3, dword ptr [sinA]
+vmovups zmm4, zmmword ptr [r11] ;y0...y7
+vmulps zmm5,zmm4,zmm3 ;yi*sinA
 
-vsubps zmm10,zmm2,zmm7 ;xi*cosA-yi*sinA
-;vsubps ymm11,ymm4,ymm9 ;xi*cosA-yi*sinA
+vsubps zmm6,zmm4,zmm5 ;xi*cosA-yi*sinA
 
 lea r12,v2
 add r12,rcx ;Store First Coordinate
 
-vmovups zmmword ptr [r12],zmm10 ;x0...x7
-;vmovups ymmword ptr [r12+20h],ymm11 ;x8...x15
+vmovups zmmword ptr [r12],zmm6 ;x0...x7
 
 lea r13,v1
 add r13,rcx ;Load First Coordinate
 
-;vbroadcastss ymm5, dword ptr [sinA]
-vmovups zmm1, zmmword ptr [r13] ;x0...x7
-vmulps zmm2,zmm1,zmm5 ;xi*sinA
-;vmovups ymm3, ymmword ptr [r13+20h] ;x8...x15
-;vmulps ymm4,ymm3,ymm5 ;xi*sinA
+vbroadcastss zmm7, dword ptr [sinA]
+vmovups zmm8, zmmword ptr [r13] ;x0...x7
+vmulps zmm9,zmm8,zmm7 ;xi*sinA
 
 lea r14,v1
 add r14,rdx ;Load Second Coordinate
 
-;vbroadcastss ymm0, dword ptr [cosA]
-vmovups zmm6, zmmword ptr [r14] ;y0...y7
-vmulps zmm7,zmm6,zmm0 ;yi*cosA
-;vmovups ymm8, ymmword ptr [r14+20h] ;y8...y15
-;vmulps ymm9,ymm8,ymm0 ;yi*cosA
+vbroadcastss ymm10, dword ptr [cosA]
+vmovups zmm11, zmmword ptr [r14] ;y0...y7
+vmulps zmm12,zmm11,zmm10 ;yi*cosA
 
-vaddps zmm10,zmm2,zmm7 ;xi*sinA+yi*cosA
-;vaddps ymm11,ymm4,ymm9 ;xi*sinA+yi*cosA
+vaddps zmm13,zmm11,zmm12 ;xi*sinA+yi*cosA
 
 lea r15,v2
 add r15,rdx ;Store First Coordinate
 
-vmovups zmmword ptr [r15],zmm10 ;y0...y7
-;vmovups ymmword ptr [r15+20h],ymm11 ;y8...y15
+vmovups zmmword ptr [r15],zmm13 ;y0...y7
 
 ;pop rdi
 ;pop rsi
