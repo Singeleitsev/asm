@@ -107,7 +107,7 @@ start proc
  mov g_hInst,rax
 ;Go to Main Application Cycle
  mov rcx,g_hInst
- xor rdx,rcx
+ xor rdx,rdx
  xor r8,r8
  mov r9,1
  call WinMain
