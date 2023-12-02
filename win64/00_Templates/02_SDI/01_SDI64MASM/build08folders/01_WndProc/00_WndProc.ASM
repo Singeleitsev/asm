@@ -5,7 +5,7 @@ WndProc proc hWnd:QWORD,uMsg:QWORD,wParam:QWORD,lParam:QWORD
 	;push rbp
 	;mov rbp,rsp
 ;Ensure the Stack is Aligned by 10h
-	and rax,-16
+	and rsp,-16
 
 ;Store Values retrieved by DispatchMessageA:
 	mov hWnd,rcx

@@ -5,7 +5,7 @@ WinMain proc hInst:QWORD, hPrevInst:QWORD, CmdLine:QWORD, CmdShow:QWORD
 	;push rbp ;<-- ;sub rsp,8
 	;mov rbp,rsp ;<--
 ;Align the Stack by 10h
-	and rax,-16
+	and rsp,-16
 
 mov rax,rsp
 Spell64rax 0,szAppTitle,szStackPointer
