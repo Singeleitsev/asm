@@ -1,6 +1,6 @@
 lbl_wmsize:
 
-mov rcx,hwnd
+mov rcx,g_hWnd
 lea rdx,rc
 call GetClientRect
 

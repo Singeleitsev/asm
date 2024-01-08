@@ -14,6 +14,7 @@ mov rcx,4000h ;GL_COLOR_BUFFER_BIT
 call glClear
 
 include Square.asm
+;include Pyramid.asm
 
 mov rcx,hdc
 call SwapBuffers
