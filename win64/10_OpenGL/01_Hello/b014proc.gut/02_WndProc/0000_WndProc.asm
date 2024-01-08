@@ -12,8 +12,6 @@ sub rsp,20h ;frame
 
 cmp edx,100h
 je lbl_wmkeydown
-cmp edx,113h
-je lbl_wmtimer
 cmp edx,5
 je lbl_wmsize
 cmp edx,2
@@ -26,7 +24,6 @@ include 0001_Create.asm
 include 0002_Destroy.asm
 include 0005_Size.asm
 include 0100_KeyDown.asm
-include 0113_Timer.asm
  
 lbl_finish:
 add rsp,20h

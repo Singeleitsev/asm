@@ -48,6 +48,7 @@ dbl_100 dq 4059000000000000h
 
 include 01_WinMain\0000_WinMain.asm
 include 02_WndProc\0000_WndProc.asm
+include 03_Scene\DrawGLScene.asm
 
 end
 

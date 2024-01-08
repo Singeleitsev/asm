@@ -14,7 +14,7 @@ call glRotatef
 mov rcx,4000h ;GL_COLOR_BUFFER_BIT
 call glClear
 
-include OGLCalcVert.asm
+;include OGLCalcVert.asm
 include OGLDraw.asm
 
 mov rcx,hdc
