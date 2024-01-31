@@ -3,25 +3,25 @@ lblWinMainCheckKeys:
 cmp keys[26h],0 ;VK_UP
 je @f
 fld aYZ
-fsub lenStep ;Camera Up
+fsub dA_Cam ;Camera Up
 fstp aYZ
 @@:
 cmp keys[28h],0 ;VK_DOWN
 je @f
 fld aYZ
-fadd lenStep ;Camera Down
+fadd dA_Cam ;Camera Down
 fstp aYZ
 @@:
 cmp keys[27h],0 ;VK_RIGHT
 je @f
 fld aXY
-fadd lenStep ;Camera Right
+fadd dA_Cam ;Camera Right
 fstp aXY
 @@:
 cmp keys[25h],0 ;VK_LEFT
 je @f
 fld aXY
-fsub lenStep ;Camera Left
+fsub dA_Cam ;Camera Left
 fstp aXY
 
 ;------------------------
@@ -29,12 +29,16 @@ fstp aXY
 @@:
 cmp keys[57h],0 ;VK_W
 je @f
-
+fld yTrans
+fadd dL_Cam
+fstp yTrans
 
 @@:
 cmp keys[53h],0 ;VK_S
 je @f
-
+fld yTrans
+fsub dL_Cam
+fstp yTrans
 
 @@: ;Gut!!!
 cmp keys[41h],0 ;VK_A
@@ -44,11 +48,11 @@ je @f
 fld aXY
 fmul f32_pi180
 fsincos
-fmul lenStep
+fmul dL_Cam
 fsub xTrans
 fchs
 fstp xTrans
-fmul lenStep
+fmul dL_Cam
 fsub zTrans
 fchs
 fstp zTrans
@@ -61,10 +65,10 @@ je @f
 fld aXY
 fmul f32_pi180
 fsincos
-fmul lenStep
+fmul dL_Cam
 fadd xTrans
 fstp xTrans
-fmul lenStep
+fmul dL_Cam
 fadd zTrans
 fstp zTrans
 

@@ -51,6 +51,10 @@ aCam dq 4041800000000000h ;GLdouble aspect = 35.0
 ;yAim dq 0 ;GLdouble centerY = 0.0
 ;zAim dq 0 ;GLdouble centerZ = 0.0
 
+;Camera Motion Deltas
+dL_Cam dd 0.1 ;0.1 Meter
+dA_Cam dd 0.5 ;0.5 Dergee
+
 ;Front Buffer
 ;is used to compute 3D-Vertices
 ;with Transformations
@@ -60,9 +64,6 @@ v3D dd 32 dup (0) ;4 Coordinates * 8 Vertices
 ;i dw 2 dup (0)
 i0 dw 0
 i1 dw 0
-
-;;Step
-lenStep dd 0.1
 
 .data?
 ;Buffers
