@@ -1,4 +1,5 @@
 option casemap:none
+
 ;Standard Libraries
 includelib D:\bin\dev\asm\ml64\VS2019\lib\user32.lib
 includelib D:\bin\dev\asm\ml64\VS2019\lib\kernel32.lib
@@ -11,18 +12,14 @@ include include\API64.inc
 include include\Call.inc
 include include\Mem.inc
 include include\OpenGL64.inc
-include include\Spell.inc
 include include\struct64.inc
 
 .const
 szTitle db 'OpenGL example',0
 szClass db 'MASMOPENGL64',0
 
-dbl_TENTH dq 3fb99999a0000000h
-dbl_1 dq 3FF0000000000000h
-dbl_5 dq 4014000000000000h
-dbl_45 dq 4046800000000000h
-dbl_100 dq 4059000000000000h
+include include\NumericConst.asm
+include 04_Object\CubeConst.asm
 
 .data
 g_hInst dq 0
@@ -38,23 +35,49 @@ pfd PIXELFORMATDESCRIPTOR64 <>
 fWinMainActive db 1
 keys db 256 dup (0)
 
-aYZ dd 0.3
-aXZ dd 0.4
-aXY dd 0.5
+aYZ dd 0
+aXZ dd 0
+aXY dd 0.1 ;GLfloat angle
 
-aTri dd 0.0
-daTri dd 0.2
+xTrans dd 0 ;GLfloat x = 0.0
+yTrans dd 0 ;GLfloat y = 0.0
+zTrans dd 0 ;GLfloat z = 0.0
+
+aCam dq 4041800000000000h ;GLdouble aspect = 35.0
+;xCam dq 0 ;GLdouble eyeX = 0.0
+;yCam dq 0 ;GLdouble eyeY = 0.0
+;zCam dq 0C014000000000000h ;GLdouble eyeZ = -5.0
+;xAim dq 0 ;GLdouble centerX = 0.0
+;yAim dq 0 ;GLdouble centerY = 0.0
+;zAim dq 0 ;GLdouble centerZ = 0.0
+
+;Front Buffer
+;is used to compute 3D-Vertices
+;with Transformations
+v3D dd 32 dup (0) ;4 Coordinates * 8 Vertices
+
+;Counters
+;i dw 2 dup (0)
+i0 dw 0
+i1 dw 0
+
+;;Step
+lenStep dd 0.1
 
 .data?
-;Temporarily Empty
+;Buffers
+;buf32 dd 4 dup (?)
+;buf64 dd 4 dup (?)
 
 .code
 
 include 01_WinMain\0000_WinMain.asm
 include 02_WndProc\0000_WndProc.asm
 include 03_Scene\CreateGLWindow.asm
+include 03_Scene\SetupWorld.asm
+include 03_Scene\ReSizeGLScene.asm
+include 03_Scene\InitGL.asm
 include 03_Scene\DrawGLScene.asm
-include 03_Scene\CameraMove.asm
 
 end
 

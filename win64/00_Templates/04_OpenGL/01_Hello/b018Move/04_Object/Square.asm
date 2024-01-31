@@ -1,4 +1,7 @@
- 
+
+fld aXY
+fadd sgl_TENTH
+fstp aXY
 movd xmm0,aXY
 mov eax,0
 movd xmm1,eax
@@ -24,9 +27,9 @@ mov eax,3DCCCCCDh ;0.1f
 movd xmm2,eax
 call glColor3f
 
-mov rax,0BFE3333333333333h ;-0.6f
+mov rax,0BFF0000000000000h ;-1.0
 movq xmm0,rax
-mov rax,0BFE3333333333333h ;-0.6f
+mov rax,0BFF0000000000000h ;-1.0
 movq xmm1,rax
 mov rax,0
 movq xmm2,rax
@@ -40,9 +43,9 @@ mov eax,3DCCCCCDh ;0.1f
 movd xmm2,eax
 call glColor3f
 
-mov rax,3FE3333333333333h ;0.6f
+mov rax,3FF0000000000000h ;1.0
 movq xmm0,rax
-mov rax,0BFE3333333333333h ;-0.6f
+mov rax,0BFF0000000000000h ;-1.0
 movq xmm1,rax
 mov rax,0
 movq xmm2,rax
@@ -56,9 +59,9 @@ mov eax,3F800000h ;1.0f
 movd xmm2,eax
 call glColor3f
 
-mov rax,3FE3333333333333h ;0.6f
+mov rax,3FF0000000000000h ;1.0
 movq xmm0,rax
-mov rax,3FE3333333333333h ;0.6f
+mov rax,3FF0000000000000h ;1.0
 movq xmm1,rax
 mov rax,0
 movq xmm2,rax
@@ -72,9 +75,9 @@ mov eax,3F800000h ;1.0f
 movd xmm2,eax
 call glColor3f
 
-mov rax,0BFE3333333333333h ;-0.6f
+mov rax,0BFF0000000000000h ;-1.0
 movq xmm0,rax
-mov rax,3FE3333333333333h ;0.6f
+mov rax,3FF0000000000000h ;1.0
 movq xmm1,rax
 mov rax,0
 movq xmm2,rax

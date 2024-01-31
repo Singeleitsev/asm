@@ -18,7 +18,7 @@ include include\struct64.inc
 szTitle db 'OpenGL example',0
 szClass db 'MASMOPENGL64',0
 
-include include\NumericConst.inc
+include include\NumericConst.asm
 
 .data
 g_hInst dq 0

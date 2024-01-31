@@ -10,6 +10,12 @@ mov rbp,rsp
 and rsp,-16 ;Align the Stack
 sub rsp,100h ;Create the Buffer
 
+;sub rsp,20h
+mov rcx,0
+call GetModuleHandleA
+;add rsp,20h
+mov g_hInst,rax
+
 ;Register Class
 ;Fill the WNDCLASSEX64 Structure
 mov wc.cbSize,50h
@@ -61,6 +67,10 @@ mov qword ptr [rsp+58h],0 ;Don't Pass Anything To WM_CREATE
 call CreateWindowExA
 mov g_hWnd,rax
 
+mov rcx, g_hWnd
+call GetDC
+mov hdc,rax
+
 ;Fill the PIXELFORMATDESCRIPTOR Structure
 mov pfd.nSize,28h ;sizeof.PIXELFORMATDESCRIPTOR
 mov pfd.nVersion,1
@@ -89,10 +99,7 @@ mov pfd.dwLayerMask,0 ;Layer Masks Ignored
 mov pfd.dwVisibleMask,0 ;Layer Masks Ignored
 mov pfd.dwDamageMask,0 ;Layer Masks Ignored
 
-mov rcx, g_hWnd
-call GetDC
-mov hdc,rax
-
+;Now call the Function
 mov rcx,hdc
 lea rdx,pfd
 call ChoosePixelFormat
@@ -106,19 +113,30 @@ mov rcx,hdc
 call wglCreateContext
 mov hrc,rax
 
+;Try To Activate The Rendering Context
 mov rcx,hdc
 mov rdx,hrc
 call wglMakeCurrent
 
-;mov rcx,g_hWnd
-;lea rdx,rc
-;call GetClientRect
+;Show The Window
+mov rcx,g_hWnd
+mov rdx,5 ;SW_SHOW
+call ShowWindow
 
-;mov rcx,0
-;mov rdx,0
-;mov r8d,rc.right
-;mov r9d,rc.bottom
-;call glViewport
+;Slightly Higher Priority
+mov rcx,g_hWnd
+call SetForegroundWindow
+
+;Sets Keyboard Focus To The Window
+mov rcx,g_hWnd
+call SetFocus
+
+call ReSizeGLScene
+
+call InitGL
+
+
+;Normal Exit
 
 add rsp,100h
 ;Since the Proc has NO parameters

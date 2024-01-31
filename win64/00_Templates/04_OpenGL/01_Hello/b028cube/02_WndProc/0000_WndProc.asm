@@ -22,11 +22,8 @@ cmp edx,6
 je lbl_wmactivate
 cmp edx,112h
 je lbl_wmsyscommand
-cmp edx,1
-je lbl_wmcreate
 
 include FFFF_Default.asm
-include 0001_Create.asm
 include 0002_Destroy.asm
 include 0005_Size.asm
 include 0006_Activate.asm
