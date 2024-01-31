@@ -31,27 +31,27 @@ call glMatrixMode
 ;Reset The Projection Matrix
 call glLoadIdentity
 
-;Calculate The Aspect Ratio Of The Window
-;gluPerspective(45.0f,(GLfloat)width/(GLfloat)height,0.1f,100.0f);
-movsd xmm0,aCam ;GLdouble aspect = 35.0
-movd xmm1,rc.right ;Load the Dword
-cvtdq2pd xmm1,xmm1 ;Convert the Dword Integer to Packed Double
-movd xmm2,rc.bottom ;Load the Dword
-cvtdq2pd xmm2,xmm2 ;Convert the Dword Integer to Packed Double
-divsd xmm1,xmm2
-movsd xmm2,f64_TENTH ;0.1f
-movsd xmm3,f64_100 ;100.0f
-call gluPerspective
+;;Calculate The Aspect Ratio Of The Window
+;;gluPerspective(45.0f,(GLfloat)width/(GLfloat)height,0.1f,100.0f);
+;movsd xmm0,aCam ;GLdouble aspect = 35.0
+;movd xmm1,rc.right ;Load the Dword
+;cvtdq2pd xmm1,xmm1 ;Convert the Dword Integer to Packed Double
+;movd xmm2,rc.bottom ;Load the Dword
+;cvtdq2pd xmm2,xmm2 ;Convert the Dword Integer to Packed Double
+;divsd xmm1,xmm2
+;movsd xmm2,f64_TENTH ;0.1f
+;movsd xmm3,f64_100 ;100.0f
+;call gluPerspective
 
-;movsd xmm0,f64_neg1 ;GLdouble left = -1.0
-;movsd xmm1,f64_1 ;GLdouble right = 1.0
-;movsd xmm3,f64_neg1 ;GLdouble bottom = -1.0
-;movsd xmm4,f64_1 ;GLdouble top = 1.0
-;movsd xmm8,f64_2 ;GLdouble zNear = 2.0f
-;movsd qword ptr [rsp+20h],xmm8
-;movsd xmm8,f64_5 ;GLdouble zFar = 5.0f
-;movsd qword ptr [rsp+28h],xmm8
-;call glFrustum
+movsd xmm0,f64_neg1 ;GLdouble left = -1.0
+movsd xmm1,f64_1 ;GLdouble right = 1.0
+movsd xmm3,f64_neg1 ;GLdouble bottom = -1.0
+movsd xmm4,f64_1 ;GLdouble top = 1.0
+movsd xmm8,f64_2 ;GLdouble zNear = 2.0f
+movsd qword ptr [rsp+20h],xmm8
+movsd xmm8,f64_5 ;GLdouble zFar = 5.0f
+movsd qword ptr [rsp+28h],xmm8
+call glFrustum
 
 ;Select The Modelview Matrix
 mov rcx,1700h ;GL_MODELVIEW
