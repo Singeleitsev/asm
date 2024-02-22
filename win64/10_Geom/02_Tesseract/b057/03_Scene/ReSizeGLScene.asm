@@ -21,8 +21,6 @@ xor r9,r9
 mov r9d,nHeight
 call glViewport
 
-;call CameraMove
-
 ;Normal Exit
 
 mov rax,1

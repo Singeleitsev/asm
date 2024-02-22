@@ -44,7 +44,7 @@ yTrans dd 0 ;GLfloat y = 0.0
 zTrans dd 0 ;GLfloat z = 0.0
 
 ;Camera Motion Deltas
-dL_Cam dd 0.1 ;0.1 Meter
+dL_Cam dd 0.01 ;0.01 Meter
 dA_Cam dd 0.5 ;0.5 Dergee
 
 ;Front Buffer

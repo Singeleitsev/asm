@@ -52,8 +52,8 @@ aCam dq 4041800000000000h ;GLdouble aspect = 35.0
 ;zAim dq 0 ;GLdouble centerZ = 0.0
 
 ;Camera Motion Deltas
-dL_Cam dd 0.5 ;0.5 Points = 100 Millimeter / 200 Scale
-dA_Cam dd 0.5 ;0.5 Degree
+dL_Cam dd 2.5 ;2.5 Points = 500 Millimeter / 200 Scale
+dA_Cam dd 1.0 ;1.0 Degree
 
 ;Front Buffer
 ;is used to compute 3D-Vertices
