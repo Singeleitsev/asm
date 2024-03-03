@@ -1,7 +1,7 @@
 
-;==================
-Rot4D_Proc_512 proc
-;==================
+;=============
+Rot4D_512 proc
+;=============
 
 ;Since the Proc has parameters
 ;Assembler will add this prologue automatically:
@@ -42,6 +42,6 @@ vmovups zmmword ptr [rdx],zmm9 ;y0...y15
 
 ret
 
-Rot4D_Proc_512 endp
+Rot4D_512 endp
 
 

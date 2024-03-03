@@ -1,7 +1,7 @@
 
-;==============
-Rot4D_Proc proc
-;==============
+;=============
+Rot4D_256 proc
+;=============
 
 ;Since the Proc has parameters
 ;Assembler will add this prologue automatically:
@@ -55,6 +55,6 @@ je lbl_Rot4D
 
 ret
 
-Rot4D_Proc endp
+Rot4D_256 endp
 
 

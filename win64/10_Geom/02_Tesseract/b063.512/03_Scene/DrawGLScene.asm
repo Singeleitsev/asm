@@ -53,8 +53,8 @@ call glTranslatef
 ;Describe Geometry Here
 ;======================
 include 04_Object\TesseractCalcVert.asm
-;call R4_To_R3_256_Proc
-call R4_To_R3_512_Proc
+;call R4_To_R3_256
+call R4_To_R3_512
 include 04_Object\TesseractDraw.asm
 ;======================
 

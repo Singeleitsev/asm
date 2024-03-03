@@ -1,7 +1,7 @@
 
-;=====================
-R4_To_R3_512_Proc proc
-;=====================
+;================
+R4_To_R3_512 proc
+;================
 
 ;Since the Proc has parameters
 ;Assembler will add this prologue automatically:
@@ -37,5 +37,5 @@ vmovups zmmword ptr [z4D],zmm8 ;z0...z15
 
 ret
 
-R4_To_R3_512_Proc endp
+R4_To_R3_512 endp
 

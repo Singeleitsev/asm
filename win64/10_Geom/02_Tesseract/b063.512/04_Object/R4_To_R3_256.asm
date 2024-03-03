@@ -1,7 +1,7 @@
 
-;=================
-R4_To_R3_Proc proc
-;=================
+;================
+R4_To_R3_256 proc
+;================
 
 ;Since the Proc has parameters
 ;Assembler will add this prologue automatically:
@@ -52,6 +52,6 @@ je lbl_Project4D
 
 ret
 
-R4_To_R3_Proc endp
+R4_To_R3_256 endp
 
 
