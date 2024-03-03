@@ -134,10 +134,18 @@ a_R4_XY dd 0
 ;4D Rotation Deltas
 da_R4_ZW dd 0;.01
 da_R4_YW dd 0;.01
-da_R4_YZ dd 0;.01
+da_R4_YZ dd 0.01 ; Stretch along X_OGL
 da_R4_XW dd 0;.01
-da_R4_XZ dd 0;.01
-da_R4_XY dd 0.01
+da_R4_XZ dd 0.01 ; Stretch along Z_OGL
+da_R4_XY dd 0.01 ; Stretch along Y_OGL
+
+;Rotation Flags
+flag_R4_ZW db 0
+flag_R4_YW db 0
+flag_R4_YZ db 1 ; Stretch along X_OGL
+flag_R4_XW db 0
+flag_R4_XZ db 0 ; Stretch along Z_OGL
+flag_R4_XY db 0 ; Stretch along Y_OGL
 
 ;Spell Patterns
 sz_hInst db 'hInst: 0000.0000.0000.0000h',0

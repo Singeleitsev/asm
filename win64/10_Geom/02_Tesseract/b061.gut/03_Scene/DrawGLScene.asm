@@ -53,9 +53,12 @@ call glTranslatef
 ;Describe Geometry Here
 ;======================
 include 04_Object\TesseractCalcVert.asm
-;call R4_To_R3_Proc
+call R4_To_R3_Proc
 include 04_Object\TesseractDraw.asm
 ;======================
+
+mov rcx,g_hDC
+call SwapBuffers ;Double Buffering
 
 ;Normal Exit
 

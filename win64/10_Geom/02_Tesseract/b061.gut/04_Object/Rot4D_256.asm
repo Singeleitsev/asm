@@ -42,8 +42,8 @@ vaddps ymm9,ymm7,ymm8 ;xi*sinA+yi*cosA
 
 vmovups ymmword ptr [rdx],ymm9 ;y0...y7
 
-add rcx,20h
-add rdx,20h
+add rcx,20h ;Next x
+add rdx,20h ;Next y
 
 add rax,1
 cmp rax,1

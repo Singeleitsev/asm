@@ -20,13 +20,6 @@ mov g_hInst,rax
 cmp rax,0
 je lblWinMainErr
 
-;Spell g_hInst
-mov rcx,g_hInst
-xor rdx,rdx ;There's no hWnd yet
-lea r8,szWinMain
-lea r9,sz_hInst
-call Spell64
-
 call CreateGLWindow
 cmp rax,1
 jne lblWinMainErr
@@ -68,22 +61,12 @@ call DrawGLScene
 cmp rax,0
 je lblWinMainErr
 
-lblWinMainSwapBuffers:
-mov rcx,g_hDC
-call SwapBuffers ;Double Buffering
-cmp rax,0
-je lblWinMainErr
 jmp lblWinMainLoop
 
 ;Normal End
 lblWinMainDone:
 call KillGLWindow
-;Spell wParam
-mov rcx,msg.wParam
-mov rdx,g_hWnd
-lea r8,szWinMain
-lea r9,sz_wParam
-call Spell64
+
 ;return (msg.wParam)
 mov rcx,msg.wParam
 call ExitProcess

@@ -87,14 +87,6 @@ cmp rax,0
 je lbl_ErrCreateWindow
 mov g_hWnd,rax
 
-;Spell hWnd
-mov rcx,g_hWnd
-mov rdx,g_hWnd
-lea r8,szCreateGLWindow
-lea r9,sz_hWnd
-call Spell64
-
-
 ;Fill the PIXELFORMATDESCRIPTOR Structure
 mov pfd.nSize,28h ;sizeof.PIXELFORMATDESCRIPTOR
 mov pfd.nVersion,1
@@ -130,13 +122,6 @@ cmp rax,0
 je lbl_ErrGetDC
 mov g_hDC,rax
 
-;Spell hDC
-mov rcx,g_hDC
-mov rdx,g_hWnd
-lea r8,szCreateGLWindow
-lea r9,szGetDC
-call Spell64
-
 ;Find A Matching Pixel Format
 mov rcx,g_hDC
 lea rdx,pfd
@@ -157,13 +142,6 @@ call wglCreateContext
 cmp rax,0
 je lbl_ErrCreateContext
 mov g_hRC,rax
-
-;Spell hRC
-mov rcx,g_hRC
-mov rdx,g_hWnd
-lea r8,szCreateGLWindow
-lea r9,szGetRC
-call Spell64
 
 mov rcx,g_hDC
 mov rdx,g_hRC
