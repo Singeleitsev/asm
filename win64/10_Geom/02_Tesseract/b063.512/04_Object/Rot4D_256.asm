@@ -30,16 +30,13 @@ vmovups ymm3, ymmword ptr [rdx] ;y0...y7
 
 vmulps ymm4,ymm0,ymm2 ;xi*cosA
 vmulps ymm5,ymm1,ymm3 ;yi*sinA
-
 vsubps ymm6,ymm4,ymm5 ;xi*cosA-yi*sinA
-
-vmovups ymmword ptr [rcx],ymm6 ;x0...x7
 
 vmulps ymm7,ymm1,ymm2 ;xi*sinA
 vmulps ymm8,ymm0,ymm3 ;yi*cosA
-
 vaddps ymm9,ymm7,ymm8 ;xi*sinA+yi*cosA
 
+vmovups ymmword ptr [rcx],ymm6 ;x0...x7
 vmovups ymmword ptr [rdx],ymm9 ;y0...y7
 
 add rcx,20h ;Next x
