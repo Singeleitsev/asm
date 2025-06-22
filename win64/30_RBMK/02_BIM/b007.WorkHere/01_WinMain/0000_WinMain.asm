@@ -19,7 +19,7 @@ call PeekMessageA
 ;add rsp,30h
 
 cmp rax,0
-je lblWinMainCheckKeys
+je lblWinMainCheckActive
 
 cmp msg.message,12h ;WM_QUIT
 je lblWinMainEnd
@@ -33,11 +33,11 @@ call DispatchMessageA
 ;add rsp,20h
 jmp lblWinMainLoop
 
-include CheckKeys.asm
-
 lblWinMainCheckActive:
 cmp fWinMainActive,0
 je lblWinMainLoop
+
+include CheckKeys.asm
 
 lblWinMainReDraw:
 ;sub rsp,20h

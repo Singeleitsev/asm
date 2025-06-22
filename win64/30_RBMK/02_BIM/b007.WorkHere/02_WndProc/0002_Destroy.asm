@@ -11,10 +11,6 @@ mov rcx,hwnd
 mov rdx,hdc
 call ReleaseDC
 
-mov rcx,hwnd
-mov rdx,1
-call KillTimer
-
 xor rcx,rcx
 call PostQuitMessage
 

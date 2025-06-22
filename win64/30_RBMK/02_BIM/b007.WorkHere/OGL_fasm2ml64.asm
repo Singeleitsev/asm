@@ -18,14 +18,19 @@ include include\struct64.inc
 szTitle db 'OpenGL example',0
 szClass db 'MASMOPENGL64',0
 
-include include\NumericConst.asm
-;include 04_Object\RBMKConst.asm
+include include\ConstMenu.asm
+include include\ConstNumeric.asm
+;include 04_Object\ConstRBMK.asm
 
 .data
 g_hInst dq 0
 g_hWnd dq 0
 hdc dq 0
 hrc dq 0
+
+hMenu dq 0
+hMenuFile dq 0
+hMenuHelp dq 0
 
 wc WNDCLASSEX64 <>
 msg MSG64 <>
