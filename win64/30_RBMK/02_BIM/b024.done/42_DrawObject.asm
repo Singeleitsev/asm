@@ -98,7 +98,7 @@ inc y
 cmp y,47
 jg lbl_DrawObject_Back_to_Origin
 mov x,0
-xorps xmm0,xmm0adaa
+xorps xmm0,xmm0
 movss xmm1,f32_250
 xorps xmm2,xmm2
 Call glTranslatef ;(0, 250, 0)

@@ -30,7 +30,7 @@ mov aYZ,0
 mov aXZ,0
 
 ;Model Rotation Speed
-mov eax,f32_5
+mov eax,f32_1
 mov dAngle32,eax
 
 ;Camera and Aim Position
