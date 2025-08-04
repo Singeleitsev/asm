@@ -162,21 +162,25 @@ RectAspect dq 0 ;Float64
 xTrans dd 0
 yTrans dd 0
 zTrans dd 0
-;Model Angles
-aXY dd 0
-aYZ dd 0
-aXZ dd 0
-;Camera
+;Model Angle
+aXY_Model dd 0
+;Model Scale
+GlobalScale64 dq 3F50624DD2F1A9FCh ;0.001
+GlobalScale32 dd 3A83126Fh ;0.001
+;Camera Position
 xCam dq 0
 yCam dq 0
 zCam dq 0
+;Aim Position
 xAim dq 0
 yAim dq 0
 zAim dq 0
-GlobalScale64 dq 3F50624DD2F1A9FCh ;0.001
-GlobalScale32 dd 3A83126Fh ;0.001
+;Camera Angle
+aXY_Camera dd 0
+aYZ_Camera dd 0
+aXZ_Camera dd 0
 ;Motion
-dStep dq 4059000000000000h ;100.0
+dStep64 dq 4059000000000000h ;100.0
 dAngle32 dd 40a00000h ;5.0
 ;Keyboard Buffer
 key db 256 dup (0)

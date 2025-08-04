@@ -26,17 +26,11 @@ movss xmm2,f32_1
 xorps xmm3,xmm3
 Call glRotatef ;(-90, 0, 1, 0)
 
-movss xmm0,aXY
+movss xmm0,aXY_Model
 xorps xmm1,xmm1
 xorps xmm2,xmm2
 movss xmm3,f32_1
 Call glRotatef ;(aXY, 0, 0, 1)
-
-movss xmm0,aYZ
-movss xmm1,f32_1
-xorps xmm2,xmm2
-xorps xmm3,xmm3
-Call glRotatef ;(aYZ, 1, 0, 0)
 
 movss xmm0,xTrans
 movss xmm1,yTrans

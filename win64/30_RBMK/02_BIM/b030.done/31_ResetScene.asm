@@ -25,21 +25,21 @@ mov yTrans,0
 mov zTrans,0
 
 ;Model Angles
-mov aXY,0
-mov aYZ,0
-mov aXZ,0
+mov eax,f32_45
+mov aXY_Model,eax
+;mov aYZ_Model,0
+;mov aXZ_Model,0
 
 ;Model Rotation Speed
 mov eax,f32_1
 mov dAngle32,eax
 
 ;Camera and Aim Position
-mov rax,f64_neg6 ;x of Spawn Point
+mov rax,f64_neg7p5 ;x of Spawn Point
 mov xCam,rax
-mov rax,f64_3 ;Altitude
+mov rax,f64_2 ;Altitude = 3 meters
 mov yCam,rax
-mov rax,f64_neg6 ;y of Spawn Point
-mov zCam,rax
+mov zCam,0 ;y of Spawn Point
 mov xAim,0
 mov yAim,0
 mov zAim,0
@@ -47,7 +47,7 @@ mov zAim,0
 ;Camera Speed
 movsd xmm0,GlobalScale64
 mulsd xmm0,f64_100
-movsd dStep,xmm0
+movsd dStep64,xmm0
 
 Call CameraMove
 
