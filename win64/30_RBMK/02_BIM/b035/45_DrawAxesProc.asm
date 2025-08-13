@@ -1,4 +1,4 @@
-DrawAxes proc
+DrawAxesProc proc
 ;Since the Proc has NO parameters
 ;Assembler will NOT add this prologue automatically:
 push rbp
@@ -86,8 +86,8 @@ mov rcx,1 ;GL_LINES
 Call glBegin
 xorps xmm0,xmm0
 xorps xmm1,xmm1
-movss xmm2,f32_neg12000
-Call glVertex3f ;(0, 0, -12000)
+xorps xmm2,xmm2
+Call glVertex3f ;(0, 0, 0)
 xorps xmm0,xmm0
 xorps xmm1,xmm1
 movss xmm2,f32_1000
@@ -116,4 +116,4 @@ add rsp,100h
 ;Assembler will NOT add this epilogue automatically:
 leave
 ret
-DrawAxes endp
+DrawAxesProc endp

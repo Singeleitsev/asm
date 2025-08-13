@@ -50,14 +50,14 @@ cmp rax, 0
 je lbl_ErrRegisterClass
 
 ;Create the Window
-mov rcx,40100h ;dwExStyle = WS_EX_APPWINDOW + WS_EX_WINDOWEDGE
+mov rcx,40100h ;dwExStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE
 lea rdx,szMainWndClass
 lea r8,szMainWndTitle
-mov r9,16CF0000h ;dwStyle = WS_VISIBLE+WS_OVERLAPPEDWINDOW+WS_CLIPCHILDREN+WS_CLIPSIBLINGS = 16CF.0000h
+mov r9,16CF0000h ;dwStyle = WS_VISIBLE | WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS = 16CF.0000h
 mov qword ptr [rsp+20h],10h ;x = 16
 mov qword ptr [rsp+28h],10h ;y = 16
-mov qword ptr [rsp+30h],DEFAULT_SCREEN_WIDTH ;nWidth = 1024
-mov qword ptr [rsp+38h],DEFAULT_SCREEN_HEIGHT ;nHeight = 768
+mov qword ptr [rsp+30h],400h ;nWidth = 1024
+mov qword ptr [rsp+38h],300h ;nHeight = 768
 mov qword ptr [rsp+40h],0 ;hWndParent
 mov qword ptr [rsp+48h],0 ;hMenu
 mov rax,ghInst
@@ -113,8 +113,6 @@ jmp lbl_WinMain_Loop
 lbl_WinMain_CheckActive:
 cmp fWinMainActive,0
 je lbl_WinMain_Loop
-
-include 11_KeyCheck.asm
 
 lbl_WinMain_ReDraw:
 ;sub rsp,20h

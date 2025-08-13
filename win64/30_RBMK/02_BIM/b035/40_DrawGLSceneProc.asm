@@ -10,9 +10,13 @@ sub rsp,100h ;Create the Buffer
 mov rcx, 4100h;GL_COLOR_BUFFER_BIT Or GL_DEPTH_BUFFER_BIT
 Call glClear
 
-Call DrawAxes
-Call DrawObject
-Call CameraMove
+include 41_CheckKeys.asm
+include 42_CheckValues.asm
+include 43_RefreshStatus.asm
+include 44_SetView.asm
+
+Call DrawAxesProc
+Call DrawObjectProc
 
 mov rcx,ghDC
 Call SwapBuffers

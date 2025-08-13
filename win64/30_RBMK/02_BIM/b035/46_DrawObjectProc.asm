@@ -1,4 +1,4 @@
-DrawObject proc
+DrawObjectProc proc
 LOCAL x:WORD, y:WORD
 LOCAL lpLayout:QWORD
 
@@ -112,4 +112,4 @@ add rsp,100h
 ;Assembler will add this epilogue automatically:
 ;leave
 ret
-DrawObject endp
+DrawObjectProc endp

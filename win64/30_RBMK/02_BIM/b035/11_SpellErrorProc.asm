@@ -19,7 +19,7 @@ dec rdi ;rdi = Address of the Last Digit
 
 xor rcx,rcx ; Clean the Counter
 
-jmp @f
+jmp @f ;Temporarily jump
 ;mov rax,nLastError ;Is Already There
 
 lbl_CalcOneByte:
@@ -31,6 +31,7 @@ add bl,30h
 jmp lbl_StoreHexDigit
 lbl_Over9:
 add bl,41h
+
 lbl_StoreHexDigit:
 mov byte ptr [rdi],bl
 shr rax,8
