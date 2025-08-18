@@ -241,8 +241,8 @@ db 'S - Look Up',13
 db 'A - Look Left',13
 db 'D - Look Right',13,13
 db 'Object Rotation:',13
-db 'Q - Turn the Object Clockwise',13
-db 'E - Turn the Object Counter-Clockwise',13
+db 'Q - Turn the Object Counter-Clockwise',13
+db 'E - Turn the Object Clockwise',13
 db 'Tab - Turn the Object Clockwise Quick',13,13
 db 'Shift - Boost',0
 szAboutMsgTitle db 'Manual',0

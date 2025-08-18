@@ -90,18 +90,31 @@ jne @f
 movss xmm0,aXY_Model
 addss xmm0,dTab ;30.0_f32 = 41F00000h
 movss aXY_Model,xmm0
+jmp lbl_WndProc_Return0
+
 @@:
 cmp nKeyCode,0Dh ;Enter
 jne @f
 ;mov rcx,hWnd
 call AboutProc
+jmp lbl_WndProc_Return0
+
+@@:
+cmp nKeyCode,1Bh ;Esc
+jne @f
+call ResetScene
+jmp lbl_WndProc_Return0
+
 @@:
 cmp nKeyCode,20h ;SpaceBar
 jne @f
 call ResetScene
+jmp lbl_WndProc_Return0
+
 @@:
-cmp nKeyCode,1Bh ;Esc
-je lbl_wmClose
+cmp nKeyCode,70h ;F1
+jne @f
+call AboutProc
 jmp lbl_WndProc_Return0
 
 
