@@ -81,8 +81,8 @@ mulss xmm1,sinA
 addss xmm0,xmm1
 movss dxCam3,xmm0
 ;dyCam3 = dyCam2
-mov eax,dxCam2
-mov dxCam3,eax
+mov eax,dyCam2
+mov dyCam3,eax
 ;dzCam3 = dzCam2 * cosA - dxCam2 * sinA
 movss xmm0,dzCam2
 mulss xmm0,cosA
