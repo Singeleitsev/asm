@@ -67,10 +67,10 @@ cmp ax,0 ;Not Minimized when HIWORD(wParam) = 0
 jne lblDeActivate
 
 lblSetActive:
-mov AppActive,1
+mov isActive,1
 jmp lbl_WndProc_Return0
 lblDeActivate:
-mov AppActive,0
+mov isActive,0
 jmp lbl_WndProc_Return0
 
 
@@ -102,7 +102,7 @@ jmp lbl_WndProc_Return0
 @@:
 cmp nKeyCode,1Bh ;Esc
 jne @f
-cmp SceneRefreshed,1
+cmp isRefreshed,1
 je lbl_wmClose
 call ResetScene
 jmp lbl_WndProc_Return0

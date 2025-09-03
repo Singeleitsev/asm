@@ -20,6 +20,7 @@ je @f
 movss xmm0,aXY_Model
 addss xmm0,dAngle
 movss aXY_Model,xmm0
+lea rcx,aXY_Model
 Call CheckAngle
 @@:
 cmp key[43h],0 ;C - Clockwise
@@ -27,18 +28,45 @@ je @f
 movss xmm0,aXY_Model
 subss xmm0,dAngle
 movss aXY_Model,xmm0
+lea rcx,aXY_Model
 Call CheckAngle
 
 ;Camera Rotation - Mouse Input
-;Call SetFocus(ghWnd)
-;Call GetCursorPos(lpCurPos)
-;Call SetCursorPos(xScrCenter, yScrCenter)
+mov rcx,ghWnd
+Call SetFocus
+
+lea rcx,xCurPos
+Call GetCursorPos
+
+mov ecx,xScrCenter
+mov edx,yScrCenter
+Call SetCursorPos
+
 ;dxMouse = xScrCenter - CurPos.X
+movss xmm0,xScrCenter
+subss xmm0,xCurPos
+movss dxMouse,xmm0
+
 ;dyMouse = yScrCenter - CurPos.Y
-;aYZ_Cam = aYZ_Cam + dyMouse / 20
-;aYZ_Cam = CheckAngle(aYZ_Cam)
-;aXY_Cam = aXY_Cam + dxMouse / 20
-;aXY_Cam = CheckAngle(aXY_Cam)
+movss xmm1,yScrCenter
+subss xmm1,yCurPos
+movss dyMouse,xmm1
+
+;aYZ_Cam = CheckAngle(aYZ_Cam + dyMouse / 20)
+movss xmm0,dyMouse
+divss xmm0,f32_20
+addss xmm0,aYZ_Cam
+movss aYZ_Cam,xmm0
+lea rcx,aYZ_Cam
+Call CheckAngle
+
+;aXY_Cam = CheckAngle(aXY_Cam+ dxMouse / 20)
+movss xmm0,dxMouse
+divss xmm0,f32_20
+addss xmm0,aXY_Cam
+movss aXY_Cam,xmm0
+lea rcx,aXY_Cam
+Call CheckAngle
 
 @@:
 ;lbl_CameraRotation: ;Keyboard Input
@@ -47,6 +75,7 @@ je @f
 movss xmm0,aYZ_Cam
 subss xmm0,dAngle
 movss aYZ_Cam,xmm0
+lea rcx,aYZ_Cam
 Call CheckAngle
 @@:
 cmp key[53h],0 ;S - Look Down
@@ -54,6 +83,7 @@ je @f
 movss xmm0,aYZ_Cam
 addss xmm0,dAngle
 movss aYZ_Cam,xmm0
+lea rcx,aYZ_Cam
 Call CheckAngle
 @@:
 cmp key[41h],0 ;A - Look Left
@@ -61,6 +91,7 @@ je @f
 movss xmm0,aXY_Cam
 subss xmm0,dAngle
 movss aXY_Cam,xmm0
+lea rcx,aXY_Cam
 Call CheckAngle
 @@:
 cmp key[44h],0 ;D - Look Right
@@ -68,6 +99,7 @@ je @f
 movss xmm0,aXY_Cam
 addss xmm0,dAngle
 movss aXY_Cam,xmm0
+lea rcx,aXY_Cam
 Call CheckAngle
 @@:
 cmp key[51h],0 ;Q - Roll Left
@@ -75,6 +107,7 @@ je @f
 movss xmm0,aXZ_Cam
 addss xmm0,dAngle
 movss aXZ_Cam,xmm0
+lea rcx,aXZ_Cam
 Call CheckAngle
 @@:
 cmp key[45h],0 ;E - Roll Right
@@ -82,6 +115,7 @@ je @f
 movss xmm0,aXZ_Cam
 subss xmm0,dAngle
 movss aXZ_Cam,xmm0
+lea rcx,aXZ_Cam
 Call CheckAngle
 
 @@:

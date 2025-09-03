@@ -1,5 +1,9 @@
 WinMain proc
 LOCAL nPeek:QWORD, nWndClass:QWORD
+;Since the Proc has locals
+;Assembler will add this prologue automatically:
+;push rbp
+;mov rbp,rsp
 
 and rsp,-16 ;Align the Stack
 sub rsp,100h ;Create the Buffer
@@ -111,7 +115,7 @@ call DispatchMessageA
 jmp lbl_WinMain_Loop
 
 lbl_WinMain_CheckActive:
-cmp AppActive,0
+cmp isActive,0
 je lbl_WinMain_Loop
 
 lbl_WinMain_ReDraw:
@@ -147,4 +151,7 @@ xor rcx,rcx
 call ExitProcess
 ;add rsp,20h
 
+;Since the Proc has locals
+;Assembler will add this epilogue automatically:
+leave
 WinMain endp

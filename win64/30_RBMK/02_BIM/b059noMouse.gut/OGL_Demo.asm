@@ -27,6 +27,8 @@ ExitProcess PROTO
 GetLastError PROTO
 
 ;WndProc
+GetCursorPos PROTO :QWORD
+SetCursorPos PROTO :QWORD,:QWORD
 MessageBoxA PROTO :QWORD,:QWORD,:QWORD,:QWORD
 DefWindowProcA PROTO :QWORD,:QWORD,:QWORD,:QWORD
 DestroyWindow PROTO
@@ -138,8 +140,8 @@ PIXELFORMATDESCRIPTOR64 STRUC
  dwDamageMask dd ?
 PIXELFORMATDESCRIPTOR64 ENDS
 INITCOMMONCONTROLSEX64 STRUC
-    dwSize dd ?
-    dwICC dd ?
+ dwSize dd ?
+ dwICC dd ?
 INITCOMMONCONTROLSEX64 Ends
 
 .const
@@ -174,9 +176,9 @@ hwndStatusBar dq 0
 idStatusBar dq 0
 xStatusParts dd 100,200,300,450,600,750,900,-1 ;Divide Status Bar by 8 parts
 
-;WinMain
-AppActive dq 0
-SceneRefreshed dq 1
+;Flags
+isActive db 0
+isRefreshed db 1
 
 ;OpenGL
 ghDC dq 0
@@ -189,12 +191,13 @@ RectAspect dq 0 ;Float64
 ;Cursor Position
 xScrCenter dd 0
 yScrCenter dd 0
-CurPos POINT2D <>
+xCurPos dd 0 ;Current Position
+yCurPos dd 0
+;xPrevPos dd 0 ;Previous Position
+;yPrevPos dd 0
+dxMouse dd 0
+dyMouse dd 0
 
-;Model Position
-;xModel dd 0
-;yModel dd 0
-;zModel dd 0
 ;Model Scale
 GlobalScale dd 3A83126Fh ;0.001_f32
 ;Model Angle
@@ -212,10 +215,10 @@ zCam dd 0c0900000h ;-4.5_f32 -> Move the World 4.5 Meters Down = Move the Camera
 ;Motion
 dStep dd 3DCCCCCDh ;0.1_f32
 dAngle dd 3F800000h ;1.0_f32
-AngularSpeed dd 3F800000h ;1.0_f32
 LinearSpeed dd 3DCCCCCDh ;0.1_f32
-AngularBoost dd 41200000h ;10.0_f32
+AngularSpeed dd 3F800000h ;1.0_f32
 LinearBoost dd 41200000h ;10.0_f32
+AngularBoost dd 41200000h ;10.0_f32
 dTab dd 41f00000h ;30.0_f32
 
 ;Affine Transformations
@@ -235,6 +238,16 @@ dxCam3 dd 0
 dyCam3 dd 0
 dzCam3 dd 0
 
+;Floating Point
+i8_Sign db 0
+f32_Absolute dd 0
+f32_Exponent dd 0
+f32_Mantissa dd 0
+i32_IntegerPart dd 0
+i32_FractionalPart dd 0
+bcd80_IntegerPart dt 0
+bcd80_FractionalPart dt 0
+
 ;Keyboard Buffer
 key db 128 dup (0)
 nKeyCode dd 0
@@ -242,56 +255,75 @@ nKeyCode dd 0
 ;Strings
 szMainWndTitle db 'OpenGL example',0
 szMainWndClass db 'MainWndClass',0
-szMsgCloseText db 'Close?',0
 szMsgCloseTitle db 'Such A Good Application',0
+szMsgCloseText db 'Close?',0
 
 ;Menu
 szMenuFile db '&File',0
 szMenuFileExit db 'E&xit',9,'Ctrl+W',0
 szMenuHelp db '&Help',0
 szMenuHelpAbout db '&About...',0
+szAboutMsgTitle db 'Manual',0
 szAboutMsgText db 'Camera Motion:',13
 db 'Arrow Up - Move Forward',13
 db 'Arrow Down - Move Backward',13
 db 'Arrow Left - Move Left',13
 db 'Arrow Right - Move Right',13
 db 'Page Up - Move Up',13
-db 'Page Down - Move Down',13,13
+db 'Page Down - Move Down',13
+db 13
 db 'Camera Rotation:',13
 db 'W - Look Down',13
 db 'S - Look Up',13
 db 'A - Look Left',13
 db 'D - Look Right',13
 db 'Q - Roll Camera Left',13
-db 'E - Roll Camera Right',13,13
+db 'E - Roll Camera Right',13
+db 13
 db 'Object Rotation:',13
 db 'Z - Turn the Object Counter-Clockwise',13
 db 'X - Reset the Object Position',13
 db 'C - Turn the Object Clockwise',13
-db 'Tab - Turn the Object Clockwise Quick',13,13
+db 'Tab - Turn the Object Clockwise Quick',13
+db 13
 db 'Shift - Boost',0
-szAboutMsgTitle db 'Manual',0
 
 ;Status Bar
 ;https://learn.microsoft.com/en-us/windows/win32/winauto/status-bar-control
 szStatusClassName db 'msctls_statusbar32',0 ;"STATUSCLASSNAMEW"
-sz_xCam db 'xCam = 0.000',0 ;format(xCam, "0.000")
-sz_yCam db 'yCam = 0.000',0 ;format(yCam, "0.000")
-sz_zCam db 'zCam = 0.000',0 ;format(zCam, "0.000")
-sz_aXY_Model db 'aXY_Model = 0.000',0 ;format(aXY_Model, "0.000")
-sz_aXY_Cam db 'aXY_Cam = 0.000',0 ;format(aXY_Cam, "0.000")
-sz_aYZ_Cam db 'aYZ_Cam = 0.000',0 ;format(aYZ_Cam, "0.000")
+sz_xCam db 'xCam = ',11 dup (0)
+lpsz_xCam = $ - 11
+sz_yCam db 'yCam = ',11 dup (0)
+lpsz_yCam = $ - 11
+sz_zCam db 'zCam = ',11 dup (0)
+lpsz_zCam = $ - 11
+sz_aXY_Model db 'aXY_Model = ',10 dup (0)
+lpsz_aXY_Model = $ - 10
+sz_aYZ_Cam db 'aYZ_Cam = ',10 dup (0)
+lpsz_aYZ_Cam = $ - 10
+sz_aXY_Cam db 'aXY_Cam = ',10 dup (0)
+lpsz_aXY_Cam = $ - 10
+sz_aXZ_Cam db 'aXZ_Cam = ',10 dup (0)
+lpsz_aXZ_Cam = $ - 10
 
 ;Debug
 nLastError dq 0
-szErrGetModuleHandle db 'GetModuleHandle Error: 0000',0
-szErrRegisterClass db 'RegisterClass Error: 0000',0
-szErrCreateWindow db 'CreateWindow Error: 0000',0
-szErrChoosePixelFormat db 'ChoosePixelFormat Error: 0000',0
-szErrCreateContext db 'wglCreateContext Error: 0000',0
-szErrGetClientRect db 'GetClientRect Error: 0000',0
-szErrCreateMenu db 'CreateMenu Error: 0000',0
-szErrCreateStatusBar db 'CreateStatusBar Error: 0000',0
+szErrGetModuleHandle db 'GetModuleHandle Error: 0x0000',0
+lpszErrGetModuleHandleCode = $-2
+szErrRegisterClass db 'RegisterClass Error: 0x0000',0
+lpszErrRegisterClassCode = $-2
+szErrCreateWindow db 'CreateWindow Error: 0x0000',0
+lpszErrCreateWindowCode = $-2
+szErrChoosePixelFormat db 'ChoosePixelFormat Error: 0x0000',0
+lpszErrChoosePixelFormatCode = $-2
+szErrCreateContext db 'wglCreateContext Error: 0x0000',0
+lpszErrCreateContextCode = $-2
+szErrGetClientRect db 'GetClientRect Error: 0x0000',0
+lpszErrGetClientRectCode = $-2
+szErrCreateMenu db 'CreateMenu Error: 0x0000',0
+lpszErrCreateMenuCode = $-2
+szErrCreateStatusBar db 'CreateStatusBar Error: 0x0000',0
+lpszErrCreateStatusBarCode = $-2
 
 .code
 include 10_WinMain.asm
@@ -299,7 +331,7 @@ include 20_WndProc.asm
 ;include 21_CreateMenu.asm
 ;include 22_CreateStatusBar.asm
 ;include 23_GLResize.asm
-include 24_CloseProc.asm
+include 29_CloseProc.asm
 include 30_AboutProc.asm
 include 40_InitializeGLProc.asm
 include 50_DrawGLSceneProc.asm
@@ -309,10 +341,12 @@ include 50_DrawGLSceneProc.asm
 include 54_CheckAngleProc.asm
 include 55_CheckDistanceProc.asm
 include 56_CameraMoveProc.asm
+
 include 60_ResetSceneProc.asm
 include 70_DrawAxesProc.asm
 include 71_DrawObjectProc.asm
 include 72_DrawCapProc.asm
+include 80_FloatConvertProc.asm
 include 90_SpellErrorProc.asm
 
 end

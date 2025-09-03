@@ -44,7 +44,7 @@ mov xCam,0 ;0.0_f32
 mov yCam,41100000h ;9.0_f32
 mov zCam,0c0900000h ;-4.5_f32
 
-mov SceneRefreshed,1
+mov isRefreshed,1
 
 add rsp,100h
 ;Since the Proc has NO parameters
