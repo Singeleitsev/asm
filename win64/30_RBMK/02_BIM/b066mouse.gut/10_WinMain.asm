@@ -99,13 +99,23 @@ mov qword ptr [rsp+20h],1 ;PM_REMOVE Messages are removed from the queue after p
 call PeekMessageA
 ;add rsp,30h
 
+cmp rax,0 ;Is there a Message?
+jne lbl_WinMain_ProceedMessage
+
+;lbl_WinMain_CheckActive:
+cmp isActive,0 ;No Messages. Is the Window Active?
+je lbl_WinMain_Loop
+
+;lbl_WinMain_ReDraw:
+;sub rsp,20h
+call DrawGLScene ;No Messages. The Window is Active
+;add rsp,20h
+jmp lbl_WinMain_Loop
+
+lbl_WinMain_ProceedMessage:
 cmp msg.message,12h ;WM_QUIT
 je lbl_WinMain_End
 
-cmp rax,0
-je lbl_WinMain_CheckActive
-
-lbl_WinMain_ProceedMessage:
 ;sub rsp,20h
 lea rcx,msg ;lpMsg
 call TranslateMessage
@@ -114,15 +124,7 @@ call DispatchMessageA
 ;add rsp,20h
 jmp lbl_WinMain_Loop
 
-lbl_WinMain_CheckActive:
-cmp isActive,0
-je lbl_WinMain_Loop
 
-lbl_WinMain_ReDraw:
-;sub rsp,20h
-call DrawGLScene
-;add rsp,20h
-jmp lbl_WinMain_Loop
 
 lbl_ErrGetModuleHandle:
 lea rcx,szErrGetModuleHandle

@@ -250,10 +250,9 @@ dyCam3 dd 0
 dzCam3 dd 0
 
 ;Floating Point
-i8_Sign db 0
 f32_Absolute dd 0
-f32_Exponent dd 0
-f32_Mantissa dd 0
+;f32_Exponent dd 0
+;f32_Mantissa dd 0
 i32_IntegerPart dd 0
 i32_FractionalPart dd 0
 bcd80_IntegerPart dt 0
