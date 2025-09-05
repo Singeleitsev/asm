@@ -1,4 +1,9 @@
 WndProc proc hWnd:QWORD, wMsg:QWORD, wParam:QWORD, lParam:QWORD
+;CurPos POINT2D Structure must be Aligned by 10h in the Memory
+;to Avoid the Error 80000002 (STATUS_DATATYPE_MISALIGNMENT)
+;We'll declare it as a local Variable in DrawGLScene proc
+LOCAL dummy:QWORD, CurPos:QWORD
+
 ;Since the Proc has parameters
 ;Assembler will add this prologue automatically:
 ;push rbp
@@ -13,18 +18,24 @@ mov wParam,r8
 mov lParam,r9
 
 ;Messages Arranged by Probability
+cmp edx,200h
+je lbl_wmMouseMove
+cmp edx,201h
+je lbl_wmLButtonDown
+cmp edx,202h
+je lbl_wmLButtonUp
 cmp edx,100h
 je lbl_wmKeyDown
 cmp edx,101h
 je lbl_wmKeyUp
-cmp edx,201h
-je lbl_wmLButtonDown
+cmp edx,204h
+je lbl_wmRButtonDown
 cmp edx,111h
 je lbl_wmCommand
-cmp edx,5
-je lbl_wmSize
 cmp edx,6
 je lbl_wmActivate
+cmp edx,5
+je lbl_wmSize
 ;cmp edx,112h
 ;je lbl_wmSysCommand
 cmp edx,10h
@@ -42,8 +53,6 @@ jmp lbl_WndProc_End
 
 ;WM_CREATE = 1
 lbl_wmCreate:
-lea rcx,icce
-Call InitCommonControlsEx
 include 21_CreateMenu.asm
 include 22_CreateStatusBar.asm
 jmp lbl_WndProc_Return0
@@ -104,13 +113,13 @@ cmp nKeyCode,1Bh ;Esc
 jne @f
 cmp isRefreshed,1
 je lbl_wmClose
-call ResetScene
+call ReAssign
 jmp lbl_WndProc_Return0
 
 @@:
 cmp nKeyCode,20h ;SpaceBar
 jne @f
-call ResetScene
+call ReAssign
 jmp lbl_WndProc_Return0
 
 @@:
@@ -149,8 +158,36 @@ jmp lbl_WndProc_Return0
 ;jmp lbl_WndProc_Return0
 
 
+;WM_MOUSEMOVE = 200h
+lbl_wmMouseMove:
+cmp nMode,2
+jne lbl_WndProc_Return0
+include 24_MouseMove.asm
+jmp lbl_WndProc_Return0
+
+
 ;WM_LBUTTONDOWN = 201h
 lbl_wmLButtonDown:
+;Toggle Mouse-Driven Camera Rotation
+mov nMode,2
+;Extract PrevPos.X
+mov xPrevPos,r9d
+and xPrevPos,0FFFFh
+;Extract PrevPos.Y
+mov yPrevPos,r9d
+shr yPrevPos,16
+jmp lbl_WndProc_Return0
+
+
+;WM_LBUTTONUP = 202h
+lbl_wmLButtonUp:
+;Toggle Keyboard-Driven Camera Rotation
+mov nMode,1
+jmp lbl_WndProc_Return0
+
+
+;WM_RBUTTONDOWN = 204h
+lbl_wmRButtonDown:
 mov rcx,hWnd
 Call AboutProc
 jmp lbl_WndProc_Return0

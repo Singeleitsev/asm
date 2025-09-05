@@ -4,7 +4,7 @@
 mov xCurPos,r9d
 and xCurPos,0FFFFh
 
-;Extract = CurPos.Y
+;Extract CurPos.Y
 mov yCurPos,r9d
 shr yCurPos,16
 

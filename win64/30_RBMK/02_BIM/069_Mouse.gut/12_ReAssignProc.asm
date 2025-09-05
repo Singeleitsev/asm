@@ -1,4 +1,4 @@
-ResetScene proc
+ReAssign proc
 ;Since the Proc has NO parameters
 ;Assembler will NOT add this prologue automatically:
 push rbp
@@ -51,4 +51,4 @@ add rsp,100h
 ;Assembler will NOT add this epilogue automatically:
 leave
 ret
-ResetScene endp
+ReAssign endp

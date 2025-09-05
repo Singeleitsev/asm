@@ -72,7 +72,7 @@ mov ghWnd,rax
 cmp rax, 0
 je lbl_ErrCreateWindow
 
-Call InitializeGL
+include 11_InitializeGL.asm
 
 ;Show The Window
 mov rcx,ghWnd

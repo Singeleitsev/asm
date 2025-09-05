@@ -1,11 +1,4 @@
-InitializeGL proc
-;Since the Proc has NO parameters
-;Assembler will NOT add this prologue automatically:
-push rbp
-mov rbp,rsp
-
-and rsp,-16 ;Align the Stack
-sub rsp,100h ;Create the Buffer
+;lbl_InitializeGL:
 
 mov rcx, ghWnd
 call GetDC
@@ -83,40 +76,22 @@ mov rcx,0C50h ;GL_PERSPECTIVE_CORRECTION_HINT
 mov rdx,1102h ;GL_NICEST
 call glHint
 
-mov ecx,xScrCenter
-mov edx,yScrCenter
-Call SetCursorPos
+Call ReAssign
 
-Call ResetScene
-
-jmp lbl_InitializeGL_Return1
+jmp lbl_InitializeGL_End
 
 lbl_ErrChoosePixelFormat:
 lea rcx,szErrChoosePixelFormat
 ;mov rdx,31 ;String Length
 mov rdx,lpszErrChoosePixelFormatCode
 Call SpellError
-jmp lbl_InitializeGL_Return0
+jmp lbl_InitializeGL_End
 
 lbl_ErrCreateContext:
 lea rcx,szErrCreateContext
 ;mov rdx,30 ;String Length
 mov rdx,lpszErrCreateContextCode
 Call SpellError
-jmp lbl_InitializeGL_Return0
-
-lbl_InitializeGL_Return0:
-xor rax,rax
-jmp lbl_InitializeGL_End
-
-lbl_InitializeGL_Return1:
-mov rax,1
-jmp lbl_InitializeGL_End
+;jmp lbl_InitializeGL_End
 
 lbl_InitializeGL_End:
-add rsp,100h
-;Since the Proc has NO parameters
-;Assembler will NOT add this epilogue automatically:
-leave
-ret
-InitializeGL endp

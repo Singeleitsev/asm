@@ -139,4 +139,4 @@ mov dzCam0,0
 Call CameraMove
 
 @@:
-lbl_CheckKeys_End:
+;lbl_CheckKeys_End:

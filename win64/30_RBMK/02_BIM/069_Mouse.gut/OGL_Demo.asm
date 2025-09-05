@@ -27,8 +27,6 @@ ExitProcess PROTO
 GetLastError PROTO
 
 ;WndProc
-GetCursorPos PROTO :QWORD
-SetCursorPos PROTO :QWORD,:QWORD
 MessageBoxA PROTO :QWORD,:QWORD,:QWORD,:QWORD
 DefWindowProcA PROTO :QWORD,:QWORD,:QWORD,:QWORD
 DestroyWindow PROTO
@@ -177,6 +175,11 @@ idStatusBar dq 0
 xStatusParts dd 100,200,300,450,600,750,900,-1 ;Divide Status Bar by 8 parts
 
 ;Flags
+;nMode:
+;0 - Stick Camera to World Axes
+;1 - Move Camera Along its Own Axes
+;2 - Move Camera by Mouse
+nMode db 1
 isActive db 0
 isRefreshed db 1
 
@@ -189,14 +192,12 @@ RectHeight dd 0 ;Integer
 RectAspect dq 0 ;Float64
 
 ;Cursor Position
-xScrCenter dd 0
-yScrCenter dd 0
-xCurPos dd 0 ;Current Position
+xScrCenter dd 512
+yScrCenter dd 384
+xCurPos dd 0 ;Current Cursor Position
 yCurPos dd 0
-;xPrevPos dd 0 ;Previous Position
-;yPrevPos dd 0
-dxMouse dd 0
-dyMouse dd 0
+xPrevPos dd 0 ;Previous Position
+yPrevPos dd 0
 
 ;Model Scale
 GlobalScale dd 3A83126Fh ;0.001_f32
@@ -239,10 +240,9 @@ dyCam3 dd 0
 dzCam3 dd 0
 
 ;Floating Point
-i8_Sign db 0
 f32_Absolute dd 0
-f32_Exponent dd 0
-f32_Mantissa dd 0
+;f32_Exponent dd 0
+;f32_Mantissa dd 0
 i32_IntegerPart dd 0
 i32_FractionalPart dd 0
 bcd80_IntegerPart dt 0
@@ -292,7 +292,7 @@ db 'Shift - Boost',0
 ;https://learn.microsoft.com/en-us/windows/win32/winauto/status-bar-control
 szStatusClassName db 'msctls_statusbar32',0 ;"STATUSCLASSNAMEW"
 sz_xCam db 'xCam = ',11 dup (0)
-lpsz_xCam = $ - 11
+lpsz_xCam = $ - 11 ;First Empty (0) Byte
 sz_yCam db 'yCam = ',11 dup (0)
 lpsz_yCam = $ - 11
 sz_zCam db 'zCam = ',11 dup (0)
@@ -309,7 +309,7 @@ lpsz_aXZ_Cam = $ - 10
 ;Debug
 nLastError dq 0
 szErrGetModuleHandle db 'GetModuleHandle Error: 0x0000',0
-lpszErrGetModuleHandleCode = $-2
+lpszErrGetModuleHandleCode = $-2 ;Last Zero (30h) Byte
 szErrRegisterClass db 'RegisterClass Error: 0x0000',0
 lpszErrRegisterClassCode = $-2
 szErrCreateWindow db 'CreateWindow Error: 0x0000',0
@@ -327,26 +327,31 @@ lpszErrCreateStatusBarCode = $-2
 
 .code
 include 10_WinMain.asm
+;include 11_InitializeGL.asm
+include 12_ReAssignProc.asm
+
 include 20_WndProc.asm
 ;include 21_CreateMenu.asm
 ;include 22_CreateStatusBar.asm
 ;include 23_GLResize.asm
+;include 24_MouseMove.asm
+include 28_AboutProc.asm
 include 29_CloseProc.asm
-include 30_AboutProc.asm
-include 40_InitializeGLProc.asm
-include 50_DrawGLSceneProc.asm
-;include 51_CheckKeys.asm
-;include 52_SetView.asm
-;include 53_RefreshStatus.asm
-include 54_CheckAngleProc.asm
-include 55_CheckDistanceProc.asm
-include 56_CameraMoveProc.asm
 
-include 60_ResetSceneProc.asm
-include 70_DrawAxesProc.asm
-include 71_DrawObjectProc.asm
-include 72_DrawCapProc.asm
-include 80_FloatConvertProc.asm
+include 30_DrawGLSceneProc.asm
+;include 31_CheckKeys.asm
+include 32_CheckAngleProc.asm
+include 33_CheckDistanceProc.asm
+include 34_CameraMoveProc.asm
+;include 35_SetView.asm
+
+;include 40_RefreshStatus.asm
+include 41_FloatConvertProc.asm
+
+include 50_DrawAxesProc.asm
+include 51_DrawObjectProc.asm
+include 52_DrawCapProc.asm
+
 include 90_SpellErrorProc.asm
 
 end
