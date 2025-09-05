@@ -1,5 +1,8 @@
 ;lbl_CreateStatusBar:
 
+lea rcx,icce
+Call InitCommonControlsEx
+
 ;Create the Window
 xor rcx,rcx ;dwExStyle = 0
 lea rdx,szStatusClassName

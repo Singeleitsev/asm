@@ -38,8 +38,8 @@ mov rdx,7F00h ;hCursor = IDC_ARROW = 32512 = 7F00h
 call LoadCursorA
 mov wcx.hCursor,rax
 ;Background
-mov rcx,2 ;GRAY_BRUSH
-;mov rcx,4 ;BLACK_BRUSH
+;mov rcx,4 ;GRAY_BRUSH
+mov rcx,4 ;BLACK_BRUSH
 call GetStockObject
 mov wcx.hbrBackground,rax
 mov wcx.lpszMenuName,0

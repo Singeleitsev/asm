@@ -178,8 +178,8 @@ xStatusParts dd 100,200,300,450,600,750,900,-1 ;Divide Status Bar by 8 parts
 ;nMode:
 ;0 - Stick Camera to World Axes
 ;1 - Move Camera Along its Own Axes
-;2 - Move Camera by Mouse
 nMode db 1
+nMouse db 0
 isActive db 0
 isRefreshed db 1
 
@@ -250,7 +250,7 @@ bcd80_FractionalPart dt 0
 
 ;Keyboard Buffer
 key db 128 dup (0)
-nKeyCode dd 0
+nKeyCode dw 0
 
 ;Strings
 szMainWndTitle db 'OpenGL example',0
@@ -334,7 +334,9 @@ include 20_WndProc.asm
 ;include 21_CreateMenu.asm
 ;include 22_CreateStatusBar.asm
 ;include 23_GLResize.asm
-;include 24_MouseMove.asm
+;include 24_MouseRotate.asm
+;include 25_MousePan.asm
+;include 26_MouseZoom.asm
 include 28_AboutProc.asm
 include 29_CloseProc.asm
 

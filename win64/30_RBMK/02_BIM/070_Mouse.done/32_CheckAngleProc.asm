@@ -14,11 +14,11 @@ mov edx,dword ptr[rcx]
 mov Angle,edx
 
 ;Test IEEE 754 Zero Bit
-bt edx,31
+bt edx,31 ;Is Negative?
 jc lbl_CheckAngleNegative
 
-cmp edx,f32_360
-jl lbl_endCheckAngle
+cmp edx,f32_360 ;Exceeds 360 Dergees?
+jl lbl_CheckAngle_End
 
 ;lbl_CheckAnglePositive:
 fld Angle
@@ -34,7 +34,7 @@ fstp Angle
 mov edx,Angle
 mov dword ptr[rcx],edx
 
-lbl_endCheckAngle:
+lbl_CheckAngle_End:
 mov isRefreshed,0
 
 add rsp,100h

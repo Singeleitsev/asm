@@ -20,16 +20,22 @@ mov lParam,r9
 ;Messages Arranged by Probability
 cmp edx,200h
 je lbl_wmMouseMove
-cmp edx,201h
-je lbl_wmLButtonDown
-cmp edx,202h
-je lbl_wmLButtonUp
 cmp edx,100h
 je lbl_wmKeyDown
 cmp edx,101h
 je lbl_wmKeyUp
+cmp edx,201h
+je lbl_wmLButtonDown
+cmp edx,202h
+je lbl_wmLButtonUp
 cmp edx,204h
 je lbl_wmRButtonDown
+cmp edx,207h
+je lbl_wmMButtonDown
+cmp edx,208h
+je lbl_wmMButtonUp
+cmp edx,20Ah
+je lbl_wmMouseWheel
 cmp edx,111h
 je lbl_wmCommand
 cmp edx,6
@@ -87,7 +93,7 @@ jmp lbl_WndProc_Return0
 lbl_wmKeyDown:
 xor rax,rax
 mov eax,r8d
-mov nKeyCode,r8d ;LOWORD(wParam)
+mov nKeyCode,r8w ;LOWORD(wParam)
 ;Set 1 in the Array
 lea rbx,key
 add rax,rbx
@@ -133,7 +139,7 @@ jmp lbl_WndProc_Return0
 lbl_wmKeyUp:
 xor rax,rax
 mov eax,r8d
-mov nKeyCode,r8d ;LOWORD(wParam)
+mov nKeyCode,r8w ;LOWORD(wParam)
 lea rbx,key
 add rax,rbx
 mov byte ptr [rax],0
@@ -160,16 +166,18 @@ jmp lbl_WndProc_Return0
 
 ;WM_MOUSEMOVE = 200h
 lbl_wmMouseMove:
-cmp nMode,2
-jne lbl_WndProc_Return0
-include 24_MouseMove.asm
+cmp nMouse,1 ;MOUSE_MODE_CAMERA_ROTATION = 1
+je lbl_MouseRotate
+cmp nMouse,2 ;MOUSE_MODE_CAMERA_PAN = 2
+je lbl_MousePan
 jmp lbl_WndProc_Return0
-
+include 24_MouseRotate.asm
+include 25_MousePan.asm
 
 ;WM_LBUTTONDOWN = 201h
 lbl_wmLButtonDown:
 ;Toggle Mouse-Driven Camera Rotation
-mov nMode,2
+mov nMouse,1 ;MOUSE_MODE_CAMERA_ROTATION = 1
 ;Extract PrevPos.X
 mov xPrevPos,r9d
 and xPrevPos,0FFFFh
@@ -178,18 +186,39 @@ mov yPrevPos,r9d
 shr yPrevPos,16
 jmp lbl_WndProc_Return0
 
-
 ;WM_LBUTTONUP = 202h
 lbl_wmLButtonUp:
 ;Toggle Keyboard-Driven Camera Rotation
-mov nMode,1
+mov nMouse,0
 jmp lbl_WndProc_Return0
-
 
 ;WM_RBUTTONDOWN = 204h
 lbl_wmRButtonDown:
 mov rcx,hWnd
 Call AboutProc
+jmp lbl_WndProc_Return0
+
+;WM_MBUTTONDOWN = 207h
+lbl_wmMButtonDown:
+;Toggle Mouse-Driven Camera Pan
+mov nMouse,2 ;MOUSE_MODE_CAMERA_PAN = 2
+;Extract PrevPos.X
+mov xPrevPos,r9d
+and xPrevPos,0FFFFh
+;Extract PrevPos.Y
+mov yPrevPos,r9d
+shr yPrevPos,16
+jmp lbl_WndProc_Return0
+
+;WM_MBUTTONUP = 208h
+lbl_wmMButtonUp:
+;Toggle Keyboard-Driven Camera Motion
+mov nMouse,0
+jmp lbl_WndProc_Return0
+
+;WM_MOUSEWHEEL = 20Ah
+lbl_wmMouseWheel:
+include 26_MouseZoom.asm
 jmp lbl_WndProc_Return0
 
 
@@ -198,7 +227,6 @@ lbl_wmClose:
 mov rcx,hWnd
 call CloseWndProc
 jmp lbl_WndProc_Return0
-
 
 ;WM_DESTROY = 2
 lbl_wmDestroy:

@@ -1,8 +1,5 @@
 ;lbl_CreateMenu:
 
-lea rcx,icce
-Call InitCommonControlsEx
-
 ;Main Menu
 Call CreateMenu
 mov hMenu,rax

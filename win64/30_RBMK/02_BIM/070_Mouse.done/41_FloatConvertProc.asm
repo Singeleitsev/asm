@@ -38,12 +38,12 @@ fmul f32_10000 ;4 Decimal Digits in Fractional Part ;st(0) = float(4567.89)
 fistp i32_FractionalPart ;i32_FractionalPart = float(4568)
 ;Convert to Packed BCD
 fild i32_IntegerPart ;st(0) = i32_IntegerPart = float(123)
-fbstp bcd80_IntegerPart ;bcd80_IntegerPart = 2301h
+fbstp bcd80_IntegerPart ;bcd80_IntegerPart = int(2301h)
 fild i32_FractionalPart ;st(0) = i32_IntegerPart = float(4568)
-fbstp bcd80_FractionalPart ;bcd80_FractionalPart = 6845h
+fbstp bcd80_FractionalPart ;bcd80_FractionalPart = int(6845h)
 
 ;Integer Part
-lea rax,bcd80_IntegerPart ;rax = addressof(First Byte = Last Two Digits = 30h)
+lea rax,bcd80_IntegerPart ;rax = addressof(First Byte = Last Two Digits = 23h)
 add rax,1 ;rax = addressof(Last Byte = First Two Digits = 01h)
 xor r10,r10
 mov r10b,byte ptr [rax] ;r10b = 01h
