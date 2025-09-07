@@ -32,18 +32,19 @@ DefWindowProcA PROTO :QWORD,:QWORD,:QWORD,:QWORD
 DestroyWindow PROTO
 PostQuitMessage PROTO :QWORD
 
-;StatusBar
-InitCommonControlsEx PROTO :QWORD
-
-;PopupMenu
+;Menu
 CreateMenu PROTO
 CreatePopupMenu PROTO
 SetMenu PROTO :QWORD,:QWORD
 DrawMenuBar PROTO :QWORD
-;TrackPopupMenu PROTO :QWORD,:QWORD,:QWORD,:QWORD,:QWORD,:QWORD,:QWORD ;<--
 AppendMenuA PROTO :QWORD,:QWORD,:QWORD,:QWORD
-CheckMenuItem PROTO :QWORD,:QWORD,:QWORD
+CreateAcceleratorTableA PROTO :QWORD,:QWORD
+TranslateAcceleratorA PROTO :QWORD,:QWORD,:QWORD
+DestroyAcceleratorTable PROTO :QWORD
 DestroyMenu PROTO :QWORD
+
+;StatusBar
+InitCommonControlsEx PROTO :QWORD
 
 ;GDI & Paint
 GetDC PROTO :QWORD
@@ -140,7 +141,13 @@ PIXELFORMATDESCRIPTOR64 ENDS
 INITCOMMONCONTROLSEX64 STRUC
  dwSize dd ?
  dwICC dd ?
-INITCOMMONCONTROLSEX64 Ends
+INITCOMMONCONTROLSEX64 ENDS
+ACCEL64 STRUC
+ fVirt dw ?
+ key dw ?
+ cmd dd ?
+ACCEL64 ENDS
+
 
 .const
 ;Numeric
@@ -159,6 +166,7 @@ msg MSG64 <>
 RectMain RECT64 <>
 pfd PIXELFORMATDESCRIPTOR64 <>
 icce INITCOMMONCONTROLSEX64 <>
+accel ACCEL64<>
 
 ;Global Handles
 ghInst dq 0
@@ -168,18 +176,24 @@ ghWnd dq 0
 hMenu dq 0
 hMenuFile dq 0
 hMenuHelp dq 0
+hAccTable dq 0
 
 ;Status Bar
 hwndStatusBar dq 0
 idStatusBar dq 0
-xStatusParts dd 100,200,300,450,600,750,900,-1 ;Divide Status Bar by 8 parts
+xStatusParts dd 146,292,438,584,730,876,-1 ;Divide Status Bar by 7 parts
 
 ;Flags
+nMode db 1
 ;nMode:
 ;0 - Stick Camera to World Axes
 ;1 - Move Camera Along its Own Axes
-nMode db 1
 nMouse db 0
+;nMouse:
+;MOUSE_MODE_FREE_MOTION = 0
+;MOUSE_MODE_CAMERA_ROTATION = 1
+;MOUSE_MODE_CAMERA_ROLL = 2
+;MOUSE_MODE_CAMERA_PAN = 3
 isActive db 0
 isRefreshed db 1
 
@@ -192,8 +206,8 @@ RectHeight dd 0 ;Integer
 RectAspect dq 0 ;Float64
 
 ;Cursor Position
-xScrCenter dd 512
-yScrCenter dd 384
+xScrCenter dd 200h ;1024 / 2 = 512
+yScrCenter dd 150h ;768 / 2 = 384
 xCurPos dd 0 ;Current Cursor Position
 yCurPos dd 0
 xPrevPos dd 0 ;Previous Position
@@ -210,8 +224,8 @@ aYZ_Cam dd 43960000h ;Tilt = 300.0_f32
 aXZ_Cam dd 0 ;Turn = 0.0_f32
 ;Camera Position
 xCam dd 0 ;0.0_f32
-yCam dd 41100000h ;9.0_f32 -> Move the World 9 Meters Forward = Move the Camera 9 Meters Back
-zCam dd 0c0900000h ;-4.5_f32 -> Move the World 4.5 Meters Down = Move the Camera 4.5 Meters Up
+yCam dd 41100000h ;9.0_f32 = Move the World 9 Meters Forward = Move the Camera 9 Meters Back
+zCam dd 0c0900000h ;-4.5_f32 = Move the World 4.5 Meters Down = Move the Camera 4.5 Meters Up
 
 ;Motion
 dStep dd 3DCCCCCDh ;0.1_f32
@@ -329,14 +343,15 @@ lpszErrCreateStatusBarCode = $-2
 include 10_WinMain.asm
 ;include 11_InitializeGL.asm
 include 12_ReAssignProc.asm
+;include 13_CreateMenu.asm
+;include 14_CreateStatusBar.asm
 
 include 20_WndProc.asm
-;include 21_CreateMenu.asm
-;include 22_CreateStatusBar.asm
 ;include 23_GLResize.asm
-;include 24_MouseRotate.asm
-;include 25_MousePan.asm
-;include 26_MouseZoom.asm
+;include 24_1_MouseRotate.asm
+;include 24_2_MouseRoll.asm
+;include 24_3_MousePan.asm
+;include 24_4_MouseZoom.asm
 include 28_AboutProc.asm
 include 29_CloseProc.asm
 
@@ -355,5 +370,6 @@ include 51_DrawObjectProc.asm
 include 52_DrawCapProc.asm
 
 include 90_SpellErrorProc.asm
+
 
 end

@@ -17,6 +17,9 @@ Call MessageBoxA
 cmp rax,6 ;IDYES
 jne lbl_CloseWndProc_End
 
+lea rcx,hAccTable
+Call DestroyAcceleratorTable
+
 xor rcx,rcx
 xor rdx,rdx
 Call wglMakeCurrent

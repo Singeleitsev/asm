@@ -46,6 +46,26 @@ xor r8,r8
 xor r9,r9
 Call SendMessageA
 
+mov eax,RectWidth
+mov ebx,7
+div ebx
+mov ebx,eax
+mov rcx,6
+lea r9,xStatusParts
+lbl_Resize_StatusParts:
+mov dword ptr [r9],eax
+add ax,bx
+add r9,4
+dec cl
+cmp cl,0
+jg lbl_Resize_StatusParts
+
+mov rcx,hwndStatusBar
+mov rdx, 404h ;Msg = SB_SETPARTS = WM_USER + 4
+mov r8,7 ;wParam = Number of Parts
+lea r9,xStatusParts
+Call SendMessageA
+
 jmp lbl_GLResize_End
 
 lbl_ErrGetClientRect:

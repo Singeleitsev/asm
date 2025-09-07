@@ -2,6 +2,8 @@
 
 ;Main Menu
 Call CreateMenu
+cmp rax,0
+je lbl_ErrCreateMenu
 mov hMenu,rax
 
 ;File
@@ -37,12 +39,24 @@ lea r9,szMenuHelpAbout
 Call AppendMenuA
 
 ;Done
-mov rcx,hWnd
+mov rcx,ghWnd
 mov rdx,hMenu
 Call SetMenu
 
-mov rcx,hWnd
+mov rcx,ghWnd
 Call DrawMenuBar
+
+;Accelerators
+mov accel.fVirt,9 ;FVIRTKEY | FCONTROL = 1 + 8
+mov accel.key,57h ;W
+mov accel.cmd,IDM_APP_EXIT
+
+lea rcx,accel
+mov rdx,1 ;The number of ACCEL structures in the array
+Call CreateAcceleratorTableA
+cmp rax,0
+je lbl_ErrCreateMenu
+mov hAccTable,rax
 
 jmp lbl_CreateMenu_End
 

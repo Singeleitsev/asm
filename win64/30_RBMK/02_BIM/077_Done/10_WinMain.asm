@@ -18,7 +18,7 @@ je lbl_ErrGetModuleHandle
 
 ;Fill the WNDCLASSEX64 Structure
 mov wcx.cbSize,50h
-mov wcx.style,23h ;CS_HREDRAW | CS_VREDRAW | CS_OWNDC
+mov wcx.style,2Bh ;CS_VREDRAW | CS_HREDRAW | CS_DBLCLKS | CS_OWNDC = 1 + 2 + 8 + 20
 lea rax,WndProc
 mov wcx.lpfnWndProc,rax
 mov wcx.cbClsExtra,0 ;No Extra Window Data
@@ -73,6 +73,8 @@ cmp rax, 0
 je lbl_ErrCreateWindow
 
 include 11_InitializeGL.asm
+include 13_CreateMenu.asm
+include 14_CreateStatusBar.asm
 
 ;Show The Window
 mov rcx,ghWnd
@@ -115,6 +117,15 @@ jmp lbl_WinMain_Loop
 lbl_WinMain_ProceedMessage:
 cmp msg.message,12h ;WM_QUIT
 je lbl_WinMain_End
+
+;sub rsp,20h
+mov rcx,ghWnd
+mov rdx,hAccTable
+lea r8,msg ;lpMsg
+Call TranslateAcceleratorA
+;add rsp,20h
+cmp rax,0
+jne lbl_WinMain_Loop
 
 ;sub rsp,20h
 lea rcx,msg ;lpMsg

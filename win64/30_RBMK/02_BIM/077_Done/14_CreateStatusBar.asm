@@ -12,7 +12,7 @@ mov qword ptr [rsp+20h],0 ;x = 0
 mov qword ptr [rsp+28h],0 ;y = 0
 mov qword ptr [rsp+30h],0 ;nWidth = 0
 mov qword ptr [rsp+38h],0 ;nHeight = 0
-mov rax,hWnd ;hWndParent
+mov rax,ghWnd ;hWndParent
 mov qword ptr [rsp+40h],rax
 mov qword ptr [rsp+48h],1 ;hMenu = idStatusBar = 1
 mov rax,ghInst
@@ -25,7 +25,7 @@ je lbl_ErrCreateStatusBar
 
 mov rcx,hwndStatusBar
 mov rdx, 404h ;Msg = SB_SETPARTS = WM_USER + 4
-mov r8,8 ;wParam = Number of Parts
+mov r8,7 ;wParam = Number of Parts
 lea r9,xStatusParts
 Call SendMessageA
 

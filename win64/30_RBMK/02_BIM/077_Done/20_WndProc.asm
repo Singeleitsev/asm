@@ -30,10 +30,14 @@ cmp edx,202h
 je lbl_wmLButtonUp
 cmp edx,204h
 je lbl_wmRButtonDown
+cmp edx,205h
+je lbl_wmRButtonUp
 cmp edx,207h
 je lbl_wmMButtonDown
 cmp edx,208h
 je lbl_wmMButtonUp
+cmp edx,209h
+je lbl_wmMButtonDblClk
 cmp edx,20Ah
 je lbl_wmMouseWheel
 cmp edx,111h
@@ -48,8 +52,8 @@ cmp edx,10h
 je lbl_wmClose
 cmp edx,2
 je lbl_wmDestroy
-cmp edx,1
-je lbl_wmCreate
+;cmp edx,1
+;je lbl_wmCreate
 
 ;None of the Above
 lbl_DefWndProc:
@@ -58,10 +62,8 @@ jmp lbl_WndProc_End
 
 
 ;WM_CREATE = 1
-lbl_wmCreate:
-include 21_CreateMenu.asm
-include 22_CreateStatusBar.asm
-jmp lbl_WndProc_Return0
+;lbl_wmCreate:
+;jmp lbl_WndProc_Return0
 
 
 ;WM_SIZE = 5
@@ -148,11 +150,11 @@ jmp lbl_WndProc_Return0
 
 ;WM_COMMAND = 111h
 lbl_wmCommand:
-cmp r8d,IDM_APP_EXIT
+cmp r8w,IDM_APP_EXIT
 jne @f
 jmp lbl_wmClose
 @@:
-cmp r8d,IDM_HELP_ABOUT
+cmp r8w,IDM_HELP_ABOUT
 jne lbl_WndProc_Return0
 mov rcx,hWnd
 Call AboutProc
@@ -168,11 +170,14 @@ jmp lbl_WndProc_Return0
 lbl_wmMouseMove:
 cmp nMouse,1 ;MOUSE_MODE_CAMERA_ROTATION = 1
 je lbl_MouseRotate
-cmp nMouse,2 ;MOUSE_MODE_CAMERA_PAN = 2
+cmp nMouse,2 ;MOUSE_MODE_CAMERA_ROLL = 2
+je lbl_MouseRoll
+cmp nMouse,3 ;MOUSE_MODE_CAMERA_PAN = 3
 je lbl_MousePan
 jmp lbl_WndProc_Return0
-include 24_MouseRotate.asm
-include 25_MousePan.asm
+include 24_1_MouseRotate.asm
+include 24_2_MouseRoll.asm
+include 24_3_MousePan.asm
 
 ;WM_LBUTTONDOWN = 201h
 lbl_wmLButtonDown:
@@ -188,20 +193,32 @@ jmp lbl_WndProc_Return0
 
 ;WM_LBUTTONUP = 202h
 lbl_wmLButtonUp:
-;Toggle Keyboard-Driven Camera Rotation
-mov nMouse,0
+;Toggle Keyboard-Driven Camera Movement
+mov nMouse,0 ;MOUSE_MODE_FREE_MOTION = 0
 jmp lbl_WndProc_Return0
 
 ;WM_RBUTTONDOWN = 204h
 lbl_wmRButtonDown:
-mov rcx,hWnd
-Call AboutProc
+;Toggle Mouse-Driven Camera Rolling
+mov nMouse,2 ;MOUSE_MODE_CAMERA_ROLL = 2
+;Extract PrevPos.X
+mov xPrevPos,r9d
+and xPrevPos,0FFFFh
+;Extract PrevPos.Y
+mov yPrevPos,r9d
+shr yPrevPos,16
+jmp lbl_WndProc_Return0
+
+;WM_RBUTTONUP = 205h
+lbl_wmRButtonUp:
+;Toggle Keyboard-Driven Camera Movement
+mov nMouse,0 ;MOUSE_MODE_FREE_MOTION = 0
 jmp lbl_WndProc_Return0
 
 ;WM_MBUTTONDOWN = 207h
 lbl_wmMButtonDown:
 ;Toggle Mouse-Driven Camera Pan
-mov nMouse,2 ;MOUSE_MODE_CAMERA_PAN = 2
+mov nMouse,3 ;MOUSE_MODE_CAMERA_PAN = 3
 ;Extract PrevPos.X
 mov xPrevPos,r9d
 and xPrevPos,0FFFFh
@@ -212,13 +229,18 @@ jmp lbl_WndProc_Return0
 
 ;WM_MBUTTONUP = 208h
 lbl_wmMButtonUp:
-;Toggle Keyboard-Driven Camera Motion
-mov nMouse,0
+;Toggle Keyboard-Driven Camera Movement
+mov nMouse,0 ;MOUSE_MODE_FREE_MOTION = 0
+jmp lbl_WndProc_Return0
+
+;WM_MBUTTONDBLCLK = 209h
+lbl_wmMButtonDblClk:
+call ReAssign
 jmp lbl_WndProc_Return0
 
 ;WM_MOUSEWHEEL = 20Ah
 lbl_wmMouseWheel:
-include 26_MouseZoom.asm
+include 24_4_MouseZoom.asm
 jmp lbl_WndProc_Return0
 
 
