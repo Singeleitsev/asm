@@ -1,13 +1,5 @@
 lbl_MousePan:
 
-;Extract CurPos.X
-mov xCurPos,r9d
-and xCurPos,0FFFFh
-
-;Extract CurPos.Y
-mov yCurPos,r9d
-shr yCurPos,16
-
 ;dxMouse = PrevPos.X - CurPos.X
 fild xPrevPos
 fisub xCurPos

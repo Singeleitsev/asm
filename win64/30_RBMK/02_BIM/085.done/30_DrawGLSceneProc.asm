@@ -1,4 +1,5 @@
 DrawGLScene proc
+LOCAL dxCamX:DWORD, dxCamY:DWORD, dyCamX:DWORD, dyCamY:DWORD
 ;Since the Proc has NO parameters
 ;Assembler will NOT add this prologue automatically:
 push rbp

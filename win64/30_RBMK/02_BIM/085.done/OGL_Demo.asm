@@ -40,6 +40,7 @@ DrawMenuBar PROTO :QWORD
 AppendMenuA PROTO :QWORD,:QWORD,:QWORD,:QWORD
 CreateAcceleratorTableA PROTO :QWORD,:QWORD
 TranslateAcceleratorA PROTO :QWORD,:QWORD,:QWORD
+CheckMenuItem PROTO :QWORD,:QWORD,:QWORD
 DestroyAcceleratorTable PROTO :QWORD
 DestroyMenu PROTO :QWORD
 
@@ -145,7 +146,7 @@ INITCOMMONCONTROLSEX64 ENDS
 ACCEL64 STRUC
  fVirt dw ?
  key dw ?
- cmd dd ?
+ cmd dw ?
 ACCEL64 ENDS
 
 
@@ -155,9 +156,19 @@ include 00_ConstNumeric.asm
 ;Object
 include 01_Layout.asm
 
+;Mnemonics
+MOUSE_MODE_NO_ACTION equ 0
+MOUSE_MODE_CAMERA_ROTATION equ 1
+MOUSE_MODE_CAMERA_ROLL equ 2
+MOUSE_MODE_CAMERA_PAN equ 3
+CAMERA_MODE_PLANAR equ 0
+CAMERA_MODE_SPATIAL equ 1
+
 ;Menu ID's
-IDM_APP_EXIT equ 1009
-IDM_HELP_ABOUT equ 9001
+IDM_APP_EXIT equ 10Fh
+IDM_CAMERA_MODE_PLANAR equ 200h
+IDM_CAMERA_MODE_SPATIAL equ 201h
+IDM_HELP_ABOUT equ 0F01h
 
 .data
 ;Structures
@@ -175,25 +186,19 @@ ghWnd dq 0
 ;Menu Handles
 hMenu dq 0
 hMenuFile dq 0
+hMenuOptions dq 0
+hMenuOptionsCamera dq 0
 hMenuHelp dq 0
 hAccTable dq 0
 
 ;Status Bar
 hwndStatusBar dq 0
 idStatusBar dq 0
-xStatusParts dd 146,292,438,584,730,876,-1 ;Divide Status Bar by 7 parts
+xStatusParts dd 92,184,276,389,501,614,747,880,-1 ;Divide Status Bar by 9 parts
 
 ;Flags
-nMode db 1
-;nMode:
-;0 - Stick Camera to World Axes
-;1 - Move Camera Along its Own Axes
-nMouse db 0
-;nMouse:
-;MOUSE_MODE_FREE_MOTION = 0
-;MOUSE_MODE_CAMERA_ROTATION = 1
-;MOUSE_MODE_CAMERA_ROLL = 2
-;MOUSE_MODE_CAMERA_PAN = 3
+nCameraMode db CAMERA_MODE_SPATIAL
+nMouse db MOUSE_MODE_NO_ACTION
 isActive db 0
 isRefreshed db 1
 
@@ -216,12 +221,14 @@ yPrevPos dd 0
 ;Model Scale
 GlobalScale dd 3A83126Fh ;0.001_f32
 ;Model Angle
+aYZ_Model dd 0 ;0.0_f32
 aXY_Model dd 41a00000h ;20.0_f32
+aXZ_Model dd 0 ;0.0_f32
 
 ;Camera Angle
-aXY_Cam dd 0 ;Roll = 0.0_f32
 aYZ_Cam dd 43960000h ;Tilt = 300.0_f32
-aXZ_Cam dd 0 ;Turn = 0.0_f32
+aXY_Cam dd 0 ;Turn = 0.0_f32
+aXZ_Cam dd 0 ;Roll = 0.0_f32
 ;Camera Position
 xCam dd 0 ;0.0_f32
 yCam dd 41100000h ;9.0_f32 = Move the World 9 Meters Forward = Move the Camera 9 Meters Back
@@ -267,18 +274,25 @@ key db 128 dup (0)
 nKeyCode dw 0
 
 ;Strings
-szMainWndTitle db 'OpenGL example',0
+szMainWndTitle db 'MASM64 OpenGL Environment',0
 szMainWndClass db 'MainWndClass',0
-szMsgCloseTitle db 'Such A Good Application',0
-szMsgCloseText db 'Close?',0
+szMsgCloseText db 'Exit?',0
 
 ;Menu
 szMenuFile db '&File',0
 szMenuFileExit db 'E&xit',9,'Ctrl+W',0
+szMenuOptions db '&Options',0
+szMenuOptionsCamera db 'Camera &Mode',0
+szMenuOptionsCameraMode0 db '&World',27h,'s Coordinates',9,'0',0
+szMenuOptionsCameraMode1 db '&Camera',27h,'s Coordinates',9,'1',0
 szMenuHelp db '&Help',0
-szMenuHelpAbout db '&About...',0
+szMenuHelpAbout db '&About...',9,'F1',0
 szAboutMsgTitle db 'Manual',0
 szAboutMsgText db 'Camera Motion:',13
+db 'Left Mouse Button - Look Left-Right, Up-Down',13
+db 'Mouse Wheel Down - Move Camera Left-Right, Up-Down',13
+db 'Right Mouse Button - Roll Camera Left-Right, Look Up-Down',13
+db 13
 db 'Arrow Up - Move Forward',13
 db 'Arrow Down - Move Backward',13
 db 'Arrow Left - Move Left',13
@@ -286,20 +300,17 @@ db 'Arrow Right - Move Right',13
 db 'Page Up - Move Up',13
 db 'Page Down - Move Down',13
 db 13
-db 'Camera Rotation:',13
-db 'W - Look Down',13
-db 'S - Look Up',13
-db 'A - Look Left',13
-db 'D - Look Right',13
-db 'Q - Roll Camera Left',13
-db 'E - Roll Camera Right',13
-db 13
 db 'Object Rotation:',13
-db 'Z - Turn the Object Counter-Clockwise',13
-db 'X - Reset the Object Position',13
-db 'C - Turn the Object Clockwise',13
+db 'W - Tilt from the Camera',13
+db 'S - Tilt to the Camera',13
+db 'A - Turn Left',13
+db 'D - Turn Right',13
+db 'Q - Tilt Left',13
+db 'E - Tilt Right',13
+db 13
 db 'Tab - Turn the Object Clockwise Quick',13
 db 13
+db 'Space, Esc - Reset Scene',13
 db 'Shift - Boost',0
 
 ;Status Bar
@@ -311,14 +322,18 @@ sz_yCam db 'yCam = ',11 dup (0)
 lpsz_yCam = $ - 11
 sz_zCam db 'zCam = ',11 dup (0)
 lpsz_zCam = $ - 11
-sz_aXY_Model db 'aXY_Model = ',10 dup (0)
-lpsz_aXY_Model = $ - 10
 sz_aYZ_Cam db 'aYZ_Cam = ',10 dup (0)
 lpsz_aYZ_Cam = $ - 10
 sz_aXY_Cam db 'aXY_Cam = ',10 dup (0)
 lpsz_aXY_Cam = $ - 10
 sz_aXZ_Cam db 'aXZ_Cam = ',10 dup (0)
 lpsz_aXZ_Cam = $ - 10
+sz_aYZ_Model db 'aYZ_Model = ',10 dup (0)
+lpsz_aYZ_Model = $ - 10
+sz_aXY_Model db 'aXY_Model = ',10 dup (0)
+lpsz_aXY_Model = $ - 10
+sz_aXZ_Model db 'aXZ_Model = ',10 dup (0)
+lpsz_aXZ_Model = $ - 10
 
 ;Debug
 nLastError dq 0

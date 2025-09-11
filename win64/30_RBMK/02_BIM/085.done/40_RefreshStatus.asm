@@ -30,9 +30,20 @@ mov ecx,zCam
 mov rdx,lpsz_zCam
 Call FloatConvert
 
+
 mov rcx,hwndStatusBar
 mov rdx,401h ;SB_SETTEXTA = WM_USER + 1 '0x0401
 mov r8,3 ;Part 3
+lea r9,sz_aYZ_Model
+Call SendMessageA
+
+mov ecx,aYZ_Model
+mov rdx,lpsz_aYZ_Model
+Call FloatConvert
+
+mov rcx,hwndStatusBar
+mov rdx,401h ;SB_SETTEXTA = WM_USER + 1 '0x0401
+mov r8,4 ;Part 4
 lea r9,sz_aXY_Model
 Call SendMessageA
 
@@ -42,7 +53,18 @@ Call FloatConvert
 
 mov rcx,hwndStatusBar
 mov rdx,401h ;SB_SETTEXTA = WM_USER + 1 '0x0401
-mov r8,4 ;Part 4
+mov r8,5 ;Part 5
+lea r9,sz_aXZ_Model
+Call SendMessageA
+
+mov ecx,aXZ_Model
+mov rdx,lpsz_aXZ_Model
+Call FloatConvert
+
+
+mov rcx,hwndStatusBar
+mov rdx,401h ;SB_SETTEXTA = WM_USER + 1 '0x0401
+mov r8,6 ;Part 6
 lea r9,sz_aYZ_Cam
 Call SendMessageA
 
@@ -52,7 +74,7 @@ Call FloatConvert
 
 mov rcx,hwndStatusBar
 mov rdx,401h ;SB_SETTEXTA = WM_USER + 1 '0x0401
-mov r8,5 ;Part 5
+mov r8,7 ;Part 7
 lea r9,sz_aXY_Cam
 Call SendMessageA
 
@@ -62,7 +84,7 @@ Call FloatConvert
 
 mov rcx,hwndStatusBar
 mov rdx,401h ;SB_SETTEXTA = WM_USER + 1 '0x0401
-mov r8,6 ;Part 6
+mov r8,8 ;Part 8
 lea r9,sz_aXZ_Cam
 Call SendMessageA
 

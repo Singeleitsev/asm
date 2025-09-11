@@ -1,78 +1,24 @@
-;lbl_CheckKeys:
-
-;Boost
-mov eax,LinearSpeed
-mov dStep,eax
-mov eax,AngularSpeed
-mov dAngle,eax
-cmp key[10h],0 ;Shift
-je @f
-movss xmm0,LinearBoost
-mulss xmm0,dStep
-movss dStep,xmm0
-movss xmm0,AngularBoost
-mulss xmm0,dAngle
-movss dAngle,xmm0
-
-;Object Rotation
-@@:
-cmp key[51h],0 ;Q - Counter-Clockwise
-je @f
-movss xmm0,aXY_Model
-addss xmm0,dAngle
-movss aXY_Model,xmm0
-@@:
-cmp key[45h],0 ;E - Clockwise
-je @f
-movss xmm0,aXY_Model
-subss xmm0,dAngle
-movss aXY_Model,xmm0
-
-;Camera Rotation
-@@:
-cmp key[57h],0 ;W - Look Up
-je @f
-movss xmm0,aYZ_Cam
-subss xmm0,dAngle
-movss aYZ_Cam,xmm0
-@@:
-cmp key[53h],0 ;S - Look Down
-je @f
-movss xmm0,aYZ_Cam
-addss xmm0,dAngle
-movss aYZ_Cam,xmm0
-@@:
-cmp key[41h],0 ;A - Look Left
-je @f
-movss xmm0,aXY_Cam
-subss xmm0,dAngle
-movss aXY_Cam,xmm0
-@@:
-cmp key[44h],0 ;D - Look Right
-je @f
-movss xmm0,aXY_Cam
-addss xmm0,dAngle
-movss aXY_Cam,xmm0
+lbl_CameraMode0:
 
 @@:
 ;Computing Camera Deltas
 finit
 ;Straight Walk
-;dxCamY = dStep * sin(aXY_Cam * f32_PIover180)
-;dyCamY = dStep * cos(aXY_Cam * f32_PIover180)
+;dxCamY = dStep * sin(aXY_Cam * f32_PI_OVER_180)
+;dyCamY = dStep * cos(aXY_Cam * f32_PI_OVER_180)
 fld aXY_Cam
-fmul f32_PIover180
+fmul f32_PI_OVER_180
 fsincos
 fmul dStep
 fstp dyCamY ;cos to dy
 fmul dStep
 fstp dxCamY ;sin to dx
 ;Side Walk
-;dxCamX = dStep * sin((360-aXY_Cam) * f32_PIover180)
-;dyCamX = dStep * cos((360-XY_Cam) * f32_PIover180)
+;dxCamX = dStep * sin((360-aXY_Cam) * f32_PI_OVER_180)
+;dyCamX = dStep * cos((360-XY_Cam) * f32_PI_OVER_180)
 fld f32_360
 fsub aXY_Cam
-fmul f32_PIover180
+fmul f32_PI_OVER_180
 fsincos
 fmul dStep
 fstp dxCamX ;cos to dx
@@ -137,3 +83,4 @@ addss xmm0,dStep
 movss zCam,xmm0
 
 @@:
+jmp lbl_CheckKeys_End

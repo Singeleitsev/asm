@@ -154,6 +154,34 @@ cmp r8w,IDM_APP_EXIT
 jne @f
 jmp lbl_wmClose
 @@:
+cmp r8w,IDM_CAMERA_MODE_PLANAR
+jne @f
+mov nCameraMode,0
+;Check/UnCheck
+mov rcx,hMenuOptionsCamera
+mov rdx,IDM_CAMERA_MODE_SPATIAL
+xor r8,r8 ;MF_UNCHECKED
+Call CheckMenuItem
+mov rcx,hMenuOptionsCamera
+mov rdx,IDM_CAMERA_MODE_PLANAR
+mov r8,8 ;MF_CHECKED
+Call CheckMenuItem
+jmp lbl_WndProc_Return0
+@@:
+cmp r8w,IDM_CAMERA_MODE_SPATIAL
+jne @f
+mov nCameraMode,1
+;Check/UnCheck
+mov rcx,hMenuOptionsCamera
+mov rdx,IDM_CAMERA_MODE_SPATIAL
+mov r8,8 ;MF_CHECKED
+Call CheckMenuItem
+mov rcx,hMenuOptionsCamera
+mov rdx,IDM_CAMERA_MODE_PLANAR
+xor r8,r8 ;MF_UNCHECKED
+Call CheckMenuItem
+jmp lbl_WndProc_Return0
+@@:
 cmp r8w,IDM_HELP_ABOUT
 jne lbl_WndProc_Return0
 mov rcx,hWnd
@@ -168,6 +196,13 @@ jmp lbl_WndProc_Return0
 
 ;WM_MOUSEMOVE = 200h
 lbl_wmMouseMove:
+;Extract CurPos.X
+mov xCurPos,r9d
+and xCurPos,0FFFFh
+;Extract CurPos.Y
+mov yCurPos,r9d
+shr yCurPos,16
+;Select Mode
 cmp nMouse,1 ;MOUSE_MODE_CAMERA_ROTATION = 1
 je lbl_MouseRotate
 cmp nMouse,2 ;MOUSE_MODE_CAMERA_ROLL = 2

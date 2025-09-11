@@ -10,12 +10,15 @@ sub rsp,100h ;Create the Buffer
 mov hWnd,rcx
 
 ;mov rcx,hWnd
-lea rdx,szMsgCloseText ;"Close?"
-lea r8,szMsgCloseTitle ;"Such A Good Application"
+lea rdx,szMsgCloseText ;"Exit?"
+lea r8,szMainWndTitle ;"RBMK-1000 OpenGL Environment"
 mov r9,24h ;MB_YESNO Or MB_ICONQUESTION
 Call MessageBoxA
 cmp rax,6 ;IDYES
 jne lbl_CloseWndProc_End
+
+lea rcx,hAccTable
+Call DestroyAcceleratorTable
 
 xor rcx,rcx
 xor rdx,rdx

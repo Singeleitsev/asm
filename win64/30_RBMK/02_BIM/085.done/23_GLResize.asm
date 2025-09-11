@@ -46,23 +46,51 @@ xor r8,r8
 xor r9,r9
 Call SendMessageA
 
+lea rdi,xStatusParts
 mov eax,RectWidth
-mov ebx,7
-div ebx
-mov ebx,eax
-mov rcx,6
-lea r9,xStatusParts
-lbl_Resize_StatusParts:
-mov dword ptr [r9],eax
-add ax,bx
-add r9,4
-dec cl
-cmp cl,0
-jg lbl_Resize_StatusParts
+mov ebx,11 ;xStatusParts(0) = 11/128*RectWidth
+mul ebx
+shr eax,7
+mov dword ptr[rdi],eax
+mov eax,RectWidth
+mov ebx,23 ;xStatusParts(1) = 23/128*RectWidth
+mul ebx
+shr eax,7
+mov dword ptr[rdi+4],eax
+mov eax,RectWidth
+mov ebx,34 ;xStatusParts(2) = 34/128*RectWidth
+mul ebx
+shr eax,7
+mov dword ptr[rdi+8],eax
+mov eax,RectWidth
+mov ebx,48 ;xStatusParts(3) = 48/128*RectWidth
+mul ebx
+shr eax,7
+mov dword ptr[rdi+12],eax
+mov eax,RectWidth
+mov ebx,62 ;xStatusParts(4) = 62/128*RectWidth
+mul ebx
+shr eax,7
+mov dword ptr[rdi+16],eax
+mov eax,RectWidth
+mov ebx,76 ;xStatusParts(5) = 76/128*RectWidth
+mul ebx
+shr eax,7
+mov dword ptr[rdi+20],eax
+mov eax,RectWidth
+mov ebx,93 ;xStatusParts(6) = 93/128*RectWidth
+mul ebx
+shr eax,7
+mov dword ptr[rdi+24],eax
+mov eax,RectWidth
+mov ebx,110 ;xStatusParts(7) = 110/128*RectWidth
+mul ebx
+shr eax,7
+mov dword ptr[rdi+28],eax
 
 mov rcx,hwndStatusBar
 mov rdx, 404h ;Msg = SB_SETPARTS = WM_USER + 4
-mov r8,7 ;wParam = Number of Parts
+mov r8,9 ;wParam = Number of Parts
 lea r9,xStatusParts
 Call SendMessageA
 

@@ -14,9 +14,9 @@ mov rcx,1700h ;GL_MODELVIEW
 Call glMatrixMode
 Call glPushMatrix ;Store Initial Value
 movss xmm0,f32_neg5875
-movss xmm1,f32_neg5875
+movss xmm1,f32_5875
 xorps xmm2,xmm2
-Call glTranslatef ;(-5875, -5875, 0)
+Call glTranslatef ;(-5875, 5875, 0)
 
 mov x,0
 mov y,0
@@ -99,9 +99,9 @@ cmp y,47
 jg lbl_DrawObject_Back_to_Origin
 mov x,0
 xorps xmm0,xmm0
-movss xmm1,f32_250
+movss xmm1,f32_neg250
 xorps xmm2,xmm2
-Call glTranslatef ;(0, 250, 0)
+Call glTranslatef ;(0, -250, 0)
 jmp lbl_DrawObject_ScanRow
 
 lbl_DrawObject_Back_to_Origin:

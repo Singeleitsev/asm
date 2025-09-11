@@ -22,6 +22,37 @@ mov r8,IDM_APP_EXIT
 lea r9,szMenuFileExit
 Call AppendMenuA
 
+;Options
+Call CreatePopupMenu
+mov hMenuOptions,rax
+
+mov rcx,hMenu
+mov rdx,10h ;MF_POPUP
+mov r8,hMenuOptions
+lea r9,szMenuOptions
+Call AppendMenuA
+
+Call CreatePopupMenu
+mov hMenuOptionsCamera,rax
+
+mov rcx,hMenuOptions
+mov rdx,10h ;MF_POPUP
+mov r8,hMenuOptionsCamera
+lea r9,szMenuOptionsCamera
+Call AppendMenuA
+
+mov rcx,hMenuOptionsCamera
+xor rdx,rdx ;MF_STRING
+mov r8,IDM_CAMERA_MODE_PLANAR ;0
+lea r9,szMenuOptionsCameraMode0
+Call AppendMenuA
+
+mov rcx,hMenuOptionsCamera
+mov rdx,8 ;MF_STRING | MF_CHECKED
+mov r8,IDM_CAMERA_MODE_SPATIAL ;1
+lea r9,szMenuOptionsCameraMode1
+Call AppendMenuA
+
 ;Help
 Call CreatePopupMenu
 mov hMenuHelp,rax

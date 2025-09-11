@@ -31,8 +31,10 @@ mov eax,3A83126Fh ;0.001_f32
 mov GlobalScale,eax
 
 ;Model Angle
+mov aYZ_Model,0
 mov eax,41a00000h ;20.0_f32
 mov aXY_Model,eax
+mov aXZ_Model,0
 
 ;Camera Angles
 mov aYZ_Cam,43960000h ;300.0_f32

@@ -6,11 +6,23 @@ Call glMatrixMode
 
 Call glLoadIdentity
 
+movss xmm0,aYZ_Model
+movss xmm1,f32_1
+xorps xmm2,xmm2
+xorps xmm3,xmm3
+Call glRotatef ;(aYZ_Model, 1, 0, 0)
+
 movss xmm0,aXY_Model
 xorps xmm1,xmm1
 xorps xmm2,xmm2
 movss xmm3,f32_1
 Call glRotatef ;(aXY_Model, 0, 0, 1)
+
+movss xmm0,aXZ_Model
+xorps xmm1,xmm1
+movss xmm2,f32_1
+xorps xmm3,xmm3
+Call glRotatef ;(aXZ_Model, 0, 1, 0)
 
 movss xmm0,GlobalScale
 movss xmm1,GlobalScale
@@ -33,13 +45,19 @@ movss xmm0,aYZ_Cam
 movss xmm1,f32_1
 xorps xmm2,xmm2
 xorps xmm3,xmm3
-Call glRotatef ;(aYZ_Cam, 1, 0, 0) 'Camera Tilt First
+Call glRotatef ;(aYZ_Cam, 1, 0, 0) '1-CameraTilt
 
 movss xmm0,aXY_Cam
 xorps xmm1,xmm1
 xorps xmm2,xmm2
 movss xmm3,f32_1
-Call glRotatef ;(aXY_Cam, 0, 0, 1) 'Camera Turn
+Call glRotatef ;(aXY_Cam, 0, 0, 1) '2-CameraTurn
+
+movss xmm0,aXZ_Cam
+xorps xmm1,xmm1
+movss xmm2,f32_1
+xorps xmm3,xmm3
+Call glRotatef ;(aXZ_Cam, 0, 1, 0) '3-CameraRoll
 
 movss xmm0,xCam
 movss xmm1,yCam

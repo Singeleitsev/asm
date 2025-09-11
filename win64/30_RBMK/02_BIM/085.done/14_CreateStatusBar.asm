@@ -1,5 +1,8 @@
 ;lbl_CreateStatusBar:
 
+lea rcx,icce
+Call InitCommonControlsEx
+
 ;Create the Window
 xor rcx,rcx ;dwExStyle = 0
 lea rdx,szStatusClassName
@@ -9,7 +12,7 @@ mov qword ptr [rsp+20h],0 ;x = 0
 mov qword ptr [rsp+28h],0 ;y = 0
 mov qword ptr [rsp+30h],0 ;nWidth = 0
 mov qword ptr [rsp+38h],0 ;nHeight = 0
-mov rax,hWnd ;hWndParent
+mov rax,ghWnd ;hWndParent
 mov qword ptr [rsp+40h],rax
 mov qword ptr [rsp+48h],1 ;hMenu = idStatusBar = 1
 mov rax,ghInst
@@ -20,24 +23,9 @@ mov hwndStatusBar,rax
 cmp rax,0
 je lbl_ErrCreateStatusBar
 
-lea rax,xStatusParts
-mov dword ptr [rax],100
-add rax,4
-mov dword ptr [rax],200
-add rax,4
-mov dword ptr [rax],300
-add rax,4
-mov dword ptr [rax],450
-add rax,4
-mov dword ptr [rax],600
-add rax,4
-mov dword ptr [rax],750
-add rax,4
-mov dword ptr [rax],-1
-
 mov rcx,hwndStatusBar
 mov rdx, 404h ;Msg = SB_SETPARTS = WM_USER + 4
-mov r8,7 ;wParam = Number of Parts
+mov r8,9 ;wParam = Number of Parts
 lea r9,xStatusParts
 Call SendMessageA
 
@@ -45,7 +33,8 @@ jmp lbl_CreateStatusBar_End
 
 lbl_ErrCreateStatusBar:
 lea rcx,szErrCreateStatusBar
-mov rdx,27 ;String Length
+;mov rdx,29 ;String Length
+mov rdx,lpszErrCreateStatusBarCode
 call SpellError
 ;jmp lbl_CreateStatusBar_End
 
