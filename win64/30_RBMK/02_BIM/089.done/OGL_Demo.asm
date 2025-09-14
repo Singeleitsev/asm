@@ -194,7 +194,10 @@ hAccTable dq 0
 ;Status Bar
 hwndStatusBar dq 0
 idStatusBar dq 0
-xStatusParts dd 92,184,276,389,501,614,747,880,-1 ;Divide Status Bar by 9 parts
+;Divide Status Bar by 9 parts
+xStatusParts dd 8 dup (0),-1 ;9 Variables
+;Proportions Empirically Counted for Width = 1024
+xStatusProportions dd 102,204,307,430,552,675,788,901 ;8 Constants
 
 ;Flags
 nCameraMode db CAMERA_MODE_SPATIAL
@@ -262,12 +265,7 @@ dzCam3 dd 0
 
 ;Floating Point
 f32_Absolute dd 0
-;f32_Exponent dd 0
-;f32_Mantissa dd 0
-i32_IntegerPart dd 0
-i32_FractionalPart dd 0
-bcd80_IntegerPart dt 0
-bcd80_FractionalPart dt 0
+bcd80_Absolute dt 0
 
 ;Keyboard Buffer
 key db 128 dup (0)
@@ -283,8 +281,8 @@ szMenuFile db '&File',0
 szMenuFileExit db 'E&xit',9,'Ctrl+W',0
 szMenuOptions db '&Options',0
 szMenuOptionsCamera db 'Camera &Mode',0
-szMenuOptionsCameraMode0 db '&World',27h,'s Coordinates',9,'0',0
-szMenuOptionsCameraMode1 db '&Camera',27h,'s Coordinates',9,'1',0
+szMenuOptionsCameraMode0 db '&Ortho Mode',0
+szMenuOptionsCameraMode1 db '&Free Movement',0
 szMenuHelp db '&Help',0
 szMenuHelpAbout db '&About...',9,'F1',0
 szAboutMsgTitle db 'Manual',0
@@ -317,13 +315,13 @@ db 'Shift - Boost',0
 ;https://learn.microsoft.com/en-us/windows/win32/winauto/status-bar-control
 szStatusClassName db 'msctls_statusbar32',0 ;"STATUSCLASSNAMEW"
 sz_xCam db 'xCam = ',11 dup (0)
-lpsz_xCam = $ - 11 ;First Empty (0) Byte
+lpsz_xCam = $ - 11 ;First Empty (00h) Byte of Total 11
 sz_yCam db 'yCam = ',11 dup (0)
 lpsz_yCam = $ - 11
 sz_zCam db 'zCam = ',11 dup (0)
 lpsz_zCam = $ - 11
 sz_aYZ_Cam db 'aYZ_Cam = ',10 dup (0)
-lpsz_aYZ_Cam = $ - 10
+lpsz_aYZ_Cam = $ - 10 ;First Empty (00h) Byte of Total 10
 sz_aXY_Cam db 'aXY_Cam = ',10 dup (0)
 lpsz_aXY_Cam = $ - 10
 sz_aXZ_Cam db 'aXZ_Cam = ',10 dup (0)

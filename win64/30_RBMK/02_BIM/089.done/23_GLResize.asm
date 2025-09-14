@@ -46,47 +46,21 @@ xor r8,r8
 xor r9,r9
 Call SendMessageA
 
+;xStatusParts(i) = xStatusProportions(i)*RectWidth/1024
+mov cl,8
+mov ebx,RectWidth
+lea rsi,xStatusProportions
 lea rdi,xStatusParts
-mov eax,RectWidth
-mov ebx,11 ;xStatusParts(0) = 11/128*RectWidth
-mul ebx
-shr eax,7
-mov dword ptr[rdi],eax
-mov eax,RectWidth
-mov ebx,23 ;xStatusParts(1) = 23/128*RectWidth
-mul ebx
-shr eax,7
-mov dword ptr[rdi+4],eax
-mov eax,RectWidth
-mov ebx,34 ;xStatusParts(2) = 34/128*RectWidth
-mul ebx
-shr eax,7
-mov dword ptr[rdi+8],eax
-mov eax,RectWidth
-mov ebx,48 ;xStatusParts(3) = 48/128*RectWidth
-mul ebx
-shr eax,7
-mov dword ptr[rdi+12],eax
-mov eax,RectWidth
-mov ebx,62 ;xStatusParts(4) = 62/128*RectWidth
-mul ebx
-shr eax,7
-mov dword ptr[rdi+16],eax
-mov eax,RectWidth
-mov ebx,76 ;xStatusParts(5) = 76/128*RectWidth
-mul ebx
-shr eax,7
-mov dword ptr[rdi+20],eax
-mov eax,RectWidth
-mov ebx,93 ;xStatusParts(6) = 93/128*RectWidth
-mul ebx
-shr eax,7
-mov dword ptr[rdi+24],eax
-mov eax,RectWidth
-mov ebx,110 ;xStatusParts(7) = 110/128*RectWidth
-mul ebx
-shr eax,7
-mov dword ptr[rdi+28],eax
+lbl_NextStatusPart:
+mov eax,dword ptr[rsi] ;xStatusProportions(i)
+mul ebx ;*RectWidth
+shr eax,10 ;/1024
+mov dword ptr[rdi],eax ;xStatusParts(i)
+add rsi,4
+add rdi,4
+dec cl
+cmp cl,0
+jg lbl_NextStatusPart
 
 mov rcx,hwndStatusBar
 mov rdx, 404h ;Msg = SB_SETPARTS = WM_USER + 4
