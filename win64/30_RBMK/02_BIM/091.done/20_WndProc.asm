@@ -196,12 +196,6 @@ jmp lbl_WndProc_Return0
 
 ;WM_MOUSEMOVE = 200h
 lbl_wmMouseMove:
-;Extract CurPos.X
-mov xCurPos,r9d
-and xCurPos,0FFFFh
-;Extract CurPos.Y
-mov yCurPos,r9d
-shr yCurPos,16
 ;Select Mode
 cmp nMouse,1 ;MOUSE_MODE_CAMERA_ROTATION = 1
 je lbl_MouseRotate

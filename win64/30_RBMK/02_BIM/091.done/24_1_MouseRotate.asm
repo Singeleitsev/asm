@@ -1,13 +1,20 @@
-lbl_MouseRoll:
+lbl_MouseRotate:
+
+;Extract CurPos.X
+mov xCurPos,r9d
+and xCurPos,0FFFFh
+;Extract CurPos.Y
+mov yCurPos,r9d
+shr yCurPos,16
 
 ;dxMouse = PrevPos.X - CurPos.X
 fild xPrevPos
 fisub xCurPos
-;aXZ_Cam = CheckAngle(aXZ_Cam + dxMouse / 20)
+;aXY_Cam = CheckAngle(aXY_Cam + dxMouse / 20)
 fdiv f32_20 ;20 is an Empirical Multiplier
-fadd aXZ_Cam
-fstp aXZ_Cam
-lea rcx,aXZ_Cam
+fadd aXY_Cam
+fstp aXY_Cam
+lea rcx,aXY_Cam
 Call CheckAngle
 
 ;dyMouse = PrevPos.Y - CurPos.Y
@@ -28,6 +35,6 @@ mov xPrevPos,eax
 mov ebx,yCurPos
 mov yPrevPos,ebx
 
-;lbl_MouseRoll_End:
+;lbl_MouseRotate_End:
 jmp lbl_WndProc_Return0
 
