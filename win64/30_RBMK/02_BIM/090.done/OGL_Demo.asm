@@ -290,6 +290,7 @@ szAboutMsgText db 'Camera Motion:',13
 db 'Left Mouse Button - Look Left-Right, Up-Down',13
 db 'Mouse Wheel Down - Move Camera Left-Right, Up-Down',13
 db 'Right Mouse Button - Roll Camera Left-Right, Look Up-Down',13
+db 'Mouse Scroll - Move Camera Forward-Backward',13
 db 13
 db 'Arrow Up - Move Forward',13
 db 'Arrow Down - Move Backward',13
