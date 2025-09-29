@@ -44,7 +44,7 @@ call PeekMessageA
 ;add rsp,30h
 
 cmp rax,0
-je lblWinMainCheckKeys
+je lblWinMainCheckActive
 
 lblWinMainCheckQuit:
 cmp msg.message,12h ;WM_QUIT
@@ -57,16 +57,15 @@ call TranslateMessage
 lea rcx,msg ;lpMsg
 call DispatchMessageA
 ;add rsp,20h
-
 jmp lblWinMainLoop
-
-lblWinMainCheckKeys:
-cmp keys[1Bh],0 ;VK_ESCAPE
-jne lblWinMainDone
 
 lblWinMainCheckActive:
 cmp fWinMainActive,0
 je lblWinMainLoop
+
+lblWinMainCheckKeys:
+cmp keys[1Bh],0 ;VK_ESCAPE
+jne lblWinMainDone
 
 lblWinMainReDraw:
 call DrawGLScene

@@ -54,7 +54,7 @@ lea rdi,xStatusParts
 lbl_NextStatusPart:
 mov eax,dword ptr[rsi] ;xStatusProportions(i)
 mul ebx ;*RectWidth
-shr eax,10 ;/1024
+shr eax,10 ;Divide by DEFAULT_SCREEN_WIDTH = 1024
 mov dword ptr[rdi],eax ;xStatusParts(i)
 add rsi,4
 add rdi,4
