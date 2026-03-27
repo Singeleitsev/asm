@@ -1,9 +1,12 @@
 ;Tolerance
+;eps dd 38d1b717h ;epsilon = 1e-3 = f32_ONE_THOUSANDTH
 eps dd 358637bdh ;epsilon = 1e-6 = f32_ONE_MILLIONTH
 ;eps dd 322bcc77h ;epsilon = 1e-8
 
+
 align 16
-;Specify the Lines
+
+;LineLine
 
 ; Case 1 – Intersection at (0.25, -0.5, 1)
 ; Line1: (-1.25, -1.5, 1.5) - (5.5, 3, -0.75)
@@ -105,4 +108,53 @@ y3_05 dd 40900000h ; 4.5f
 z3_05 dd 0c01f5c29h ; -2.24f (approx hex for -2.24)
 w3_05 dd 0
 
+;PlaneLine
 
+; Case 6 – Line goes through triangle (plane: z=0 triangle, line passes through interior)
+; Plane points (z=0 triangle)
+; P0: (0,0,0)
+; P1: (1,0,0)
+; P2: (0,1,0)
+; Line from (0.5,0.5,1) to (0.5,0.5,-1)
+x0_06 dd 00000000h ; 0.0f
+y0_06 dd 00000000h ; 0.0f
+z0_06 dd 00000000h ; 0.0f
+w0_06 dd 0
+x1_06 dd 3f800000h ; 1.0f
+y1_06 dd 00000000h ; 0.0f
+z1_06 dd 00000000h ; 0.0f
+w1_06 dd 0
+x2_06 dd 00000000h ; 0.0f
+y2_06 dd 3f800000h ; 1.0f
+z2_06 dd 00000000h ; 0.0f
+w2_06 dd 0
+x3_06 dd 3f000000h ; 0.5f
+y3_06 dd 3f000000h ; 0.5f
+z3_06 dd 3f800000h ; 1.0f
+w3_06 dd 0
+x4_06 dd 3f000000h ; 0.5f
+y4_06 dd 3f000000h ; 0.5f
+z4_06 dd 0bf800000h ; -1.0f
+w4_06 dd 0
+
+; Case 7 – Parallel
+x0_07 dd 0
+y0_07 dd 0
+z0_07 dd 0
+w0_07 dd 0
+x1_07 dd 0
+y1_07 dd 0
+z1_07 dd 0
+w1_07 dd 0
+x2_07 dd 0
+y2_07 dd 0
+z2_07 dd 0
+w2_07 dd 0
+x3_07 dd 0
+y3_07 dd 0
+z3_07 dd 0
+w3_07 dd 0
+x4_07 dd 0
+y4_07 dd 0
+z4_07 dd 0
+w4_07 dd 0

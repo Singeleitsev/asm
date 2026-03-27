@@ -27,6 +27,9 @@ szExactSkew db "Exact Skew",0
 szCollinear db "The specified Lines are Collinear",0
 szParallel db "The specified Lines are Parallel",0
 szNearSkew db "Near Skew",0
+szPlaneLine3D_Intersection db "The Line intersects the Plane",0
+szPlaneLine3D_Parallel db "The Line is Parallel to the Plane",0
+szPlaneLine3D_LineInPlane db "The Line lays in the Plane",0
 ;Prompt Messages
 ;szExit db "Close this Application?",0
 ;Error Messages
@@ -226,11 +229,76 @@ jmp defWndProc
 ;jmp finWndProc
 
 wmKeyUp:
-;mov rcx,hWnd
-;mov rdx,uMsg
-;mov r8,wParam
-;mov r9,lParam
+;LineLine
+cmp r8w,31h ;Keyboard 1
+je lbl_Case1
+cmp r8w,32h ;Keyboard 2
+je lbl_Case2
+cmp r8w,33h ;Keyboard 3
+je lbl_Case3
+cmp r8w,34h ;Keyboard 4
+je lbl_Case4
+cmp r8w,35h ;Keyboard 5
+je lbl_Case5
+;PlaneLine
+cmp r8w,36h ;Keyboard 6
+je lbl_Case6
+cmp r8w,37h ;Keyboard 7
+je lbl_Case7
+jmp finWndProc ;Any other key
+;LineLine
+lbl_Case1:
+movups xmm0, xmmword ptr [x0_01] ;Intersection
+movups xmm1, xmmword ptr [x1_01]
+movups xmm2, xmmword ptr [x2_01]
+movups xmm3, xmmword ptr [x3_01]
+jmp lbl_LineLine3D
+lbl_Case2:
+movups xmm0, xmmword ptr [x0_02] ;Far Skew
+movups xmm1, xmmword ptr [x1_02]
+movups xmm2, xmmword ptr [x2_02]
+movups xmm3, xmmword ptr [x3_02]
+jmp lbl_LineLine3D
+lbl_Case3:
+movups xmm0, xmmword ptr [x0_03] ;Collinear
+movups xmm1, xmmword ptr [x1_03]
+movups xmm2, xmmword ptr [x2_03]
+movups xmm3, xmmword ptr [x3_03]
+jmp lbl_LineLine3D
+lbl_Case4:
+movups xmm0, xmmword ptr [x0_04] ;Parallel
+movups xmm1, xmmword ptr [x1_04]
+movups xmm2, xmmword ptr [x2_04]
+movups xmm3, xmmword ptr [x3_04]
+jmp lbl_LineLine3D
+lbl_Case5:
+movups xmm0, xmmword ptr [x0_05] ;Near Skew
+movups xmm1, xmmword ptr [x1_05]
+movups xmm2, xmmword ptr [x2_05]
+movups xmm3, xmmword ptr [x3_05]
+jmp lbl_LineLine3D
+;PlaneLine
+lbl_Case6:
+movups xmm0, xmmword ptr [x0_06] ;Intersection
+movups xmm1, xmmword ptr [x1_06]
+movups xmm2, xmmword ptr [x2_06]
+movups xmm3, xmmword ptr [x3_06]
+movups xmm4, xmmword ptr [x4_06]
+jmp lbl_PlaneLine3D
+lbl_Case7:
+movups xmm0, xmmword ptr [x0_07] ;Parallel
+movups xmm1, xmmword ptr [x1_07]
+movups xmm2, xmmword ptr [x2_07]
+movups xmm3, xmmword ptr [x3_07]
+movups xmm4, xmmword ptr [x4_07]
+jmp lbl_PlaneLine3D
+;LineLine
+lbl_LineLine3D:
 call LineLine3D
+jmp finWndProc
+;PlaneLine
+lbl_PlaneLine3D:
+call PlaneLine3D
 jmp finWndProc
 
 wmLButtonUp:
@@ -254,5 +322,6 @@ ret
 WndProc endp
 
 include LineLine3D.asm
+include PlaneLine3D.asm
 
 end

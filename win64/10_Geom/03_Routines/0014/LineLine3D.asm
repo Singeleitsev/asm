@@ -13,57 +13,8 @@ LineLine3D Proc
 push rbp
 mov rbp,rsp
 
-cmp r8w,31h ;Keyboard 1
-je lbl_Case1
-cmp r8w,32h ;Keyboard 2
-je lbl_Case2
-cmp r8w,33h ;Keyboard 3
-je lbl_Case3
-cmp r8w,34h ;Keyboard 4
-je lbl_Case4
-cmp r8w,35h ;Keyboard 5
-je lbl_Case5
-
-jmp lbl_LineLine3D_End ;Any other key
-
-lbl_Case1:
-movups xmm0, xmmword ptr [x0_01] ;Intersection
-movups xmm1, xmmword ptr [x1_01]
-movups xmm2, xmmword ptr [x2_01]
-movups xmm3, xmmword ptr [x3_01]
-jmp lbl_LineLine3D
-
-lbl_Case2:
-movups xmm0, xmmword ptr [x0_02] ;Far Skew
-movups xmm1, xmmword ptr [x1_02]
-movups xmm2, xmmword ptr [x2_02]
-movups xmm3, xmmword ptr [x3_02]
-jmp lbl_LineLine3D
-
-lbl_Case3:
-movups xmm0, xmmword ptr [x0_03] ;Collinear
-movups xmm1, xmmword ptr [x1_03]
-movups xmm2, xmmword ptr [x2_03]
-movups xmm3, xmmword ptr [x3_03]
-jmp lbl_LineLine3D
-
-lbl_Case4:
-movups xmm0, xmmword ptr [x0_04] ;Parallel
-movups xmm1, xmmword ptr [x1_04]
-movups xmm2, xmmword ptr [x2_04]
-movups xmm3, xmmword ptr [x3_04]
-jmp lbl_LineLine3D
-
-lbl_Case5:
-movups xmm0, xmmword ptr [x0_05] ;Near Skew
-movups xmm1, xmmword ptr [x1_05]
-movups xmm2, xmmword ptr [x2_05]
-movups xmm3, xmmword ptr [x3_05]
-jmp lbl_LineLine3D
-
-jmp lbl_LineLine3D_End ;Any other key
-
-lbl_LineLine3D:
+and rsp,-16 ;Align the Stack
+sub rsp,100h ;Create the Buffer
 
 ;Difference Vectors
 ;dx10 = x1 - x0
@@ -241,7 +192,7 @@ Call4 MessageBoxA,0,offset szNearSkew,offset szAppTitle,0
 ;jmp lbl_LineLine3D_End
 
 lbl_LineLine3D_End:
-;add rsp,100h
+add rsp,100h
 ;Since the Proc has NO parameters
 ;Assembler will NOT add this epilogue automatically:
 leave
@@ -251,3 +202,4 @@ LineLine3D endp
 ;OUTPUT:
 ;xmm0: 0,z4t,y4t,x4t
 ;xmm1: 0,z4s,y4s,x4s
+
