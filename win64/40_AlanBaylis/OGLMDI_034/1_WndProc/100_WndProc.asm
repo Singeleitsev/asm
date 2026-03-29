@@ -22,13 +22,13 @@ mov lParam,r9
 ;switch(uMessage)
 ;Arranged by Probability
 cmp dx,111h ;WM_COMMAND
-jmp lbl_WndProc_Command
+je lbl_WndProc_Command
 cmp dx,10h ;WM_CLOSE
-jmp lbl_WndProc_Close
+je lbl_WndProc_Close
 cmp dx,2 ;WM_DESTROY
-jmp lbl_WndProc_Destroy
+je lbl_WndProc_Destroy
 cmp dx,1 ;WM_CREATE
-jmp lbl_WndProc_Create
+je lbl_WndProc_Create
 
 ;None of the Above:
 lbl_WndProc_DefFrameProc:
@@ -49,7 +49,8 @@ xor rcx,rcx
 Call PostQuitMessage
 jmp lbl_WndProc_End
 
-include 190_ClientErrors.asm
+include 190_MainErrors.asm
+include 191_ClientErrors.asm
 
 lbl_WndProc_Return0:
 xor rax,rax

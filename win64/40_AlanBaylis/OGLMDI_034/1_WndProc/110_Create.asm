@@ -1,16 +1,7 @@
 ;case WM_CREATE:
 lbl_WndProc_Create:
 
-;Find window menu where children will be listed
-;ccs.hWindowMenu = (HMENU)GetSubMenu(GetMenu(hWnd), 2)
-;mov rcx,hWnd
-Call GetMenu
-mov rcx,rax
-mov rdx,2
-Call GetSubMenu
-mov ccs.hWindowMenu,rax
-
-;mov ccs.hWindowMenu,0 ;Easy way
+include 111_CreateMenu.asm
 
 mov ccs.idFirstChild,ID_MDI_FIRSTCHILD;
 
@@ -35,7 +26,7 @@ mov qword ptr[rsp+50h],rax
 lea rax,ccs
 mov qword ptr[rsp+58h],rax
 Call CreateWindowExA
-mov rax,g_hMDIClient
+mov g_hMDIClient,rax
 cmp rax,0 ;hChild
 je lbl_CreateMDIClient_Err
 

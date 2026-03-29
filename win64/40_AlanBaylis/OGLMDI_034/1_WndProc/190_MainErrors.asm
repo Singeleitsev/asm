@@ -1,5 +1,5 @@
-lbl_CreateMDIClient_Err:
-lea rdx,szCreateMDIClient_Err ;MDI Client Window creation failed
+lbl_CreateMenuMain_Err:
+lea rdx,szCreateMenuMain_Err ;MDI Client Window creation failed
 jmp lbl_WndProc_ShowErrorMessage
 
 ;Show Message and Quit

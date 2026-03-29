@@ -17,23 +17,27 @@ mov rdx,80000000h ;dwDesiredAccess = GENERIC_READ
 mov r8,1 ;dwShareMode = FILE_SHARE_READ
 xor r9,r9
 mov qword ptr [rsp+20h],3 ;dwCreationDisposition = OPEN_EXISTING
-mov qword ptr [rsp+28h],40000080h ;dwFlagsAndAttributes = FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED
+;mov qword ptr [rsp+28h],40000080h ;dwFlagsAndAttributes = FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED
+mov  qword ptr [rsp+28h],80h ; FILE_ATTRIBUTE_NORMAL (not OVERLAPPED)
 mov qword ptr [rsp+30h],0 ;hTemplateFile
 Call CreateFileA
-mov txr.lpszFileName,rax
-cmp rax,0
+cmp rax,-1 ;INVALID_HANDLE_VALUE
 je lbl_FileOpen_Err ;Image file not found
+mov txr.lpszFileName,rax
 
 ;fread(TGAcompare,1,sizeof(TGAcompare),file) != sizeof(TGAcompare) || // Are There 12 Bytes To Read?
-mov ol.Offset_,0
+;mov ol.Offset_,0
 mov rcx,rax ;txr.lpszFileName
 lea rdx,TGAcompare ;lpBuffer
 mov r8,12 ;nNumberOfBytesToRead = sizeof header
 lea r9,NumberOfBytesRead
-lea rax,ol
-mov qword ptr [rsp+20h],rax ;lpOverlapped
+;lea rax,ol
+;mov qword ptr [rsp+20h],rax ;lpOverlapped
+mov qword ptr [rsp+20h],0
 Call ReadFile
-cmp rax,12
+test rax,rax
+jz lbl_ReadFile_Err
+cmp NumberOfBytesRead,12
 jne lbl_ReadFile_Err ;Failed to Read the File
 
 ;Check for known issues
@@ -57,15 +61,18 @@ repe cmpsb
 jnz lbl_ImageLoad_Err ;Image load failed for unknown reason
 
 ;fread(header,1,sizeof(header),file) != sizeof(header) // If So Read Next 6 Header Bytes
-mov ol.Offset_,12
+;mov ol.Offset_,12
 mov rcx,txr.lpszFileName
 lea rdx,header ;lpBuffer
 mov r8,6 ;nNumberOfBytesToRead = sizeof header
 lea r9,NumberOfBytesRead
-lea rax,ol
-mov qword ptr [rsp+20h],rax ;lpOverlapped
+;lea rax,ol
+;mov qword ptr [rsp+20h],rax ;lpOverlapped
+mov qword ptr [rsp+20h],0
 Call ReadFile
-cmp rax,6
+test rax,rax
+jz lbl_ReadFile_Err
+cmp NumberOfBytesRead,6
 jne lbl_ReadFile_Err ;Failed to Read the File
 
 lea rsi,header
@@ -116,9 +123,9 @@ mov txr.txrBitsPP,eax
 shr al,3 ;Divide By 8 To Get The Bytes Per Pixel
 
 ;imageSize = Width*Height*bytesPerPixel // Calculate The Memory Required For The TGA Data
-mov eax,txr.txrWidth
-mov ebx,txr.txrHeight
-imul ax,bx
+mov ebx,txr.txrWidth
+imul ebx,txr.txrHeight
+imul eax,ebx
 mov txr.txrSize,eax
 
 ;ImageData = (GLubyte*)malloc(imageSize) // Reserve Memory To Hold The TGA Data
@@ -133,17 +140,20 @@ cmp rax,0
 je lbl_ImageLoad_Err ;Image load failed for unknown reason
 
 ;fread(ImageData, 1, imageSize, file)!=imageSize) // Does The Image Size Match The Memory Reserved?
-mov ol.Offset_,18 ;TGAheader + header = 12 + 6
+;mov ol.Offset_,18 ;TGAheader + header = 12 + 6
 mov rcx,txr.lpszFileName
 mov rdx,lpImageData ;lpBuffer
-xor rax,rax
-mov eax,txr.txrSize
-mov r8,rax ;nNumberOfBytesToRead = sizeof ImageData = imageSize
+xor r8,r8
+mov r8d,txr.txrSize ;nNumberOfBytesToRead = sizeof ImageData = imageSize
 lea r9,NumberOfBytesRead
-lea rax,ol
-mov qword ptr [rsp+20h],rax ;lpOverlapped
+;lea rax,ol
+;mov qword ptr [rsp+20h],rax ;lpOverlapped
+mov qword ptr [rsp+20h],0
 Call ReadFile
-cmp eax,txr.txrSize
+test rax,rax
+jz lbl_DataSize_Err
+mov r8d,txr.txrSize
+cmp NumberOfBytesRead,r8d
 jne lbl_DataSize_Err ;Image Size Does Not Match The Memory Reserved
 
 ;for(GLuint i=0; i<(GLuint)imageSize; i+=bytesPerPixel);;;; // Loop Through The Image Data
@@ -165,8 +175,8 @@ mov ah,byte ptr[rsi+2]
 mov byte ptr[rsi],ah
 ;ImageData[i + 2] = (GLubyte)temp // Set The 3rd Byte To The Value In 'temp' (1st Byte Value)
 mov byte ptr[rsi+2],al
-add cx,bx ;i += bytesPerPixel
-cmp cx,dx ;i < imageSize
+add ecx,ebx ;i += bytesPerPixel
+cmp ecx,edx ;i < imageSize
 jl lbl_SwapRnB
 
 ;// Build A Texture From The Data
@@ -184,31 +194,36 @@ Call glBindTexture ;Enable the creation of a named texture that is bound to a te
 ;glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 mov rcx,0de1H ;GL_TEXTURE_2D
 mov rdx,2802H ;GL_TEXTURE_WRAP_S
-mov r8,2900h ;movss xmm2,f32_2900h ;GL_CLAMP == GLint(0x2900) == 46240000h
+mov r8,2900h
+movd xmm2,r8d ;GL_CLAMP == GLint(0x2900) == 46240000h
 Call glTexParameterf
 
 ;glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 mov rcx,0de1H ;GL_TEXTURE_2D
 mov rdx,2803H ;GL_TEXTURE_WRAP_T
-mov r8,2900h ;movss xmm2,f32_2900h ;GL_CLAMP == GLint(0x2900) == 46240000h
+mov r8,2900h
+movd xmm2,r8d ;GL_CLAMP == GLint(0x2900) == 46240000h
 Call glTexParameterf
 
 ;glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 mov rcx,0de1H ;GL_TEXTURE_2D
 mov rdx,2800H ;GL_TEXTURE_MAG_FILTER
-mov r8,2601h ;movss xmm2,f32_2601h; ;GL_LINEAR == GLint(0x2601) == 46180400h
+mov r8,2601h
+movd xmm2,r8d; ;GL_LINEAR == GLint(0x2601) == 46180400h
 Call glTexParameterf
 
 ;glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 mov rcx,0de1H ;GL_TEXTURE_2D
 mov rdx,2800H ;GL_TEXTURE_MIN_FILTER
-mov r8,2703h ;movss xmm2,f32_2703h ;GL_LINEAR_MIPMAP_LINEAR == GLint(0x2703) == 461c0c00h
+mov r8,2703h
+movd xmm2,r8d ;GL_LINEAR_MIPMAP_LINEAR == GLint(0x2703) == 461c0c00h
 Call glTexParameterf
 
 ;glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 mov rcx,2300H ;GL_TEXTURE_ENV
 mov rdx,2200h ;GL_TEXTURE_ENV_MODE
-mov r8,2100h ;movss xmm2,f32_2100h ;GL_MODULATE == GLint(0x2100) == 46040000h
+mov r8,2100h
+movd xmm2,r8d ;GL_MODULATE == GLint(0x2100) == 46040000h
 Call glTexEnvf
 
 ;glTexImage2D(GL_TEXTURE_2D, 0, type, Width, Height, 0, type, GL_UNSIGNED_BYTE, ImageData);

@@ -13,11 +13,11 @@ LOCAL iLoop:BYTE,dummy1:BYTE,dummy2:BYTE,dummy3:BYTE,dummy4:BYTE,dummy5:BYTE,dum
 and rsp,-16
 sub rsp,100h
 
-;Store the Rest of WinMain Parameters
-;mov hInstance,rcx
-;mov hPrevInstance,rdx ;rdx:EntryPoint
-;mov szCmdLine,r8
-;mov iCmdShow,r9
+;Store the Received WinMain Parameters
+mov hInstance,rcx
+mov hPrevInstance,rdx ;actually rdx:EntryPoint
+mov szCmdLine,r8
+mov iCmdShow,r9
 
 xor rcx,rcx
 Call GetModuleHandleA

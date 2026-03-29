@@ -65,6 +65,7 @@ SetWindowTextA PROTO :QWORD,:QWORD
 ShowWindow PROTO :QWORD,:QWORD
 SwapBuffers PROTO :QWORD
 TranslateMDISysAccel PROTO :QWORD,:QWORD
+TranslateAcceleratorA PROTO :QWORD,:QWORD,:QWORD
 TranslateMessage PROTO :QWORD
 UpdateWindow PROTO :QWORD
 ;OpenGL32
@@ -235,14 +236,14 @@ CREATESTRUCT64 ENDS
 ;Dacl dq 0 ;PACL
 ;SECURITY_DESCRIPTOR64 ENDS
 
-OVERLAPPED64 STRUC
-Internal dd 0
-InternalHigh dd 0
-Offset_ dq 0
-OffsetHigh dq 0
-Pointer  dq 0
-hEvent dq 0
-OVERLAPPED64 ENDS
+;OVERLAPPED64 STRUC
+;Internal dd 0
+;InternalHigh dd 0
+;Offset_ dq 0
+;OffsetHigh dq 0
+;Pointer  dq 0
+;hEvent dq 0
+;OVERLAPPED64 ENDS
 
 ;Custom Structures
 CHILD64 STRUCT
@@ -357,7 +358,6 @@ g_szChild3DClassName DB '3DOpenGL',0
 g_szChild2DClassName DB '2DOpenGL',0
 
 ;Menu Names
-szMenuNameMain db 'MAIN',0
 szMenuFile db '&File',0
 szMenuFileNewTop db 'New &Top View',0
 szMenuFileNewFront db 'New &Front View',0
@@ -366,12 +366,12 @@ szMenuFileNew3D db '&New 3D',0
 szMenuFileOpen db '&Open...',0
 szMenuFileSave db '&Save',0
 szMenuFileSaveAs db 'Save &As...',0
-szMenuFileExit db 'E&xit',0
+szMenuFileExit db 'E&xit',9,'Ctrl+W',0
 szMenuEdit db '&Edit',0
-szMenuEditUndo db '&Undo\tCtrl+Z',0
-szMenuEditCut db 'Cu&t\tCtrl+X',0
-szMenuEditCopy db '&Copy\tCtrl+C',0
-szMenuEditPaste db '&Paste\tCtrl+V',0
+szMenuEditUndo db '&Undo',9,'Ctrl+Z',0
+szMenuEditCut db 'Cu&t',9,'Ctrl+X',0
+szMenuEditCopy db '&Copy',9,'Ctrl+C',0
+szMenuEditPaste db '&Paste',9,'Ctrl+V',0
 szMenuWindow db '&Window',0
 szMenuWindowCascade db '&Cascade',0
 szMenuWindowArrange db 'Tile &Horizontal',0
@@ -398,6 +398,7 @@ szBit_Err db 'Image must be 24 or 32 bit',0
 szImageLoad_Err db 'Image load failed for unknown reason',0
 szDataSize_Err db 'Image Size Does Not Match The Memory Reserved',0
 ;WndProc
+szCreateMenuMain_Err db 'Main Menu creation failed',0
 szCreateMDIClient_Err db 'MDI Client Window creation failed',0
 szChildrenOverflow_Err db 'The number of children has reached the maximum',0
 szChildType_Err db 'Improper Child Type',0
@@ -426,7 +427,8 @@ g_hMDIClient dq 0
 g_hMainWindow dq 0
 
 ;Menu
-hMenu dq 0
+hMenuMain dq 0
+hMenuFile dq 0
 hMenuFileNewTop dq 0
 hMenuFileNewFront dq 0
 hMenuFileNewLeft dq 0
@@ -435,10 +437,12 @@ hMenuFileOpen dq 0
 hMenuFileSave dq 0
 hMenuFileSaveAs dq 0
 hMenuFileExit dq 0
+hMenuEdit dq 0
 hMenuEditUndo dq 0
 hMenuEditCut dq 0
 hMenuEditCopy dq 0
 hMenuEditPaste dq 0
+hMenuWindow dq 0
 hMenuWindowCascade dq 0
 hMenuWindowArrange dq 0
 hMenuWindowTileVert dq 0
@@ -507,9 +511,9 @@ fLightAmbient dd 03e4ccccdh,03e4ccccdh,03e4ccccdh,03dcccccdh ;0.2, 0.2, 0.2, 1.0
 fLightPosition dd 043480000h,0,0,03dcccccdh ;200.0, 0.0, 0.0, 1.0
 
 ;TGA
-szTGAFileName db 'tile1.tga',0
+szTGAFileName db 'Tile1.tga',0
 LoadTGA db 0
-ol OVERLAPPED64 <0,0,0,0,0,0>
+;ol OVERLAPPED64 <0,0,0,0,0,0>
 NumberOfBytesRead dd 0
 lpImageData dq 0 ;Image Data (Up To 32 Bits)
 TGAheader db 0,0,2,0,0,0,0,0,0,0,0,0 ;Uncompressed TGA Header
@@ -529,6 +533,7 @@ include 0_WinMain\000_WinMainProc.asm
 
 include 1_WndProc\100_WndProc.asm
 ;include 110_Create.asm ;included in WndProc
+;include 111_CreateMenu.asm
 ;include 120_Command.asm
 include 1_WndProc\121_CreateChildProc.asm
 ;include 180_Close.asm

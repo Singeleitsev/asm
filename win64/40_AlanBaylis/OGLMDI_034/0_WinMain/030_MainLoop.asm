@@ -19,6 +19,13 @@ call TranslateMDISysAccel
 cmp rax,0
 jne lbl_WinMain_Loop ;Accelerator has been Translated, Repeat the Loop
 
+mov rcx, g_hMainWindow
+mov rdx, hAccTable
+lea r8, msg
+call TranslateAcceleratorA
+test rax, rax
+jnz lbl_WinMain_Loop
+
 lea rcx,msg
 call TranslateMessage
 lea rcx,msg

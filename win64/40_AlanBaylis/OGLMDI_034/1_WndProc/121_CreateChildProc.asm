@@ -97,8 +97,10 @@ mov qword ptr[rdi],rax ;g_child[g_iNumChild - 1].hWnd = hChild
 ;Set child window device context
 mov rcx,rax ;hChild
 Call GetDC
+xor rbx,rbx
+mov ebx,eax
 mov rdi,lpChildStruct
-mov qword ptr[rdi+8],rax ;hDC
+mov qword ptr[rdi+8],rbx ;hDC
 
 ;Set child window type
 mov rax,bType
@@ -119,32 +121,31 @@ mov pfd.cColorBits,24
 mov pfd.cDepthBits,16
 mov pfd.iLayerType,0 ;PFD_MAIN_PLANE
 
-mov rcx,lpChildStruct
-add rcx,8 ;hDC
+mov rsi,lpChildStruct
+mov rcx,qword ptr[rsi+8] ;hDC
 lea rdx,pfd
 Call ChoosePixelFormat
 
-mov rcx,lpChildStruct
-add rcx,8 ;hDC
+mov rsi,lpChildStruct
+mov rcx,qword ptr[rsi+8] ;hDC
 lea rdx,pfd
 mov r8,rax ;iFormat retrieved from ChoosePixelFormat
 Call SetPixelFormat
 
-mov rcx,lpChildStruct
-add rcx,8 ;hDC
+mov rsi,lpChildStruct
+mov rcx,qword ptr[rsi+8] ;hDC
 Call wglCreateContext
 mov rdi,lpChildStruct
 mov qword ptr[rdi+10h],rax ;hRC
 
-mov rcx,lpChildStruct
-add rcx,8 ;hDC
-mov rdx,rcx
-add rcx,8 ;hRC
+mov rsi,lpChildStruct
+mov rcx,qword ptr[rsi+8] ;hDC
+mov rdx,qword ptr[rsi+10h] ;hRC
 Call wglMakeCurrent
 
 Call InitGL
 
-include 191_ChildErrors.asm
+include 192_ChildErrors.asm
 
 lbl_CreateChild_End:
 add rsp,100h

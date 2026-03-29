@@ -19,8 +19,9 @@ mov edx,7F00h ;IDC_ARROW
 call LoadCursorA
 mov wcx.hCursor,rax
 mov wcx.hbrBackground,11h ;(HBRUSH)(COLOR_3DSHADOW+1)
-lea rax,szMenuNameMain ;"MAIN"
-mov wcx.lpszMenuName,rax
+;lea rax,szMenuNameMain ;"MAIN"
+;mov wcx.lpszMenuName,rax
+mov wcx.lpszMenuName,0
 lea rax,g_szMainClassName
 mov wcx.lpszClassName,rax
 
@@ -74,7 +75,7 @@ cmp rax,0
 je lbl_CreateWindowFrame_Err
 
 mov rcx,g_hMainWindow
-mov rdx,iCmdShow ;SW_SHOWNORMAL = 1
+mov rdx,1 ;SW_SHOWNORMAL = 1
 call ShowWindow
 
 mov rcx,g_hMainWindow
