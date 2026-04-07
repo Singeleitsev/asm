@@ -308,7 +308,7 @@ CHILD_TYPE_LEFT equ 2 ;YZ (Left) ortho view
 CHILD_TYPE_3D equ 3 ;Axonometry
 
 ;Titles
-szAppTitle db 'Al',27h,'s OpenGL MDI Example',0
+szAppTitle db 'Al',27h,'s OpenGL MDI Assembly Implementation',0
 szWindowTitleTop db 'Top',0
 szWindowTitleFront db 'Front',0
 szWindowTitleLeft db 'Left',0
@@ -418,6 +418,7 @@ g_hMainWindow dq 0
 
 ;Menu
 hMenuMain dq 0
+hMenuSub dq 0
 hMenuFile dq 0
 hMenuFileNewTop dq 0
 hMenuFileNewFront dq 0
@@ -438,6 +439,9 @@ hMenuWindowArrange dq 0
 hMenuWindowTileVert dq 0
 hMenuWindowTileHorz dq 0
 hAccTable dq 0
+
+
+
 
 ;Font
 ;hFont dq 0
@@ -474,7 +478,7 @@ HorizontalShift dd 0
 
 ;Scene
 VertexNumber db 0
-ShortestDistance DD 461c4000h ;10000.0f
+ShortestDistance DD 2710h ;10000
 
 ;Cube
 g_fCubeRotationX dd 0
@@ -490,6 +494,8 @@ FrontDepth DD 042b40000h ;90.0f
 LeftDepth DD 0c2b40000h ;-90.0f
 
 ;Material
+fMatSphereAmbient dd 3F800000h, 3F800000h, 00000000h, 3DCCCCCDh   ; 1.0, 1.0, 0.0, 1.0
+fMatSphereDiffuse dd 3F800000h, 3F800000h, 00000000h, 3DCCCCCDh   ; 1.0, 1.0, 0.0, 1.0
 fMatAmbient dd 03f4ccccdh,03f4ccccdh,03f4ccccdh,03dcccccdh ;0.8, 0.8, 0.8, 1.0
 fMatDiffuse dd 03f4ccccdh,03f4ccccdh,03f4ccccdh,03dcccccdh ;0.8, 0.8, 0.8, 1.0
 fMatSpecular dd 03f666666h,03f666666h,03f666666h,03dcccccdh ;0.9, 0.9, 0.9, 1.0
@@ -510,7 +516,7 @@ TGAcompare db 12 dup (0) ;Used To Compare TGA Header
 header db 6 dup (0) ;First 6 Useful Bytes From The Header
 
 ;Text Properties
-colorRGB dd 0 ;For Win32 text
+;colorRGB dd 0 ;For Win32 text
 
 .code
 
@@ -525,7 +531,7 @@ include 0_WinMain\0000_WinMainProc.asm
 
 include 1_WndProc\100_WndProc.asm
 ;include 101_001_Create.asm
-;include 101_001_CreateMenu.asm
+;include 101_001_CreateMenuMain.asm
 ;include 101_010_Close.asm
 ;include 101_111_Command.asm
 ;include 109_Errors.asm

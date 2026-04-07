@@ -1,8 +1,4 @@
-;Set the Cube's Polygons
 SetPolygons proc
-
-LOCAL iLoop:BYTE
-LOCAL lpV0:QWORD,lpV1:QWORD,lpV2:QWORD
 
 ;Prologue
 push rbp
@@ -143,10 +139,10 @@ vmovups xmm5,xmmword ptr [rsi+40h]
 vmovups xmmword ptr [rdi+2E0h],xmm5
 
 ;Normals
-mov iLoop,0
+xor rcx,rcx
 lbl_NextNormal:
 
-movzx rax,iLoop
+mov rax,rcx
 shl ax,6 ;imul ax,40h ;SizeOf POLYGON
 lea rsi,pg
 add rsi,rax
@@ -175,8 +171,8 @@ subps xmm3,xmm5 ;xmm3 = 0,Normal.z,Normal.y,Normal.x
 
 movups xmmword ptr[rsi+30h],xmm3
 
-inc iLoop
-cmp iLoop,12
+inc cl
+cmp cl,12
 jl lbl_NextNormal
 
 ;Epilogue

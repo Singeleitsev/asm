@@ -45,12 +45,8 @@ cmp dx,101h ;WM_KEYUP
 je lbl_Child2D_KeyUp
 cmp dx,111h ;WM_COMMAND
 je lbl_Child2D_Command
-
-;cmp dx,0Fh ;WM_PAINT
-;je lbl_Child2D_Paint
 cmp dx,5 ;WM_SIZE
 je lbl_Child2D_Size
-
 cmp dx,222h ;WM_MDIACTIVATE
 je lbl_Child2D_MDIActivate
 cmp dx,10h ;WM_CLOSE
@@ -75,7 +71,6 @@ include 21_200_MouseMove.asm
 include 21_201_LButtonDown.asm
 include 21_202_LButtonUp.asm
 include 21_222_MDIActivate.asm
-
 include 29_Errors.asm
 
 lbl_Child2D_Return0:

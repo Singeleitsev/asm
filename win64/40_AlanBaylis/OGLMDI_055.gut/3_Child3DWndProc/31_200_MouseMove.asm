@@ -9,11 +9,12 @@ je lbl_Child3D_Return0
 ;without moving them to/from the Memory
 
 ;MouseX = LOWORD(lParam);
+mov r8,lParam ;X = LOWORD, Y = HIWORD
+and r8,0FFFFh ;X = LOWORD
 ;MouseY = HIWORD(lParam);
-mov r8d,dword ptr lParam ; X in low word, Y in high word
-mov r9d,r8d
-shr r9d,16 ;Y = HIWORD
-and r8d,0FFFFh ;X = LOWORD
+mov r9,lParam ;X = LOWORD, Y = HIWORD
+shr r9d,16 ;HIWORD to LOWORD
+and r9,0FFFFh
 
 ;g_iMouseDeltaX = LOWORD(lParam) - g_iMouseLastX
 mov eax,r8d
@@ -21,11 +22,13 @@ sub eax,g_iMouseLastX
 mov g_iMouseDeltaX,eax
 ;g_iMouseDeltaY = HIWORD(lParam) - g_iMouseLastY
 mov ebx,r9d
-sub r9d,g_iMouseLastY
-mov g_iMouseDeltaY,r9d
+sub ebx,g_iMouseLastY
+mov g_iMouseDeltaY,ebx
+
 ;g_iMouseLastX = LOWORD(lParam)
 mov g_iMouseLastX,r8d
 ;g_iMouseLastY = HIWORD(lParam)
 mov g_iMouseLastY,r9d
 
 jmp lbl_Child3D_Return0
+

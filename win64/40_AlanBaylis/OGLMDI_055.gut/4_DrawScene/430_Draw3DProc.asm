@@ -34,6 +34,7 @@ mov rcx,0b50H ;GL_LIGHTING
 Call glEnable
 
 Call glPushMatrix
+
 mov rcx,4 ;GL_TRIANGLES
 Call glBegin
 
@@ -313,6 +314,7 @@ add rcx,20h
 Call glVertex3fv ;(&polygon[11].Vertex[2].x)
 
 Call glEnd
+
 Call glPopMatrix
 
 mov rcx,0b50H ;GL_LIGHTING

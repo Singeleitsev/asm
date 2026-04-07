@@ -194,35 +194,35 @@ Call glBindTexture ;Enable the creation of a named texture that is bound to a te
 ;glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 mov rcx,0de1H ;GL_TEXTURE_2D
 mov rdx,2802H ;GL_TEXTURE_WRAP_S
-mov r8,2900h
+mov r8,46240000h ;2900h
 movd xmm2,r8d ;GL_CLAMP == GLint(0x2900) == 46240000h
 Call glTexParameterf
 
 ;glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 mov rcx,0de1H ;GL_TEXTURE_2D
 mov rdx,2803H ;GL_TEXTURE_WRAP_T
-mov r8,2900h
+mov r8,46240000h ;2900h
 movd xmm2,r8d ;GL_CLAMP == GLint(0x2900) == 46240000h
 Call glTexParameterf
 
 ;glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 mov rcx,0de1H ;GL_TEXTURE_2D
 mov rdx,2800H ;GL_TEXTURE_MAG_FILTER
-mov r8,2601h
+mov r8,46180400h ;2601h
 movd xmm2,r8d; ;GL_LINEAR == GLint(0x2601) == 46180400h
 Call glTexParameterf
 
 ;glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 mov rcx,0de1H ;GL_TEXTURE_2D
 mov rdx,2800H ;GL_TEXTURE_MIN_FILTER
-mov r8,2703h
+mov r8,461c0c00h ;2703h
 movd xmm2,r8d ;GL_LINEAR_MIPMAP_LINEAR == GLint(0x2703) == 461c0c00h
 Call glTexParameterf
 
 ;glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 mov rcx,2300H ;GL_TEXTURE_ENV
 mov rdx,2200h ;GL_TEXTURE_ENV_MODE
-mov r8,2100h
+mov r8,46040000h ;2100h
 movd xmm2,r8d ;GL_MODULATE == GLint(0x2100) == 46040000h
 Call glTexEnvf
 

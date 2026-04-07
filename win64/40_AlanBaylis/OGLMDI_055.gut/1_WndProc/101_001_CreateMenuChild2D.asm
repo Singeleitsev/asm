@@ -10,6 +10,13 @@ mov hMenuMain,rax
 Call CreatePopupMenu
 mov hMenuFile,rax
 
+;Append File submenu
+mov rcx,hMenuMain
+mov rdx,10h ;MF_POPUP or MF_STRING
+mov r8,hMenuFile
+lea r9,szMenuFile
+call AppendMenuA
+
 mov rcx,hMenuFile
 xor rdx,rdx ;MF_STRING or MF_ENABLED
 mov r8,CM_FILE_NEW_TOP
@@ -70,16 +77,16 @@ mov r8,CM_FILE_EXIT
 lea r9,szMenuFileExit
 call AppendMenuA
 
-;Append File submenu
-mov rcx,hMenuMain
-mov rdx,10h ;MF_POPUP or MF_STRING
-mov r8,hMenuFile
-lea r9,szMenuFile
-call AppendMenuA
-
 ;Edit
 call CreatePopupMenu
 mov hMenuEdit,rax
+
+;Append Edit submenu
+mov rcx,hMenuMain
+mov rdx,10h ;MF_POPUP or MF_STRING
+mov r8,hMenuEdit
+lea r9,szMenuEdit
+call AppendMenuA
 
 mov rcx,hMenuEdit
 mov rdx,1 ;MF_STRING or MF_GRAYED
@@ -111,16 +118,16 @@ mov r8,CM_EDIT_PASTE
 lea r9,szMenuEditPaste
 call AppendMenuA
 
-;Append Edit submenu
-mov rcx,hMenuMain
-mov rdx,10h ;MF_POPUP or MF_STRING
-mov r8,hMenuEdit
-lea r9,szMenuEdit
-call AppendMenuA
-
 ;Window (for MDI child list)
 call CreatePopupMenu
 mov hMenuWindow,rax
+
+;Append Window submenu
+mov rcx,hMenuMain
+mov rdx,10h ;MF_POPUP or MF_STRING
+mov r8,hMenuWindow
+lea r9,szMenuWindow
+call AppendMenuA
 
 mov rcx,hMenuWindow
 xor rdx,rdx ;MF_STRING or MF_ENABLED
@@ -146,19 +153,10 @@ mov r8,CM_WINDOW_TILEHORZ
 lea r9,szMenuWindowTileHorz
 call AppendMenuA
 
-;Append Window submenu
-mov rcx,hMenuMain
-mov rdx,10h ;MF_POPUP or MF_STRING
-mov r8,hMenuWindow
-lea r9,szMenuWindow
-call AppendMenuA
-
-
 ;Attach the menu to the window
 mov rcx,hWnd
 mov rdx,hMenuMain
 call SetMenu
-
 
 ;Find window menu where children will be listed
 ;ccs.hMenuWindow = (HMENU)GetSubMenu(GetMenu(hWnd),2)

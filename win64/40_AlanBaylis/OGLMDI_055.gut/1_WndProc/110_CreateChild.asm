@@ -148,6 +148,7 @@ cmp rax,0
 je lbl_CreateChild_MakeCurrent_Err
 
 include 111_InitGL.asm
+Call SetTextures
 
 ;Increment the number of children
 inc g_iNumChild

@@ -41,20 +41,15 @@ je lbl_Draw3d_SetModelView
 
 ;Apply mouse deltas to cube rotation values
 ;g_fCubeRotationX += (float)g_iMouseDeltaY * 0.5
-mov eax,g_iMouseDeltaY
-shr eax,1 ;eax = g_iMouseDeltaY /2
-cvtsi2ss xmm0,eax
-movss xmm1,g_fCubeRotationX
-addss xmm0,xmm1
+cvtsi2ss xmm0,g_iMouseDeltaY
+mulss xmm0,f32_0p5
+addss xmm0,g_fCubeRotationX
 movss g_fCubeRotationX,xmm0
-
 ;g_fCubeRotationY += (float)g_iMouseDeltaX * 0.5
-mov ebx,g_iMouseDeltaX
-shr ebx,1 ;ebx = g_iMouseDeltaX /2
-cvtsi2ss xmm2,ebx
-movss xmm3,g_fCubeRotationY
-addss xmm2,xmm3
-movss g_fCubeRotationY,xmm2
+cvtsi2ss xmm1, g_iMouseDeltaX
+mulss xmm1,f32_0p5
+addss xmm1,g_fCubeRotationY
+movss g_fCubeRotationY,xmm1
 
 lbl_Draw3d_SetModelView:
 

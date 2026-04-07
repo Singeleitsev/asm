@@ -102,7 +102,7 @@ call UpdateWindow
 ;Initialize the Object
 Call SetVertices
 Call SetPolygons
-Call SetTextures
+;Call SetTextures must be in InitGL
 
 ;sphere for vertex selection
 call gluNewQuadric

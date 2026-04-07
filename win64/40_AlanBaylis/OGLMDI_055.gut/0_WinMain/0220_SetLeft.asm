@@ -1,10 +1,10 @@
-lbl_SetFront:
+lbl_SetLeft:
 
 ;Set2DProjection
 xor rcx,rcx
 xor rdx,rdx
-mov rsi,lpChildStruct
 xor r8,r8
+mov rsi,lpChildStruct
 mov r8d,dword ptr[rsi+20h] ;right
 xor r9,r9
 mov r9d,dword ptr[rsi+24h] ;bottom
@@ -15,6 +15,7 @@ Call glMatrixMode
 
 Call glLoadIdentity
 
+;Draw2DSceneLeft
 mov rsi,lpChildStruct
 mov eax,dword ptr[rsi+20h] ;right
 shr eax,1 ;eax = iWidth * 0.5
@@ -32,14 +33,18 @@ mov rbx,f64_2000
 mov qword ptr [rsp+28h],rbx
 Call glOrtho ;(-iWidth * 0.5, iWidth * 0.5, -iHeight * 0.5, iHeight * 0.5, -2000, 2000);
 
-;Draw2DSceneFront
-mov rcx,4100H ;GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT
-Call glClear
+movss xmm0,f32_90
+xorps xmm1,xmm1
+movss xmm2,f32_1
+xorps xmm3,xmm3
+Call glRotatef
 
-mov rcx,1700H ;GL_MODELVIEW
-Call glMatrixMode
-
-Call glLoadIdentity
+;Blue Left
+xorps xmm0,xmm0
+xorps xmm1,xmm1
+movss xmm2,f32_1
+movss xmm3,xmm2
+call glColor4f
 
 Call Draw2DScene
 

@@ -29,7 +29,7 @@ mov g_hMDIClient,rax
 cmp rax,0 ;hChild
 je lbl_CreateMDIClient_Err
 
-include 101_001_CreateMenu.asm
+include 101_001_CreateMenuMain.asm
 
 jmp lbl_WndProc_Return0
 
