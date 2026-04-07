@@ -130,25 +130,25 @@ lea r9,szMenuWindow
 call AppendMenuA
 
 mov rcx,hMenuWindow
-xor rdx,rdx ;MF_STRING or MF_ENABLED
+mov rdx,1 ;MF_STRING or MF_GRAYED
 mov r8,CM_WINDOW_CASCADE
 lea r9,szMenuWindowCascade
 call AppendMenuA
 
 mov rcx,hMenuWindow
-xor rdx,rdx ;MF_STRING or MF_ENABLED
+mov rdx,1 ;MF_STRING or MF_GRAYED
 mov r8,CM_WINDOW_ARRANGE
 lea r9,szMenuWindowArrange
 call AppendMenuA
 
 mov rcx,hMenuWindow
-xor rdx,rdx ;MF_STRING or MF_ENABLED
+mov rdx,1 ;MF_STRING or MF_GRAYED
 mov r8,CM_WINDOW_TILEVERT
 lea r9,szMenuWindowTileVert
 call AppendMenuA
 
 mov rcx,hMenuWindow
-xor rdx,rdx ;MF_STRING or MF_ENABLED
+mov rdx,1 ;MF_STRING or MF_GRAYED
 mov r8,CM_WINDOW_TILEHORZ
 lea r9,szMenuWindowTileHorz
 call AppendMenuA
@@ -183,6 +183,4 @@ je lbl_CreateMenuMain_Err
 mov hAccTable,rax
 
 ;lbl_CreateMenuMain_End:
-
-
 
