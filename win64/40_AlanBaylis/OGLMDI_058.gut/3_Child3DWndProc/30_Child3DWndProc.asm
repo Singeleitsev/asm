@@ -22,14 +22,14 @@ mov lParam,r9
 ;int iThisChild = GetDlgCtrlID(hWnd) - ID_MDI_FIRSTCHILD;
 mov rcx,hWnd
 Call GetDlgCtrlID
-xor rbx,rbx
-mov ebx,eax
-sub ebx,ID_MDI_FIRSTCHILD
+mov rbx,rax
+sub rbx,ID_MDI_FIRSTCHILD
 ;g_child[iThisChild]
 imul bx,30h ;SizeOf CHILD64
 lea rdi,g_child
 add rdi,rbx
 mov lpChildStruct,rdi
+mov byte ptr[rdi+29h],al ;iThisChild
 
 ;message dispatch table
 mov rdx,uMessage
@@ -52,7 +52,7 @@ cmp dx,222h ;WM_MDIACTIVATE
 je lbl_Child3D_MDIActivate
 cmp dx,10h ;WM_CLOSE
 je lbl_Child3D_Close
-;cmp dx,??h ;WM_DESTROY
+;cmp dx,2 ;WM_DESTROY
 ;je lbl_Child3D_Destroy
 
 ;None of the Above:
@@ -76,7 +76,10 @@ include 31_202_LButtonUp.asm
 include 31_222_MDIActivate.asm
 include 39_Errors.asm
 
-;lbl_Child3D_Destroy:
+;lbl_Child2D_Destroy:
+;If sometime there is a specific menu for Child3D
+;Then don't forget this:
+;mov rcx,hMenuChild3D
 ;call DestroyMenu
 ;jmp lbl_Child3D_Return0
 

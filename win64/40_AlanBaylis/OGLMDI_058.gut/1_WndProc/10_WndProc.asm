@@ -40,16 +40,16 @@ mov rdx,g_hMDIClient
 Call DefFrameProcA
 jmp lbl_WndProc_End
 
-include 101_001_Create.asm
-include 101_010_Close.asm
-include 101_111_Command.asm
+include 11_001_Create.asm
+include 11_010_Close.asm
+include 11_111_Command.asm
 
 lbl_WndProc_Destroy:
 xor rcx,rcx
 Call PostQuitMessage
 jmp lbl_WndProc_End
 
-include 190_Errors.asm
+include 19_Errors.asm
 
 lbl_WndProc_Return0:
 xor rax,rax

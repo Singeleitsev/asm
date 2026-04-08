@@ -211,11 +211,12 @@ CREATESTRUCT64 ENDS
 ;Custom Structures
 CHILD64 STRUCT
 hWnd dq 0 ;Handle to child window
-hDC dq 0 ;Individual device context
-hRC dq 0 ;Individual rendering context
+hDC dq 0 ;Child DC
+hRC dq 0 ;Child RC
 WindowRect RECT64 <0,0,0,0>
-iType db 0 ;Type of child window (CHILD_TYPE)
-dummy db 7 dup (0)
+iType db 0 ;CHILD_TYPE
+iThisChild db 0 ;Child ID
+dummy db 6 dup (0)
 CHILD64 ENDS
 
 POINT4D STRUCT
@@ -402,7 +403,6 @@ ccs CLIENTCREATESTRUCT64 <>
 csa CREATESTRUCT64 <>
 msg MSG64 <>
 accel ACCEL64 <>
-RectMain RECT64 <>
 pfd PIXELFORMATDESCRIPTOR64 <>
 
 ;Custom Structures and Classes
@@ -529,15 +529,14 @@ include 0_WinMain\0000_WinMainProc.asm
 ;include 0230_Set3D.asm
 ;include 0900_Errors.asm
 
-include 1_WndProc\100_WndProc.asm
-;include 101_001_Create.asm
-;include 101_001_CreateMenuMain.asm
-;include 101_010_Close.asm
-;include 101_111_Command.asm
-;include 109_Errors.asm
-;include 110_CreateChild.asm
-;include 111_InitGL.asm
-;include 119_Errors.asm
+include 1_WndProc\10_WndProc.asm
+;include 11_001_Create.asm
+;include 11_001_CreateMenuMain.asm
+;include 11_010_Close.asm
+;include 11_111_Command.asm
+;include 12_CreateChild.asm
+;include 13_InitGL.asm
+;include 19_Errors.asm
 
 include 2_Child2DWndProc\20_Child2DWndProc.asm
 ;include 21_005_Size.asm
@@ -571,6 +570,7 @@ include 4_DrawScene\402_SetTexturesProc.asm
 ;include 4_DrawScene\409_Errors.asm
 include 4_DrawScene\420_Draw2DProc.asm
 include 4_DrawScene\430_Draw3DProc.asm
+include 4_DrawScene\490_PurgeProc.asm
 
 ;include 500_DrawWin32Text.asm
 

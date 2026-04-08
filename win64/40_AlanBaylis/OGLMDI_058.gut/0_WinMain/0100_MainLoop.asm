@@ -60,9 +60,8 @@ mov lpChildStruct,rsi
 mov rcx,qword ptr[rsi]
 call IsIconic
 cmp rax,0
-jne lbl_ReDrawNextChild
+jne lbl_ReDrawNextChild ;Skip if Minimized
 
-;Store the Current DC and RC
 mov rsi,lpChildStruct
 mov rcx,qword ptr[rsi+8] ;hDC
 mov rdx,qword ptr[rsi+10h] ;hRC

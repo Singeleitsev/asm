@@ -69,7 +69,7 @@ lbl_WndProc_Command_New3D:
 mov bType,CHILD_TYPE_3D
 jmp lbl_CreateChild
 
-include 110_CreateChild.asm
+include 12_CreateChild.asm
 
 lbl_WndProc_Command_WindowCascade:
 mov rcx,g_hMDIClient

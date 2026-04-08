@@ -11,7 +11,7 @@ mov ccs.idFirstChild,ID_MDI_FIRSTCHILD
 mov rcx,200h ;WS_EX_CLIENTEDGE
 lea rdx,szClientClassName
 xor r8,r8
-mov r9,52000000h ;WS_CHILD | WS_VISIBLE | WS_CLIPCHILDREN
+mov r9,52000001h ;WS_CHILD | WS_VISIBLE | WS_CLIPCHILDREN | MDIS_ALLCHILDSTYLES
 mov rax,80000000h ;CW_USEDEFAULT
 mov qword ptr[rsp+20h],rax
 mov qword ptr[rsp+28h],rax
@@ -29,7 +29,7 @@ mov g_hMDIClient,rax
 cmp rax,0 ;hChild
 je lbl_CreateMDIClient_Err
 
-include 101_001_CreateMenuMain.asm
+include 11_001_CreateMenuMain.asm
 
 jmp lbl_WndProc_Return0
 

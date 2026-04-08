@@ -147,11 +147,10 @@ Call wglMakeCurrent
 cmp rax,0
 je lbl_CreateChild_MakeCurrent_Err
 
-include 111_InitGL.asm
+include 13_InitGL.asm
 Call SetTextures
 
 ;Increment the number of children
 inc g_iNumChild
 jmp lbl_WndProc_Return0
 
-include 119_Errors.asm
