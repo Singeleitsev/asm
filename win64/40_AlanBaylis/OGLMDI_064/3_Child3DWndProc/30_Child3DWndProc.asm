@@ -1,7 +1,7 @@
 Child3DWndProc proc hWnd:QWORD,uMessage:QWORD,wParam:QWORD,lParam:QWORD
 
 LOCAL lpChildStruct:QWORD
-LOCAL hChild3DMenu:QWORD,hChild3DMenuWindow:QWORD
+LOCAL hChild3DMenu:QWORD,hChild3DSubMenu:QWORD
 LOCAL uEnableFlag:QWORD
 
 ;Prologue
@@ -44,8 +44,8 @@ cmp dx,100h ;WM_KEYDOWN
 je lbl_Child3D_KeyDown
 cmp dx,101h ;WM_KEYUP
 je lbl_Child3D_KeyUp
-cmp dx,111h ;WM_COMMAND
-je lbl_Child3D_Command
+;cmp dx,111h ;WM_COMMAND
+;je lbl_Child3D_Command
 cmp dx,5 ;WM_SIZE
 je lbl_Child3D_Size
 cmp dx,222h ;WM_MDIACTIVATE
@@ -56,7 +56,7 @@ je lbl_Child3D_Close
 ;je lbl_Child3D_Destroy
 
 ;None of the Above:
-lbl_Child3D_DefFrameProc: ;Keep this Label
+lbl_Child3D_DefMDIChildProc: ;Keep this Label
 mov rcx,hWnd
 mov rdx,uMessage
 mov r8,wParam
@@ -65,7 +65,6 @@ Call DefMDIChildProcA
 jmp lbl_Child3D_End ;Keep this Label
 
 include 31_005_Size.asm
-include 31_00F_Paint.asm
 include 31_010_Close.asm
 include 31_100_KeyDown.asm
 include 31_101_KeyUp.asm
@@ -76,7 +75,7 @@ include 31_202_LButtonUp.asm
 include 31_222_MDIActivate.asm
 include 39_Errors.asm
 
-;lbl_Child2D_Destroy:
+;lbl_Child3D_Destroy:
 ;If sometime there is a specific menu for Child3D
 ;Then don't forget this:
 ;mov rcx,hMenuChild3D

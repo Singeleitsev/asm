@@ -1,7 +1,8 @@
 ;case WM_CLOSE:
-lbl_Child3D_Close:
+lbl_Child2D_Close:
 
 mov rcx,lpChildStruct
 call ChildStructPurge
 
-jmp lbl_Child3D_DefFrameProc
+jmp lbl_Child2D_DefMDIChildProc
+

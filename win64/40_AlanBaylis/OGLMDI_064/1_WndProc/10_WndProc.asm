@@ -1,9 +1,9 @@
 WndProc proc hWnd:QWORD,uMessage:QWORD,wParam:QWORD,lParam:QWORD
 
 LOCAL iLoop:DWORD
-LOCAL bType:DWORD
-LOCAL lpChildStruct:QWORD
-LOCAL childID:QWORD
+LOCAL bType:DWORD ;Temporary until saved to g_child[iThisChild].iType
+LOCAL lpChildStruct:QWORD ;Pointer to g_child[iThisChild]
+LOCAL childID:QWORD ;Temporary until saved to g_child[iThisChild].iThisChild
 
 ;Prologue
 push rbp
@@ -40,7 +40,7 @@ mov rdx,g_hMDIClient
 Call DefFrameProcA
 jmp lbl_WndProc_End
 
-include 11_001_Create.asm
+include 11_001_0_Create.asm
 include 11_010_Close.asm
 include 11_111_Command.asm
 

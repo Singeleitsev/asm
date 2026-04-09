@@ -21,6 +21,7 @@ CreateMenu PROTO
 CreateFileA PROTO :QWORD,:QWORD,:QWORD,:QWORD,:QWORD,:QWORD,:QWORD
 CreatePopupMenu PROTO
 CreateWindowExA PROTO :QWORD,:QWORD,:QWORD,:QWORD,:QWORD,:QWORD,:QWORD,:QWORD,:QWORD,:QWORD,:QWORD,:QWORD
+CreateMDIWindowA PROTO :QWORD,:QWORD,:QWORD,:QWORD,:QWORD,:QWORD,:QWORD,:QWORD,:QWORD,:QWORD
 DefFrameProcA PROTO :QWORD,:QWORD,:QWORD,:QWORD,:QWORD
 DefMDIChildProcA PROTO :QWORD,:QWORD,:QWORD,:QWORD
 DeleteObject  PROTO :QWORD
@@ -38,8 +39,10 @@ GetDlgCtrlID PROTO :QWORD
 GetMenu PROTO :QWORD
 ;GetMessageA PROTO :QWORD,:QWORD,:QWORD,:QWORD
 GetModuleHandleA PROTO :QWORD
+GetParent PROTO :QWORD
 GetProcessHeap PROTO
 GetSubMenu PROTO :QWORD,:QWORD
+GetWindowLongA PROTO :QWORD
 HeapAlloc PROTO :QWORD,:QWORD,:QWORD
 HeapFree PROTO :QWORD,:QWORD,:QWORD
 ;InitCommonControlsEx PROTO :QWORD
@@ -131,6 +134,42 @@ lpszClassName dq 0
 hIconSm dq 0
 WNDCLASSEX64 ENDS
 
+CLIENTCREATESTRUCT64 STRUCT
+hWindowMenu dq 0
+idFirstChild dd 0
+dummy dd 0 ;Exists only in win64.inc by hutch--
+CLIENTCREATESTRUCT64 ENDS
+
+MDICREATESTRUCT64 STRUCT
+szClass dq 0
+szTitle dq 0
+hOwner dq 0
+x dd 0
+y dd 0
+cxWidth dd 0
+cyHeight dd 0
+style dd 0
+dummy dd 0 ;Exists only in win64.inc by hutch--
+lParam dq 0
+MDICREATESTRUCT64 ENDS
+
+RECT64 STRUCT
+left dd 0
+top dd 0
+right dd 0
+bottom dd 0
+RECT64 ENDS
+
+CHILD64 STRUCT
+hWnd dq 0 ;Handle to child window
+hDC dq 0 ;Child DC
+hRC dq 0 ;Child RC
+WindowRect RECT64 <0,0,0,0>
+iType db 0 ;CHILD_TYPE
+iThisChild db 0 ;Child ID
+dummy db 6 dup (0)
+CHILD64 ENDS
+
 POINT2D STRUCT
 x dd 0
 y dd 0
@@ -145,14 +184,13 @@ time dd 0
 pt POINT2D <0,0>
 MSG64 ENDS
 
-RECT64 STRUCT
-left dd 0
-top dd 0
-right dd 0
-bottom dd 0
-RECT64 ENDS
+ACCEL64 STRUCT
+fVirt dw 0
+key dw 0
+cmd dw 0
+ACCEL64 ENDS
 
-PIXELFORMATDESCRIPTOR64 STRUC
+PIXELFORMATDESCRIPTOR64 STRUCT
 nSize dw 0
 nVersion dw 0
 dwFlags dd 0
@@ -181,44 +219,7 @@ dwVisibleMask dd 0
 dwDamageMask dd 0
 PIXELFORMATDESCRIPTOR64 ENDS
 
-ACCEL64 STRUC
-fVirt dw 0
-key dw 0
-cmd dw 0
-ACCEL64 ENDS
-
-CLIENTCREATESTRUCT64 STRUC
-hWindowMenu dq 0
-idFirstChild dd 0
-dummy dd 0 ;Exists only in win64.inc by hutch--
-CLIENTCREATESTRUCT64 ENDS
-
-CREATESTRUCT64 STRUC
-lpCreateParams dq 0
-hInstance dq 0
-hMenu dq 0
-hwndParent dq 0
-cyHeight dd 0
-cxWidth dd 0
-y dd 0
-x dd 0
-style dd 0
-lpszName dq 0
-lpszClass dq 0
-dwExStyle dd 0
-CREATESTRUCT64 ENDS
-
 ;Custom Structures
-CHILD64 STRUCT
-hWnd dq 0 ;Handle to child window
-hDC dq 0 ;Child DC
-hRC dq 0 ;Child RC
-WindowRect RECT64 <0,0,0,0>
-iType db 0 ;CHILD_TYPE
-iThisChild db 0 ;Child ID
-dummy db 6 dup (0)
-CHILD64 ENDS
-
 POINT4D STRUCT
 x dd 0
 y dd 0
@@ -279,9 +280,9 @@ f64_1000 DQ 0408f400000000000h ;1000
 f64_2000 DQ 0409f400000000000h ;2000
 
 ;Resources
-IDI_MYICON equ 100h
-IDI_CHILDICON equ 101h
-ID_MDI_CLIENT equ 2000h
+;IDI_MYICON equ 100h
+;IDI_CHILDICON equ 101h
+;ID_MDI_CLIENT equ 2000h
 ID_MDI_FIRSTCHILD equ 3000h
 
 ;Menu ID's
@@ -297,10 +298,10 @@ CM_EDIT_UNDO equ 1100h
 CM_EDIT_CUT equ 1110h
 CM_EDIT_COPY equ 1111h
 CM_EDIT_PASTE equ 1112h
-CM_WINDOW_CASCADE equ 1200h
-CM_WINDOW_ARRANGE equ 1201h
-CM_WINDOW_TILEVERT equ 1202h
-CM_WINDOW_TILEHORZ equ 1203h
+CM_WINDOW_TILEVERT equ 1200h
+CM_WINDOW_TILEHORZ equ 1201h
+CM_WINDOW_CASCADE equ 1202h
+CM_WINDOW_ARRANGE equ 1203h
 
 ;Projections
 CHILD_TYPE_TOP equ 0 ;XZ (Top) ortho view
@@ -337,10 +338,10 @@ szMenuEditCut db 'Cu&t',9,'Ctrl+X',0
 szMenuEditCopy db '&Copy',9,'Ctrl+C',0
 szMenuEditPaste db '&Paste',9,'Ctrl+V',0
 szMenuWindow db '&Window',0
-szMenuWindowCascade db '&Cascade',0
-szMenuWindowArrange db 'Tile &Horizontal',0
 szMenuWindowTileVert db 'Tile &Vertical',0
-szMenuWindowTileHorz db 'Arrange &Icons',0
+szMenuWindowTileHorz db  'Tile &Horizontal',0
+szMenuWindowCascade db '&Cascade',0
+szMenuWindowArrange db 'Arrange &Icons',0
 
 ;Format
 ;szFormatString db '%s',0
@@ -359,12 +360,15 @@ szMakeCurrent_Err db 'wglMakeCurrent Error',0
 ;WndProc
 szWndProc db 'WndProc',0
 szCreateMenuMain_Err db 'Main Menu creation failed',0
+szCreateSubMenu_Err db 'SubMenu creation failed',0
 szCreateMDIClient_Err db 'MDI Client Window creation failed',0
 szChildrenOverflow_Err db 'The number of children has reached the maximum',0
 ;CreateChild
 szCreateChild db 'CreateChild',0
 szChildType_Err db 'Improper Child Type',0
 szCreateChild_Err db 'Child Window creation failed',0
+szCreateChild_ParentMisMatch db 'Child Window Parent MisMatch',0
+szCreateChild_NoSysMenu db 'No SysMenu for Child Window',0
 szCreateChild_DC_Err db 'Failed to get Device Context',0
 szCreateChild_RC_Err db 'hRC is NULL',0
 ;Child2DWndProc
@@ -375,12 +379,8 @@ szChild2D_RC_Err db 'hRC is NULL',0
 szChild3D db 'Child3DWndProc',0
 szChild3D_DC_Err db 'hDC is NULL',0
 szChild3D_RC_Err db 'hRC is NULL',0
-;SetVerticesProc
-sz_SetVertices db 'SetVertices',0
-;SetPolygonsProc
-sz_SetPolygons db 'SetPolygons',0
-;SetTexturesProc
-sz_SetTextures db 'SetTextures',0
+;SetTextures
+szSetTextures db 'SetTextures',0
 szFileOpen_Err db 'Image file not found',0
 szReadFile_Err db'Failed to Read the File',0
 szGIF_Err db 'Image cannot be indexed color',10,'Convert the image to RGB or RGBA',0
@@ -400,7 +400,8 @@ szDraw3D db 'Draw3D',0
 ;System Structures
 wcx WNDCLASSEX64 <>
 ccs CLIENTCREATESTRUCT64 <>
-csa CREATESTRUCT64 <>
+mcs MDICREATESTRUCT64<>
+
 msg MSG64 <>
 accel ACCEL64 <>
 pfd PIXELFORMATDESCRIPTOR64 <>
@@ -409,7 +410,6 @@ pfd PIXELFORMATDESCRIPTOR64 <>
 vtx POINT4D 8 dup (<>) ;Vertices for cube
 txr TEXTURE <> ;Texture instance
 pg POLYGON 12 dup (<>) ;Polygons for cube
-;LogFont LOGFONTA64 <>
 
 ;Handles
 g_hInst dq 0
@@ -434,14 +434,11 @@ hMenuEditCut dq 0
 hMenuEditCopy dq 0
 hMenuEditPaste dq 0
 hMenuWindow dq 0
-hMenuWindowCascade dq 0
-hMenuWindowArrange dq 0
 hMenuWindowTileVert dq 0
 hMenuWindowTileHorz dq 0
+hMenuWindowCascade dq 0
+hMenuWindowArrange dq 0
 hAccTable dq 0
-
-
-
 
 ;Font
 ;hFont dq 0
@@ -515,9 +512,6 @@ TGAheader db 0,0,2,0,0,0,0,0,0,0,0,0 ;Uncompressed TGA Header
 TGAcompare db 12 dup (0) ;Used To Compare TGA Header
 header db 6 dup (0) ;First 6 Useful Bytes From The Header
 
-;Text Properties
-;colorRGB dd 0 ;For Win32 text
-
 .code
 
 include 0_WinMain\0000_WinMainProc.asm
@@ -530,17 +524,18 @@ include 0_WinMain\0000_WinMainProc.asm
 ;include 0900_Errors.asm
 
 include 1_WndProc\10_WndProc.asm
-;include 11_001_Create.asm
-;include 11_001_CreateMenuMain.asm
+;include 11_001_0_Create.asm
+;include 11_001_1_MenuMain.asm
 ;include 11_010_Close.asm
 ;include 11_111_Command.asm
 ;include 12_CreateChild.asm
 ;include 13_InitGL.asm
+;include 14_0_SetTextures.asm
+;include 14_9_Errors.asm
 ;include 19_Errors.asm
 
 include 2_Child2DWndProc\20_Child2DWndProc.asm
 ;include 21_005_Size.asm
-;include 21_00F_Paint.asm
 ;include 21_010_Close.asm
 ;include 21_100_KeyDown.asm
 ;include 21_101_KeyUp.asm
@@ -553,7 +548,6 @@ include 2_Child2DWndProc\20_Child2DWndProc.asm
 
 include 3_Child3DWndProc\30_Child3DWndProc.asm
 ;include 31_005_Size.asm
-;include 31_00F_Paint.asm
 ;include 31_010_Close.asm
 ;include 31_100_KeyDown.asm
 ;include 31_101_KeyUp.asm
@@ -566,8 +560,6 @@ include 3_Child3DWndProc\30_Child3DWndProc.asm
 
 include 4_DrawScene\400_SetVerticesProc.asm
 include 4_DrawScene\401_SetPolygonsProc.asm
-include 4_DrawScene\402_SetTexturesProc.asm
-;include 4_DrawScene\409_Errors.asm
 include 4_DrawScene\420_Draw2DProc.asm
 include 4_DrawScene\430_Draw3DProc.asm
 include 4_DrawScene\490_PurgeProc.asm

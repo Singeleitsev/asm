@@ -1,12 +1,4 @@
-SetTextures proc
-
-;Prologue
-push rbp
-mov rbp,rsp
-
-;Align the Stack by 10h
-and rsp,-16
-sub rsp,100h
+;lbl_SetTextures:
 
 ;texture[0].LoadTGA();
 ;bool TEXTURE::LoadTGA()
@@ -265,15 +257,12 @@ Call CloseHandle
 
 jmp lbl_SetTextures_Return1
 
-include 409_Errors.asm
+include 14_9_Errors.asm
 
 ;Texture Building Went Ok, Return True
 lbl_SetTextures_Return1:
 mov rax,1
 
 lbl_SetTextures_End:
-;Epilogue
-leave
-ret
-SetTextures endp
+
 

@@ -1,7 +1,7 @@
 Child2DWndProc proc hWnd:QWORD,uMessage:QWORD,wParam:QWORD,lParam:QWORD
 
 LOCAL lpChildStruct:QWORD
-LOCAL hChild2DMenu:QWORD,hChild2DMenuWindow:QWORD
+LOCAL hChild2DMenu:QWORD,hChild2DSubMenu:QWORD
 LOCAL uEnableFlag:QWORD
 
 ;Prologue
@@ -44,8 +44,8 @@ cmp dx,100h ;WM_KEYDOWN
 je lbl_Child2D_KeyDown
 cmp dx,101h ;WM_KEYUP
 je lbl_Child2D_KeyUp
-cmp dx,111h ;WM_COMMAND
-je lbl_Child2D_Command
+;cmp dx,111h ;WM_COMMAND
+;je lbl_Child2D_Command
 cmp dx,5 ;WM_SIZE
 je lbl_Child2D_Size
 cmp dx,222h ;WM_MDIACTIVATE
@@ -56,7 +56,7 @@ je lbl_Child2D_Close
 ;je lbl_Child2D_Destroy
 
 ;None of the Above:
-lbl_Child2D_DefFrameProc: ;Keep this Label
+lbl_Child2D_DefMDIChildProc: ;Keep this Label
 mov rcx,hWnd
 mov rdx,uMessage
 mov r8,wParam
@@ -65,7 +65,6 @@ Call DefMDIChildProcA
 jmp lbl_Child2D_End ;Keep this Label
 
 include 21_005_Size.asm
-;include 21_00F_Paint.asm
 include 21_010_Close.asm
 include 21_100_KeyDown.asm
 include 21_101_KeyUp.asm

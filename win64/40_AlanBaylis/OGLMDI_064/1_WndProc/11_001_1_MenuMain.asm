@@ -6,6 +6,8 @@ cmp rax,0
 je lbl_CreateMenuMain_Err
 mov hMenuMain,rax
 
+
+
 ;File
 Call CreatePopupMenu
 mov hMenuFile,rax
@@ -77,6 +79,8 @@ mov r8,CM_FILE_EXIT
 lea r9,szMenuFileExit
 call AppendMenuA
 
+
+
 ;Edit
 call CreatePopupMenu
 mov hMenuEdit,rax
@@ -118,6 +122,8 @@ mov r8,CM_EDIT_PASTE
 lea r9,szMenuEditPaste
 call AppendMenuA
 
+
+
 ;Window (for MDI child list)
 call CreatePopupMenu
 mov hMenuWindow,rax
@@ -127,18 +133,6 @@ mov rcx,hMenuMain
 mov rdx,10h ;MF_POPUP or MF_STRING
 mov r8,hMenuWindow
 lea r9,szMenuWindow
-call AppendMenuA
-
-mov rcx,hMenuWindow
-mov rdx,1 ;MF_STRING or MF_GRAYED
-mov r8,CM_WINDOW_CASCADE
-lea r9,szMenuWindowCascade
-call AppendMenuA
-
-mov rcx,hMenuWindow
-mov rdx,1 ;MF_STRING or MF_GRAYED
-mov r8,CM_WINDOW_ARRANGE
-lea r9,szMenuWindowArrange
 call AppendMenuA
 
 mov rcx,hMenuWindow
@@ -153,22 +147,43 @@ mov r8,CM_WINDOW_TILEHORZ
 lea r9,szMenuWindowTileHorz
 call AppendMenuA
 
+mov rcx,hMenuWindow
+mov rdx,1 ;MF_STRING or MF_GRAYED
+mov r8,CM_WINDOW_CASCADE
+lea r9,szMenuWindowCascade
+call AppendMenuA
+
+mov rcx,hMenuWindow
+mov rdx,1 ;MF_STRING or MF_GRAYED
+mov r8,CM_WINDOW_ARRANGE
+lea r9,szMenuWindowArrange
+call AppendMenuA
+
+
+
+;Find window menu where children will be listed
+;ccs.hMenuWindow = (HMENU)GetSubMenu(GetMenu(hWnd),2)
+;mov rcx,hWnd
+;Call GetMenu
+;mov hMenuMain,rax
+
+;mov rcx,rax
+mov rcx,hMenuMain
+mov rdx,2
+Call GetSubMenu
+mov ccs.hWindowMenu,rax
+cmp rax,0
+je lbl_CreateSubMenu_Err
+
 ;Attach the menu to the window
 mov rcx,hWnd
 mov rdx,hMenuMain
 call SetMenu
 
-;Find window menu where children will be listed
-;ccs.hMenuWindow = (HMENU)GetSubMenu(GetMenu(hWnd),2)
-mov rcx,hWnd
-Call GetMenu
-mov rcx,rax
-mov rdx,2
-Call GetSubMenu
-mov ccs.hWindowMenu,rax
-
 mov rcx,hWnd
 Call DrawMenuBar
+
+
 
 ;Accelerators
 mov accel.fVirt,9 ;FVIRTKEY | FCONTROL = 1 + 8

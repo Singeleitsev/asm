@@ -4,7 +4,7 @@ lbl_Child2D_Size:
 ;if(wParam != SIZE_MINIMIZED)
 mov r8,wParam
 cmp r8d,1 ;SIZE_MINIMIZED
-je lbl_Child2D_Return0
+je lbl_Child2D_DefMDIChildProc
 
 ;RECT WindowRect;
 mov rcx,hWnd
@@ -43,7 +43,7 @@ shr ebx,1 ;WindowRect.right / 2
 sub eax,ebx
 cvtsi2ss xmm1,eax
 movss LeftDepth,xmm1
-jmp lbl_Child2D_Return0
+jmp lbl_Child2D_DefMDIChildProc
 
 lbl_Child2D_Size_Front:
 ;TopDepth = -0.5 * WindowRect.bottom + 10;
@@ -60,7 +60,7 @@ shr ebx,1 ;WindowRect.right / 2
 sub eax,ebx
 cvtsi2ss xmm1,eax
 movss LeftDepth,xmm1
-jmp lbl_Child2D_Return0
+jmp lbl_Child2D_DefMDIChildProc
 
 lbl_Child2D_Size_Left:
 ;FrontDepth = -0.5 * WindowRect.right + 10;
@@ -77,6 +77,6 @@ shr ebx,1 ;WindowRect.bottom / 2
 sub eax,ebx
 cvtsi2ss xmm1,eax
 movss TopDepth,xmm1
-;jmp lbl_Child2D_Return0
+;jmp lbl_Child2D_DefMDIChildProc
 
-jmp lbl_Child2D_Return0
+jmp lbl_Child2D_DefMDIChildProc

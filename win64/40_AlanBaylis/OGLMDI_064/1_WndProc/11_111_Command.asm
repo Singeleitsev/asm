@@ -27,14 +27,14 @@ cmp r8w,CM_EDIT_COPY
 je lbl_WndProc_Command_Default
 cmp r8w,CM_EDIT_PASTE
 je lbl_WndProc_Command_Default
-cmp r8w,CM_WINDOW_CASCADE
-je lbl_WndProc_Command_WindowCascade
-cmp r8w,CM_WINDOW_ARRANGE
-je lbl_WndProc_Command_WindowArrange
 cmp r8w,CM_WINDOW_TILEVERT
 je lbl_WndProc_Command_WindowTileVert
 cmp r8w,CM_WINDOW_TILEHORZ
 je lbl_WndProc_Command_WindowTileHorz
+cmp r8w,CM_WINDOW_CASCADE
+je lbl_WndProc_Command_WindowCascade
+cmp r8w,CM_WINDOW_ARRANGE
+je lbl_WndProc_Command_WindowArrange
 
 ;None of the Above
 lbl_WndProc_Command_Default: ;Keep this Label
@@ -71,6 +71,22 @@ jmp lbl_CreateChild
 
 include 12_CreateChild.asm
 
+lbl_WndProc_Command_WindowTileVert:
+mov rcx,g_hMDIClient
+mov rdx,226h ;WM_MDITILE
+xor r8,r8 ;MDITILE_VERTICAL
+xor r9,r9
+Call PostMessageA ;<- Post, not Send
+jmp lbl_WndProc_Return0
+
+lbl_WndProc_Command_WindowTileHorz:
+mov rcx,g_hMDIClient
+mov rdx,226h ;WM_MDITILE
+mov r8,1 ;MDITILE_HORIZONTAL
+xor r9,r9
+Call PostMessageA ;<- Post, not Send
+jmp lbl_WndProc_Return0
+
 lbl_WndProc_Command_WindowCascade:
 mov rcx,g_hMDIClient
 mov rdx,227h ;WM_MDICASCADE
@@ -83,22 +99,6 @@ lbl_WndProc_Command_WindowArrange:
 mov rcx,g_hMDIClient
 mov rdx,228h ;WM_MDIICONARRANGE
 xor r8,r8
-xor r9,r9
-Call PostMessageA
-jmp lbl_WndProc_Return0
-
-lbl_WndProc_Command_WindowTileVert:
-mov rcx,g_hMDIClient
-mov rdx,226h ;WM_MDITILE
-xor r8,r8 ;MDITILE_VERTICAL
-xor r9,r9
-Call PostMessageA
-jmp lbl_WndProc_Return0
-
-lbl_WndProc_Command_WindowTileHorz:
-mov rcx,g_hMDIClient
-mov rdx,226h ;WM_MDITILE
-mov r8,1 ;MDITILE_HORIZONTAL
 xor r9,r9
 Call PostMessageA ;<- Post, not Send
 jmp lbl_WndProc_Return0

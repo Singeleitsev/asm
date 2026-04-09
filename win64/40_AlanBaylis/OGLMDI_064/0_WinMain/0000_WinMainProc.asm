@@ -18,7 +18,6 @@ mov hPrevInstance,rdx
 mov szCmdLine,r8
 mov iCmdShow,r9
 
-
 ;Register Frame Window Class
 mov wcx.cbSize,50h ;sizeof(WNDCLASSEX)
 mov wcx.style,3 ;CS_HREDRAW | CS_VREDRAW;
@@ -51,7 +50,8 @@ je lbl_RegisterClass_Err
 mov wcx.style,2Bh ;CS_HREDRAW | CS_VREDRAW | CS_OWNDC | CS_DBLCLKS
 lea rax,Child2DWndProc
 mov wcx.lpfnWndProc,rax
-mov wcx.lpszMenuName,0
+mov wcx.cbWndExtra,8 ;The class structure should reserve extra space in the window structure. With this space, the application can associate data, such as a filename, with a particular child window
+mov wcx.lpszMenuName,0 ;The menu name should be NULL, because an MDI child window cannot have its own menu
 lea rax,szChild2DClassName
 mov wcx.lpszClassName,rax
 
@@ -101,7 +101,6 @@ call UpdateWindow
 ;Initialize the Object
 Call SetVertices
 Call SetPolygons
-;Call SetTextures must be in InitGL
 
 ;sphere for vertex selection
 call gluNewQuadric

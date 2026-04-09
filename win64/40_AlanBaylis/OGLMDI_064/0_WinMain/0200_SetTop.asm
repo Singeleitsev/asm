@@ -43,9 +43,9 @@ Call glRotatef
 
 ;Red Top
 movss xmm0,f32_1
-xorps xmm1,xmm0
+xorps xmm1,xmm1
 xorps xmm2,xmm2
-movss xmm3,xmm2
+movss xmm3,xmm0
 call glColor4f
 
 Call Draw2DScene

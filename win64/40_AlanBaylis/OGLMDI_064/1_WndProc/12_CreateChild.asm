@@ -19,18 +19,6 @@ mov rdi,lpChildStruct
 mov rcx,6 ;30h bytes = 6 qwords
 rep stosq
 
-;Compute childID
-movzx rax,g_iNumChild
-add rax,ID_MDI_FIRSTCHILD ;3000h+g_iNumChild
-mov childID,rax
-
-;ZeroMemory(&cs, sizeof(CREATESTRUCT));
-cld
-xor rax,rax
-lea rdi,csa ;CREATESTRUCT64
-mov rcx,0Ah ;50h bytes = 0Ah qwords
-rep stosq
-
 ;ReStore child window type
 xor rcx,rcx
 mov ecx,bType
@@ -71,24 +59,27 @@ lea r8,szWindowTitle3D
 ;jmp lbl_CreateChild_Go
 
 lbl_CreateChild_Go:
-mov rcx,40h ;WS_EX_MDICHILD
+;https://learn.microsoft.com/en-us/windows/win32/winmsg/using-the-multiple-document-interface
 ;lea rdx,g_szChildClassName
+mov mcs.szClass,rdx
 ;lea r8,szWindowTitle
-mov r9,56cf0000h ;WS_CHILD|WS_VISIBLE|WS_OVERLAPPEDWINDOW+WS_CLIPCHILDREN+WS_CLIPSIBLINGS
-mov rax,80000000h ;CW_USEDEFAULT
-mov qword ptr[rsp+20h],rax
-mov qword ptr[rsp+28h],rax
-mov qword ptr[rsp+30h],rax
-mov qword ptr[rsp+38h],rax
-mov rax,g_hMDIClient
-mov qword ptr[rsp+40h],rax
-mov rax,childID
-mov qword ptr[rsp+48h],rax
+mov mcs.szTitle,r8
 mov rax,g_hInst
-mov qword ptr[rsp+50h],rax
-lea rax,csa ;CREATESTRUCT64
-mov qword ptr[rsp+58h],rax
-Call CreateWindowExA
+mov mcs.hOwner,rax
+mov rax,80000000h ;CW_USEDEFAULT
+mov mcs.x,eax
+mov mcs.y,eax
+mov mcs.cxWidth,eax
+mov mcs.cyHeight,eax
+mov mcs.style,0 ;<--- WS_EX_MDICHILD = 40h
+mov mcs.lParam,0
+
+;hwnd = (HWND) SendMessage (hwndMDIClient, WM_MDICREATE, 0, (LONG) (LPMDICREATESTRUCT) &mcs);
+mov rcx,g_hMDIClient
+mov rdx,220h ;WM_MDICREATE
+xor r8,r8
+lea r9,mcs
+call SendMessageA
 ;mov hChild,rax
 cmp rax,0 ;hChild
 je lbl_CreateChild_Err
@@ -96,8 +87,20 @@ je lbl_CreateChild_Err
 mov rdi,lpChildStruct
 mov qword ptr[rdi],rax ;g_child[g_iNumChild].hWnd = hChild
 
+mov rdi,lpChildStruct
+mov rcx,qword ptr[rdi] ;hChild
+call GetParent
+cmp rax, g_hMDIClient
+jne lbl_CreateChild_ParentMisMatch
+
+mov rdi,lpChildStruct
+mov rcx,qword ptr[rdi] ;hChild
+mov rdx,-16 ;GWL_STYLE
+call GetWindowLongA
+test eax,80000h
+jz lbl_CreateChild_NoSysMenu
+
 ;Set child window device context
-;mov rcx,rax ;hChild
 mov rdi,lpChildStruct
 mov rcx,qword ptr[rdi] ;hChild
 Call GetDC
@@ -106,13 +109,7 @@ je lbl_CreateChild_DC_Err
 mov rdi,lpChildStruct
 mov qword ptr[rdi+8],rax ;hDC
 
-;ZeroMemory(&pfd, sizeof(pfd));
-cld
-xor rax,rax
-lea rdi,pfd
-mov rcx,28h ;SizeOf pfd
-rep stosb
-
+;PIXELFORMATDESCRIPTOR64
 mov pfd.nSize,28h ;sizeof pfd
 mov pfd.nVersion,1
 mov pfd.dwFlags,25h ;PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER
@@ -148,9 +145,14 @@ cmp rax,0
 je lbl_CreateChild_MakeCurrent_Err
 
 include 13_InitGL.asm
-Call SetTextures
+include 14_0_SetTextures.asm
 
+;Save ChildID to g_child
+movzx rax,g_iNumChild
+mov rdi,lpChildStruct
+mov byte ptr[rdi+29h],al
 ;Increment the number of children
 inc g_iNumChild
+
 jmp lbl_WndProc_Return0
 

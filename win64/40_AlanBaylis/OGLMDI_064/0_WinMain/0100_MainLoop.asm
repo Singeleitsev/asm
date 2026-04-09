@@ -94,7 +94,7 @@ include 0230_Set3D.asm
 
 lbl_WinMain_Flush:
 call glFlush
-mov rsi,lpChildStruct ;hWnd
+mov rsi,lpChildStruct
 mov rcx,qword ptr[rsi+8] ;hDC
 call SwapBuffers
 

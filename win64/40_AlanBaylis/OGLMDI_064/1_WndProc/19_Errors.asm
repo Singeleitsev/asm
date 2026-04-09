@@ -5,6 +5,10 @@ lbl_CreateMenuMain_Err:
 lea rdx,szCreateMenuMain_Err ;Main Menu creation failed
 jmp lbl_WndProc_ShowErrorMessage
 
+lbl_CreateSubMenu_Err:
+lea rdx,szCreateSubMenu_Err ;SubMenu creation failed
+jmp lbl_WndProc_ShowErrorMessage
+
 ;Client Window Errors
 lbl_CreateMDIClient_Err:
 lea rdx,szCreateMDIClient_Err ;MDI Client Window creation failed
@@ -21,6 +25,14 @@ jmp lbl_WndProc_ShowErrorMessage
 
 lbl_CreateChild_Err:
 lea rdx,szCreateChild_Err ;Child Window creation failed
+jmp lbl_WndProc_ShowErrorMessage
+
+lbl_CreateChild_NoSysMenu:
+lea rdx,szCreateChild_NoSysMenu ;No SysMenu for Child Window
+jmp lbl_WndProc_ShowErrorMessage
+
+lbl_CreateChild_ParentMisMatch:
+lea rdx,szCreateChild_ParentMisMatch ;Parent MisMatch
 jmp lbl_WndProc_ShowErrorMessage
 
 lbl_CreateChild_DC_Err:

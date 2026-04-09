@@ -66,7 +66,7 @@ jmp lbl_SetTextures_ShowErrorMessage
 ;Show Message and Quit
 lbl_SetTextures_ShowErrorMessage:
 xor rcx,rcx
-lea r8,sz_SetTextures
+lea r8,szSetTextures
 mov r9,30h ;MB_OK|MB_ICONEXCLAMATION
 call MessageBoxA
 xor rax,rax

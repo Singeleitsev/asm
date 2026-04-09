@@ -9,5 +9,5 @@ mov rax,lParam
 mov qword ptr[rsp+20h],rax
 call DefFrameProcA
 
-jmp lbl_WndProc_Return0
+jmp lbl_WndProc_End
 
