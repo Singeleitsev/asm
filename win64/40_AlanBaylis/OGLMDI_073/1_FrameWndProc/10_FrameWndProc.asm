@@ -24,8 +24,6 @@ mov lParam,r9
 ;Arranged by Probability
 cmp dx,111h ;WM_COMMAND
 je lbl_FrameWndProc_Command
-;cmp dx,112h ;WM_SYSCOMMAND
-;je lbl_FrameWndProc_SysCommand
 cmp dx,10h ;WM_CLOSE
 je lbl_FrameWndProc_Close
 cmp dx,2 ;WM_DESTROY
@@ -47,7 +45,6 @@ jmp lbl_FrameWndProc_End
 include 11_001_0_Create.asm
 include 11_010_Close.asm
 include 11_111_Command.asm
-;include 11_112_SysCommand.asm
 
 lbl_FrameWndProc_Destroy:
 xor rcx,rcx

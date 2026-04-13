@@ -302,6 +302,7 @@ CM_EDIT_PASTE equ 1112h
 CM_WINDOW_TILEVERT equ 1200h
 CM_WINDOW_TILEHORZ equ 1201h
 CM_WINDOW_CASCADE equ 1202h
+CM_HELP_ABOUT equ 9001h
 
 ;Projections
 CHILD_TYPE_TOP equ 0 ;XZ (Top) ortho view
@@ -324,10 +325,10 @@ szClassChild3D DB 'ClassChild3D',0
 
 ;Menu Names
 szMenuFile db '&File',0
-szMenuFileNewTop db 'New &Top View',0
-szMenuFileNewFront db 'New &Front View',0
-szMenuFileNewLeft db 'New &Left View',0
-szMenuFileNew3D db '&New 3D',0
+szMenuFileNewTop db 'New &Top View',9,'Ctrl+1',0
+szMenuFileNewFront db 'New &Front View',9,'Ctrl+2',0
+szMenuFileNewLeft db 'New &Left View',9,'Ctrl+3',0
+szMenuFileNew3D db '&New 3D View',9,'Ctrl+4',0
 szMenuFileOpen db '&Open...',0
 szMenuFileSave db '&Save',0
 szMenuFileSaveAs db 'Save &As...',0
@@ -342,14 +343,22 @@ szMenuWindow db '&Window',0
 szMenuWindowTileVert db 'Tile &Vertical',0
 szMenuWindowTileHorz db  'Tile &Horizontal',0
 szMenuWindowCascade db '&Cascade',0
+szMenuHelp db '&Help',0
+szMenuHelpAbout db '&About',0
+
+;About
+szAbout db 'Win32 (x64) MDI application',0Ah,0Dh
+db 'with OpenGL compatible child windows',0Ah,0Dh
+db 'Based on the great application',0Ah,0Dh
+db 'Copyright © 24/01/2001, Alan Baylis, All Rights Reserved',0
+
+;Debug Messages
+szLocator db 'I am here!',0
 
 ;Format
 ;szFormatString db '%s',0
 ;szFormatDecimal db '%d',0
 ;szFormatFloat db '%f',0
-
-;Debug Messages
-szLocator db 'I am here!',0
 
 ;Error Messages
 ;WinMain
@@ -367,6 +376,7 @@ szCreateMDIClient_Err db 'MDI Client Window creation failed',0
 szChildrenOverflow_Err db 'The number of children has reached the maximum',0
 ;CreateChild
 szCreateChild db 'CreateChild',0
+szChildrenOverflow db 'The number of children has reached the maximum',0
 szChildType_Err db 'Improper Child Type',0
 szCreateChild_Err db 'Child Window creation failed',0
 szCreateChild_ParentMisMatch db 'Child Window Parent MisMatch',0
@@ -457,6 +467,8 @@ hMenuWindow dq 0
 hMenuWindowTileVert dq 0
 hMenuWindowTileHorz dq 0
 hMenuWindowCascade dq 0
+hMenuHelp dq 0
+hMenuHelpAbout dq 0
 hAccTable dq 0
 
 ;Font
@@ -584,7 +596,4 @@ include 4_DrawScene\420_Draw2DProc.asm
 include 4_DrawScene\430_Draw3DProc.asm
 include 4_DrawScene\490_PurgeProc.asm
 
-;include 500_DrawWin32Text.asm
-
 end
-

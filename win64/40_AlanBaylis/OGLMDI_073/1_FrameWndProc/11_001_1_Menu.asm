@@ -156,6 +156,25 @@ mov r8,CM_WINDOW_CASCADE
 lea r9,szMenuWindowCascade
 call AppendMenuA
 
+;3
+;Help
+call CreatePopupMenu
+mov hMenuHelp,rax
+
+;Append Help submenu
+mov rcx,hMenuMain
+mov rdx,10h ;MF_POPUP or MF_STRING
+mov r8,hMenuHelp
+lea r9,szMenuHelp
+call AppendMenuA
+
+mov rcx,hMenuHelp
+xor rdx,rdx ;MF_STRING or MF_ENABLED
+mov r8,CM_HELP_ABOUT
+lea r9,szMenuHelpAbout
+call AppendMenuA
+
+
 ;Attach the menu to the window
 mov rcx,hWnd
 mov rdx,hMenuMain

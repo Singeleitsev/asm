@@ -19,7 +19,7 @@
 
 ;mov dword ptr[rcx+18h],9 ;accel.fVirt = FVIRTKEY | FCONTROL = 1 + 8
 ;mov dword ptr[rcx+1Ah],57h ;accel.key = W
-;mov dword ptr[rcx+1Ch],CM_FILE_EXIT ;accel.cmd
+;mov dword ptr[rcx+1Ch],CM_FILE_CLOSE ;accel.cmd
 
 lea rcx,accel
 mov rdx,5 ;The number of ACCEL structures in the array

@@ -35,6 +35,8 @@ cmp r8w,CM_WINDOW_TILEHORZ
 je lbl_FrameWndProc_Command_WindowTileHorz
 cmp r8w,CM_WINDOW_CASCADE
 je lbl_FrameWndProc_Command_WindowCascade
+cmp r8w,CM_HELP_ABOUT
+je lbl_FrameWndProc_Help_About
 
 ;None of the Above
 lbl_FrameWndProc_Command_Default: ;Keep this Label
@@ -63,11 +65,7 @@ call SendMessageA
 ;...and then to DefFrameProc
 jmp lbl_DefFrameProc
 
-
-
 include 12_CreateChild.asm
-
-
 
 lbl_FrameWndProc_Command_WindowTileVert:
 mov rcx,g_hWndClient
@@ -91,5 +89,13 @@ mov rdx,227h ;WM_MDICASCADE
 mov r8,2 ;MDITILE_SKIPDISABLED
 xor r9,r9
 Call SendMessageA
+jmp lbl_FrameWndProc_Return0
+
+lbl_FrameWndProc_Help_About:
+mov rcx,hWnd
+lea rdx,szAbout
+lea r8,szTitleFrame
+mov r9,30h ;MB_OK|MB_ICONEXCLAMATION
+call MessageBoxA
 jmp lbl_FrameWndProc_Return0
 

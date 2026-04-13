@@ -24,7 +24,7 @@ jmp lbl_FrameWndProc_ShowErrorMessage
 
 ;Child Window Errors
 lbl_ChildrenOverflow_Err:
-lea rdx,szRegisterClass_Err ;The number of children has reached the maximum
+lea rdx,szChildrenOverflow_Err ;The number of children has reached the maximum
 jmp lbl_FrameWndProc_ShowErrorMessage
 
 lbl_ChildType_Err:
