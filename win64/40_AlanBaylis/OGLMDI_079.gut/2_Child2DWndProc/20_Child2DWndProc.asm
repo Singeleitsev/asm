@@ -1,8 +1,6 @@
-Child3DWndProc proc hWnd:QWORD,uMessage:QWORD,wParam:QWORD,lParam:QWORD
+Child2DWndProc proc hWnd:QWORD,uMessage:QWORD,wParam:QWORD,lParam:QWORD
 
 LOCAL lpChildStruct:QWORD
-LOCAL hChild3DMenu:QWORD,hChild3DSubMenu:QWORD
-LOCAL uEnableFlag:QWORD
 
 ;Prologue
 push rbp
@@ -35,59 +33,60 @@ mov byte ptr[rdi+29h],al ;iThisChild
 mov rdx,uMessage
 ;Arranged by Probability
 cmp dx,200h ;WM_MOUSEMOVE
-je lbl_Child3D_MouseMove
+je lbl_Child2D_MouseMove
 cmp dx,201h ;WM_LBUTTONDOWN
-je lbl_Child3D_LButtonDown
+je lbl_Child2D_LButtonDown
 cmp dx,202h ;WM_LBUTTONUP
-je lbl_Child3D_LButtonUp
+je lbl_Child2D_LButtonUp
 cmp dx,100h ;WM_KEYDOWN
-je lbl_Child3D_KeyDown
+je lbl_Child2D_KeyDown
 cmp dx,101h ;WM_KEYUP
-je lbl_Child3D_KeyUp
+je lbl_Child2D_KeyUp
 ;cmp dx,111h ;WM_COMMAND
-;je lbl_Child3D_Command
+;je lbl_Child2D_Command
 cmp dx,5 ;WM_SIZE
-je lbl_Child3D_Size
+je lbl_Child2D_Size
 cmp dx,222h ;WM_MDIACTIVATE
-je lbl_Child3D_MDIActivate
+je lbl_Child2D_MDIActivate
 cmp dx,10h ;WM_CLOSE
-je lbl_Child3D_Close
+je lbl_Child2D_Close
 ;cmp dx,2 ;WM_DESTROY
-;je lbl_Child3D_Destroy
+;je lbl_Child2D_Destroy
 
 ;None of the Above:
-lbl_Child3D_DefMDIChildProc: ;Keep this Label
+lbl_Child2D_DefMDIChildProc: ;Keep this Label
 mov rcx,hWnd
 mov rdx,uMessage
 mov r8,wParam
 mov r9,lParam
 Call DefMDIChildProcA
-jmp lbl_Child3D_End ;Keep this Label
+jmp lbl_Child2D_End ;Keep this Label
 
-include 31_005_Size.asm
-include 31_010_Close.asm
-include 31_100_KeyDown.asm
-include 31_101_KeyUp.asm
-include 31_111_Command.asm
-include 31_200_MouseMove.asm
-include 31_201_LButtonDown.asm
-include 31_202_LButtonUp.asm
-include 31_222_MDIActivate.asm
-include 39_Errors.asm
+include 21_005_Size.asm
+include 21_010_Close.asm
+include 21_100_KeyDown.asm
+include 21_101_KeyUp.asm
+include 21_111_Command.asm
+include 21_200_MouseMove.asm
+include 21_201_LButtonDown.asm
+include 21_202_LButtonUp.asm
+include 21_222_MDIActivate.asm
+include 29_Errors.asm
 
-;lbl_Child3D_Destroy:
-;If sometime there is a specific menu for Child3D
+
+;lbl_Child2D_Destroy:
+;If sometime there is a specific menu for Child2D
 ;Then don't forget this:
-;mov rcx,hMenuChild3D
+;mov rcx,hMenuChild2D
 ;call DestroyMenu
-;jmp lbl_Child3D_Return0
+;jmp lbl_Child2D_Return0
 
-lbl_Child3D_Return0:
+lbl_Child2D_Return0:
 xor rax,rax
 
-lbl_Child3D_End:
+lbl_Child2D_End:
 ;Epilogue
 leave
 ret
-Child3DWndProc endp
+Child2DWndProc endp
 

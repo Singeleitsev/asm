@@ -251,6 +251,7 @@ POLYGON ENDS
 f32_neg500 DD 0c3fa0000h ;-500
 f32_neg100 DD 0c2c80000h ;-100
 ;f32_neg90 DD 0c2b40000h ;-90
+;f32_neg0p5 DD 0bf000000h ;-0.5
 f32_neg0p001 DD 0ba83126fh ;-0.001
 ;f32_0 DD 0 ;0
 f32_0p001 dd 3a83126fh ;0.001
@@ -270,9 +271,9 @@ f32_200 DD 043480000h ;200
 f32_1000 dd 447a0000h ;1000.0f
 f32_10000 dd 461c4000h ;10000.0f
 
-f64_neg2000 DQ 0c09f400000000000r ;-2000
-f64_neg1 DQ 0bff0000000000000r ;-1
-f64_neg0p5 DQ 0bfe0000000000000r ;-0.5
+f64_neg2000 DQ 0c09f400000000000h ;-2000
+f64_neg1 DQ 0bff0000000000000h ;-1
+f64_neg0p5 DQ 0bfe0000000000000h ;-0.5
 f64_neg0p001 DQ 03f50624dd2f1a9fch ;0.001
 f64_0p5 DQ 03fe0000000000000h ;0.5
 f64_1 DQ 03ff0000000000000h ;1
@@ -447,7 +448,6 @@ g_hWndClient dq 0
 
 ;Menu
 hMenuMain dq 0
-hMenuSub dq 0
 hMenuFile dq 0
 hMenuFileNewTop dq 0
 hMenuFileNewFront dq 0
@@ -500,11 +500,8 @@ g_iMouseLastY2 dd 0
 g_iMouseDeltaX2 dd 0
 g_iMouseDeltaY2 dd 0
 
-;Positioning
-VerticalShift dd 0
-HorizontalShift dd 0
-
 ;Scene
+g_IsRefreshed db 0 ;Prevents from rebuilding unchanged scene
 VertexNumber db 0
 ShortestDistance DD 2710h ;10000
 
@@ -590,10 +587,11 @@ include 3_Child3DWndProc\30_Child3DWndProc.asm
 ;include 31_222_MDIActivate.asm
 ;include 39_Errors.asm
 
-include 4_DrawScene\400_SetVerticesProc.asm
-include 4_DrawScene\401_SetPolygonsProc.asm
-include 4_DrawScene\420_Draw2DProc.asm
-include 4_DrawScene\430_Draw3DProc.asm
-include 4_DrawScene\490_PurgeProc.asm
+include 4_MiscProc\400_SetVerticesProc.asm
+include 4_MiscProc\401_SetPolygonsProc.asm
+include 4_MiscProc\420_Draw2DProc.asm
+include 4_MiscProc\430_Draw3DProc.asm
+include 4_MiscProc\440_MenuUpdateProc.asm
+include 4_MiscProc\490_PurgeProc.asm
 
 end

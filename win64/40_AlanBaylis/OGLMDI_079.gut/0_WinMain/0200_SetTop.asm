@@ -1,4 +1,4 @@
-lbl_SetFront:
+lbl_SetTop:
 
 ;Set2DProjection
 xor rcx,rcx
@@ -15,29 +15,35 @@ Call glMatrixMode
 
 Call glLoadIdentity
 
-;Draw2DSceneFront
+;Draw2DSceneTop
 mov rsi,lpChildStruct
 mov eax,dword ptr[rsi+20h] ;right
-shr eax,1 ;eax = iWidth * 0.5
+cvtsi2sd xmm1,eax ;xmm1 = float(iWidth)
+mulsd xmm1,f64_0p5 ;xmm1 = iWidth * ZoomTop
 xorpd xmm0,xmm0
-cvtsi2sd xmm1,eax ;xmm1 = iWidth * 0.5
-subsd xmm0,xmm1 ;xmm0 = -iWidth * 0.5
+subsd xmm0,xmm1 ;xmm0 = -iWidth * ZoomTop
 mov ebx,dword ptr[rsi+24h] ;bottom
-shr ebx,1 ;ebx = iHeight * 0.5
+cvtsi2sd xmm3,ebx ;xmm3 = float(iWidth)
+mulsd xmm3,f64_0p5 ;xmm3 = iWidth * ZoomTop
 xorpd xmm2,xmm2
-cvtsi2sd xmm3,ebx ;xmm3 = iHeight * 0.5
-subsd xmm2,xmm3 ;xmm2 = -iHeight * 0.5
+subsd xmm2,xmm3 ;xmm2 = -iWidth * ZoomTop
 mov rax,f64_neg2000
 mov qword ptr [rsp+20h],rax
 mov rbx,f64_2000
 mov qword ptr [rsp+28h],rbx
 Call glOrtho ;(-iWidth * 0.5, iWidth * 0.5, -iHeight * 0.5, iHeight * 0.5, -2000, 2000);
 
-;Green Front
-xorps xmm0,xmm0
+movss xmm0,f32_90
 movss xmm1,f32_1
 xorps xmm2,xmm2
-movss xmm3,xmm1
+xorps xmm3,xmm3
+Call glRotatef
+
+;Red Top
+movss xmm0,f32_1
+xorps xmm1,xmm1
+xorps xmm2,xmm2
+movss xmm3,xmm0
 call glColor4f
 
 Call Draw2DScene

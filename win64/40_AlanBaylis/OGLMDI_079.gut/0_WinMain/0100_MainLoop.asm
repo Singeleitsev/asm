@@ -39,6 +39,9 @@ include 0_WinMain\0110_CheckKeys.asm
 ;ReDraw Child Windows
 lbl_PollChildren:
 
+cmp g_IsRefreshed,1
+je lbl_WinMain_Loop ;Skip if no changes
+
 cmp g_iNumChild,0 ;If we have some children
 je lbl_WinMain_Loop
 
@@ -91,6 +94,8 @@ include 0200_SetTop.asm
 include 0210_SetFront.asm
 include 0220_SetLeft.asm
 include 0230_Set3D.asm
+
+mov g_IsRefreshed,1
 
 lbl_WinMain_Flush:
 call glFlush

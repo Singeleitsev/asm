@@ -1,6 +1,7 @@
 ;case WM_MOUSEMOVE:
 lbl_Child3D_MouseMove:
 
+;If left mouse button is down
 cmp g_bMouseDrag,0
 je lbl_Child3D_Return0
 
@@ -29,6 +30,18 @@ mov g_iMouseDeltaY,ebx
 mov g_iMouseLastX,r8d
 ;g_iMouseLastY = HIWORD(lParam)
 mov g_iMouseLastY,r9d
+
+;Apply mouse deltas to cube rotation values
+;g_fCubeRotationX += (float)g_iMouseDeltaY * 0.5
+cvtsi2ss xmm0,g_iMouseDeltaY
+mulss xmm0,f32_0p5
+addss xmm0,g_fCubeRotationX
+movss g_fCubeRotationX,xmm0
+;g_fCubeRotationY += (float)g_iMouseDeltaX * 0.5
+cvtsi2ss xmm1, g_iMouseDeltaX
+mulss xmm1,f32_0p5
+addss xmm1,g_fCubeRotationY
+movss g_fCubeRotationY,xmm1
 
 jmp lbl_Child3D_Return0
 

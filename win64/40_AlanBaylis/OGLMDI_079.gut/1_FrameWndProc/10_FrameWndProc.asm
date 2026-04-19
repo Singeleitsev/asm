@@ -47,6 +47,8 @@ include 11_010_Close.asm
 include 11_111_Command.asm
 
 lbl_FrameWndProc_Destroy:
+mov rcx,hMenuMain
+call DestroyMenu
 xor rcx,rcx
 Call PostQuitMessage
 jmp lbl_FrameWndProc_Return0

@@ -63,6 +63,8 @@ add rdi,rbx
 cld
 rep stosb
 
+call MenuUpdate
+
 lbl_ChildStructPurge_End:
 ;Epilogue
 leave

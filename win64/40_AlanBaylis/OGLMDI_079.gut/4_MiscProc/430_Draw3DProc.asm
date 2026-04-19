@@ -22,6 +22,10 @@ inc cl
 cmp cl,12
 jl lbl_Draw3D_StoreAddr
 
+;Draw3DScene
+mov rcx,4100H ;GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT
+Call glClear
+
 mov rcx,0de1H ;GL_TEXTURE_2D
 Call glEnable
 

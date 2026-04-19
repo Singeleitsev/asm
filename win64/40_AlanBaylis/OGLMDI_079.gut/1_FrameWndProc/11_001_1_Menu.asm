@@ -73,7 +73,7 @@ xor r9,r9
 call AppendMenuA
 
 mov rcx,hMenuFile
-xor rdx,rdx ;MF_STRING or MF_ENABLED
+mov rdx,1 ;MF_STRING or MF_GRAYED
 mov r8,CM_FILE_CLOSE
 lea r9,szMenuFileClose
 call AppendMenuA
@@ -130,6 +130,8 @@ call AppendMenuA
 ;Window (for MDI child list)
 call CreatePopupMenu
 mov hMenuWindow,rax
+;ChildList
+mov ccs.hWindowMenu,rax
 
 ;Append Window submenu
 mov rcx,hMenuMain
@@ -179,19 +181,6 @@ call AppendMenuA
 mov rcx,hWnd
 mov rdx,hMenuMain
 call SetMenu
-
-;Submenu
-;Find window menu where children will be listed
-;ccs.hMenuWindow = (HMENU)GetSubMenu(GetMenu(hWnd),2)
-;mov rcx,hWnd
-;Call GetMenu
-;mov rcx,rax
-mov rcx,hMenuMain
-mov rdx,2 ;Position of the "Window" menu
-Call GetSubMenu
-mov ccs.hWindowMenu,rax
-cmp rax,0
-je lbl_CreateSubMenu_Err
 
 mov rcx,hWnd
 Call DrawMenuBar

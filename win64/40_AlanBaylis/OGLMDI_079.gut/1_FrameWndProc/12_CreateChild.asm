@@ -195,8 +195,10 @@ include 14_0_SetTextures.asm
 movzx rax,g_iNumChild
 mov rdi,lpChildStruct
 mov byte ptr[rdi+29h],al
+
 ;Increment the number of children
 inc g_iNumChild
 
-jmp lbl_FrameWndProc_Return0
+call MenuUpdate
 
+jmp lbl_FrameWndProc_Return0
