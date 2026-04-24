@@ -1,9 +1,9 @@
 wmChild0Command:
 
 ;switch (wParam)
-cmp r8,IDM_VIEW_BLACK
+cmp r8w,IDM_VIEW_BLACK
 jl lblChild0CmdRet0
-cmp r8,IDM_VIEW_WHITE
+cmp r8w,IDM_VIEW_WHITE
 jg lblChild0CmdRet0
 
 ;Change the text color

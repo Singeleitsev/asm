@@ -19,7 +19,7 @@ jne lbl_WinMain_MsgLoop
 mov rcx,g_hWndFrame
 mov rdx,g_hAccel
 lea r8,msg
-call TranslateAccelerator ;TranslateAcceleratorA
+call TranslateAcceleratorA
 cmp rax,0
 jne lbl_WinMain_MsgLoop
 

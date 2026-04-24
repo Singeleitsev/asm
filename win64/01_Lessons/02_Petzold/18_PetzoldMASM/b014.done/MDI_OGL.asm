@@ -13,6 +13,7 @@ includelib D:\bin\dev\asm\ml64\VS2019\lib\GlU32.Lib
 ;WinAPI
 AppendMenuA PROTO :QWORD,:QWORD,:QWORD,:QWORD
 BeginPaint PROTO :QWORD,:QWORD
+Beep PROTO :QWORD,:QWORD
 CheckMenuItem PROTO :QWORD,:QWORD,:QWORD
 CreateAcceleratorTableA PROTO :QWORD,:QWORD
 CreateMenu PROTO
@@ -59,11 +60,13 @@ SetTextColor PROTO :QWORD,:QWORD
 SetTimer PROTO :QWORD,:QWORD,:QWORD,:QWORD
 SetWindowLongPtrA PROTO :QWORD,:QWORD,:QWORD
 ShowWindow PROTO :QWORD,:QWORD
-TranslateMDISysAccel PROTO :QWORD,:QWORD
-;TranslateAcceleratorA PROTO :QWORD,:QWORD,:QWORD
-TranslateAccelerator PROTO :QWORD,:QWORD,:QWORD
+TranslateAcceleratorA PROTO :QWORD,:QWORD,:QWORD
 TranslateMessage PROTO :QWORD
+TranslateMDISysAccel PROTO :QWORD,:QWORD
 UpdateWindow PROTO :QWORD
+
+;Macros
+include 5_Misc\Spell.asm
 
 ;Structures
 WNDCLASSEX64 STRUCT
@@ -246,6 +249,7 @@ g_hMenuChild1_Window dq 0
 g_hAccel dq 0
 
 ;Debug Messages
+szShowCommand db "RDX: 0000.0000.0000.0000h",0
 ;szHeapAddress db "Heap Allocated at: 0000.0000.0000.0000h",0
 ;szGetWindow db "Got Window Handle: 0000.0000.0000.0000h",0
 ;szLastErr db "Last Error Code: 0000.0000.0000.0000h",0

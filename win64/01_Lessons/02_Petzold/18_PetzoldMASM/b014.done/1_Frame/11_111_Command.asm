@@ -1,21 +1,21 @@
 wmFrameCommand:
 
 ;switch (wParam)
-cmp r8,IDM_FILE_NEW_CHILD_0
+cmp r8w,IDM_FILE_NEW_CHILD_0
 je lbl_MenuFrame_FileNewChild0
-cmp r8,IDM_FILE_NEW_CHILD_1
+cmp r8w,IDM_FILE_NEW_CHILD_1
 je lbl_MenuFrame_FileNewChild1
-cmp r8,IDM_FILE_CLOSE
+cmp r8w,IDM_FILE_CLOSE
 je lbl_MenuFrame_FileClose
-cmp r8,IDM_FILE_EXIT
+cmp r8w,IDM_FILE_EXIT
 je lbl_MenuFrame_FileExit
-cmp r8,IDM_WINDOW_TILE
+cmp r8w,IDM_WINDOW_TILE
 je lbl_MenuFrame_WindowTile
-cmp r8,IDM_WINDOW_CASCADE
+cmp r8w,IDM_WINDOW_CASCADE
 je lbl_MenuFrame_WindowCascade
-cmp r8,IDM_WINDOW_ARRANGE
+cmp r8w,IDM_WINDOW_ARRANGE
 je lbl_MenuFrame_WindowArrange
-cmp r8,IDM_WINDOW_CLOSEALL
+cmp r8w,IDM_WINDOW_CLOSEALL
 je lbl_MenuFrame_WindowCloseAll
 ;jmp defFrmCmd
 
