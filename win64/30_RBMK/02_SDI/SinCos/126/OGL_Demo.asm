@@ -90,7 +90,7 @@ glFlush PROTO
 
 ;System Structures
 WNDCLASSEX64 STRUCT
-cbSize dd ?
+cbSize dd 50h
 style dd ?
 lpfnWndProc dq ?
 cbClsExtra dd ?
@@ -116,6 +116,7 @@ wParam dq ?
 lParam dq ?
 time dd ?
 pt POINT2D <>
+dummy1 dd 0
 MSG64 ENDS
 
 RECT64 STRUCT
@@ -179,7 +180,7 @@ MOUSE_MODE_CAMERA_PAN equ 3
 CAMERA_MODE_PLANAR equ 0
 CAMERA_MODE_SPATIAL equ 1
 
-;Menu ID's
+;Menu IDs
 IDM_APP_EXIT equ 10Fh
 IDM_CAMERA_MODE_PLANAR equ 200h
 IDM_CAMERA_MODE_SPATIAL equ 201h
