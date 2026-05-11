@@ -1,0 +1,26 @@
+Available Vulkan Layers:
+
+Layer 0:   Name: VK_LAYER_NV_optimus  Spec Version: 4211013  Implementation Version: 1  Description: NVIDIA Optimus layer
+
+Layer 1:   Name: VK_LAYER_NV_present  Spec Version: 4211013  Implementation Version: 1  Description: NVIDIA Presentation Layer
+
+Layer 2:   Name: VK_LAYER_EOS_Overlay  Spec Version: 4202632  Implementation Version: 1  Description: Vulkan overlay layer for Epic Online Services
+
+Layer 3:   Name: VK_LAYER_LUNARG_api_dump  Spec Version: 4211029  Implementation Version: 2  Description: LunarG API dump layer
+
+Layer 4:   Name: VK_LAYER_LUNARG_gfxreconstruct  Spec Version: 4211029  Implementation Version: 4194309  Description: GFXReconstruct Capture Layer Version 1.0.5
+
+Layer 5:   Name: VK_LAYER_KHRONOS_synchronization2  Spec Version: 4211029  Implementation Version: 1  Description: Khronos Synchronization2 layer
+
+Layer 6:   Name: VK_LAYER_KHRONOS_validation  Spec Version: 4211029  Implementation Version: 1  Description: Khronos Validation Layer
+
+Layer 7:   Name: VK_LAYER_LUNARG_monitor  Spec Version: 4211029  Implementation Version: 1  Description: Execution Monitoring Layer
+
+Layer 8:   Name: VK_LAYER_LUNARG_screenshot  Spec Version: 4211029  Implementation Version: 1  Description: LunarG image capture layer
+
+Layer 9:   Name: VK_LAYER_KHRONOS_profiles  Spec Version: 4211029  Implementation Version: 1  Description: Khronos Profiles layer
+
+Layer 10:   Name: VK_LAYER_KHRONOS_shader_object  Spec Version: 4211029  Implementation Version: 1  Description: Khronos Shader object layer
+
+Layer 11:   Name: VK_LAYER_LUNARG_crash_diagnostic  Spec Version: 4211029  Implementation Version: 1  Description: Crash Diagnostic Layer is a crash/hang debugging tool that helps determines GPU progress in a Vulkan application.
+
