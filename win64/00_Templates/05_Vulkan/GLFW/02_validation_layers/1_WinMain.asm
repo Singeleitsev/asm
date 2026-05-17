@@ -71,6 +71,7 @@ mov r8,ghAvailableLayers
 test r8,r8
 jz @f
 call HeapFree
+mov ghAvailableLayers,0
 @@:
 mov rcx,ghVkInstance
 test rcx,rcx

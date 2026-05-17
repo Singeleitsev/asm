@@ -26,13 +26,19 @@ mov appInfo.apiVersion,400000h
 
 ;Fill the VkInstanceCreateInfo Structure
 mov createInfo.sType,1 ;VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO
-lea rax,DebugCreateInfo
-mov createInfo.pNext,rax
+;Setting createInfo.pNext = 0 instead of DebugCreateInfo eliminates the crash
+;because it prevents vkCreateInstance from automatically creating a debug messenger.
+;Your explicit setupDebugMessenger call then creates exactly one messenger,
+;which your cleanup code properly destroys.
+;This avoids the double-free/use-after-free inside the validation layer that caused the crash.
+mov createInfo.pNext,0 ;rax
 mov createInfo.flags,0
 lea rax,appInfo
 mov createInfo.pApplicationInfo,rax
+;createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
 mov eax,nValidationLayersCount
 mov createInfo.enabledLayerCount,eax
+;createInfo.ppEnabledLayerNames = validationLayers.data();
 lea rax,gpValidationLayer0 ;Pointer to Array of Pointers to Validation Layer Names
 mov createInfo.ppEnabledLayerNames,rax
 lea rcx,glfwExtensionCount ;Load Address

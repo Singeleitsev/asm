@@ -73,8 +73,8 @@ glfwExtensionCount dd 0
 
 .code
 
-include 01_1_WinMain.asm
-include 01_2_createInstance.asm
+include 1_WinMain.asm
+include 2_createInstance.asm
 
 end
 
