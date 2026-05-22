@@ -1,6 +1,6 @@
 @echo off
 
-set AppName=Vulkan
+set AppName=Messenger
 set BinPath=D:\bin\dev\asm\ml64\VS2019\bin
 
 if exist %AppName%.obj del %AppName%.obj
