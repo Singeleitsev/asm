@@ -16,6 +16,9 @@ mov ghPrevInstance,rdx ;NULL
 mov gpCmdLine,r8
 mov gnCmdShow,r9
 
+call InitLogger
+LOG_TEXT szLogEnterWinMain
+
 ;Fill the rest of WNDCLASSEXA
 mov rax,ghInstance
 mov wcx_hInstance,rax
@@ -31,15 +34,18 @@ mov rdx,7F00h ;hCursor = IDC_ARROW = 32512 = 7F00h
 call LoadCursorA
 mov wcx_hCursor,rax
 ;Now call the Function
+LOG_TEXT szLogRegisterClass
 lea rcx,wcx_cbSize ;&wcx
 call RegisterClassExA
 test rax,rax
 jz lbl_ErrRegisterClass
 mov gnWndClass,rax
+LOG_TEXT szLogRegisterClassSuccess
 
 include 01_CreateMenu.asm
 
 ;Create the Window
+LOG_TEXT szLogCreateWindow
 mov rcx,40100h ;dwExStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE
 lea rdx,szMainWndClass
 lea r8,szMainWndTitle
@@ -58,19 +64,16 @@ call CreateWindowExA
 test rax,rax
 jz lbl_ErrCreateWindow
 mov ghWndMain,rax
+LOG_TEXT szLogCreateWindowSuccess
 
 include 02_CreateStatusBar.asm
-;include 03_InitializeGL.asm
-
-mov rcx,ghWndMain
-mov rdx,5 ;gnCmdShow fails
-call ShowWindow
 
 mov rcx,ghWndMain
 call UpdateWindow
-
+LOG_TEXT szLogWindowUpdated
 
 ;Enter the Loop
+LOG_TEXT szLogEnterMessageLoop
 lbl_WinMain_Loop:
 lea rcx,msg_hwnd ;lpMsg
 xor rdx,rdx ;All window messages and thread messages are processed
@@ -87,7 +90,7 @@ cmp isActive,0 ;No Messages. Is the Window Active?
 je lbl_WinMain_Loop
 
 ;lbl_WinMain_ReDraw:
-;call DrawScene ;No Messages. The Window is Active
+call DrawScene ;No Messages. The Window is Active
 jmp lbl_WinMain_Loop
 
 lbl_WinMain_ProceedMessage:
@@ -138,6 +141,8 @@ xor rax,rax
 ;jmp lbl_WinMain_End
 
 lbl_WinMain_End:
+LOG_TEXT szLogExitProcess
+call CloseLogger
 ;Epilogue
 xor rcx,rcx
 call ExitProcess
