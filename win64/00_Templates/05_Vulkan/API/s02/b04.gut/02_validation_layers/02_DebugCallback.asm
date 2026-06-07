@@ -19,10 +19,15 @@ mov rax,qword ptr[r8+28h] ;VkDebugUtilsMessengerCallbackDataEXT.pMessage
 test rax,rax
 jz lbl_DebugCallback_Return0
 
-LOG_TEXT sz_vkCreateDebugUtilsMessengerEXT
+LOG_TEXT szCRLF
+mov rcx,pCallbackData
+mov rcx,qword ptr[rcx+28h] ;VkDebugUtilsMessengerCallbackDataEXT.pMessage
+call WriteLog
+LOG_TEXT szCRLF
 
 xor rcx,rcx
-mov rdx,rax ;lpText = pMessage
+mov rdx,pCallbackData
+mov rdx,qword ptr[rdx+28h] ;VkDebugUtilsMessengerCallbackDataEXT.pMessage
 lea r8,sz_vkCreateDebugUtilsMessengerEXT ;lpCaption
 mov r9d,40h ;uType = MB_OK | MB_ICONINFORMATION (0x40)
 call MessageBoxA
@@ -35,4 +40,3 @@ lbl_DebugCallback_End:
 leave
 ret
 DebugCallback endp
-

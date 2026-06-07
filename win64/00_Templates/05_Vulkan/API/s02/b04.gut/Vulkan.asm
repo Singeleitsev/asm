@@ -309,6 +309,7 @@ szLogVkDestroyDebugUtilsMessengerEXT db "vkDestroyDebugUtilsMessengerEXT",0
 ;Results
 szOK db ": OK",0Dh,0Ah,0
 szErrCode db " Error: 0x0000",0Dh,0Ah,0
+szCRLF db 0Dh,0Ah,0
 
 .code
 
