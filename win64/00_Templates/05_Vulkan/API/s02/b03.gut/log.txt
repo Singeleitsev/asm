@@ -5,9 +5,15 @@ CreateMenu: OK
 CreateAcceleratorTable: OK
 CreateWindow: OK
 CreateStatusBar: OK
+vkCreateInstance: OK
+vkGetInstanceProcAddr: OK
+vkCreateDebugUtilsMessengerEXT: OK
 UpdateWindow: OK
 Entering Message Loop
 DrawScene called
 WM_CLOSE received
+vkGetInstanceProcAddr: OK
+vkDestroyDebugUtilsMessengerEXT: OK
+vkDestroyInstance: OK
 WM_DESTROY received
 Calling ExitProcess

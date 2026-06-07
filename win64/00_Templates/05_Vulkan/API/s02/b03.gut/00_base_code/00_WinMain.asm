@@ -71,6 +71,7 @@ LOG_TEXT szOK
 include 03_CreateStatusBar.asm
 
 call createInstance
+call createDebugMessenger
 
 LOG_TEXT szLogUpdateWindow
 mov rcx,ghWndMain

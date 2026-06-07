@@ -205,6 +205,7 @@ xStatusProportions dd 102,204,307,430,552,675,788,901 ;8 Constants
 ;Vulkan
 vkInstance dq 0
 pfnCreateDebugUtilsMessenger dq 0 ;Function Pointer
+pfnDestroyDebugUtilsMessenger dq 0
 vkDebugMessenger dq 0 ;Messenger Handle
 
 ;Log

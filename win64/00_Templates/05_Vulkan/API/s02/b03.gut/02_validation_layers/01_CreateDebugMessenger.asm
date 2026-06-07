@@ -8,7 +8,7 @@ mov rbp,rsp
 and rsp,-16 ;Align the Stack
 sub rsp,100h ;Create the Buffer
 
-;1. Get function pointer
+;1. Get the Function Pointer
 LOG_TEXT szLogVkGetInstanceProcAddr
 mov rcx,vkInstance
 lea rdx,sz_vkCreateDebugUtilsMessengerEXT ;String Constant

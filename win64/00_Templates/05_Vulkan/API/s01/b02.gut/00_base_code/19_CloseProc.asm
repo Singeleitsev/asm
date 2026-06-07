@@ -17,8 +17,10 @@ Call MessageBoxA
 cmp rax,6 ;IDYES
 jne lbl_CloseWndProc_End
 
+call destroyInstance
+
 mov rcx,ghWndMain
-Call DestroyWindow
+call DestroyWindow
 
 lbl_CloseWndProc_End:
 ;Epilogue:

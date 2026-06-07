@@ -246,6 +246,7 @@ szLogGetClientRect db "GetClientRect",0
 
 ;Vulkan
 szLogVkCreateInstance db "vkCreateInstance",0
+szLogVkDestroyInstance db "vkDestroyInstance",0
 
 ;Results
 szOK db ": OK",0Dh,0Ah,0
