@@ -1,0 +1,20 @@
+Application Started
+Entering WinMain
+RegisterClass: OK
+CreateMenu: OK
+CreateAcceleratorTable: OK
+CreateWindow: OK
+CreateStatusBar: OK
+vkCreateInstance: OK
+vkGetInstanceProcAddr: OK
+vkCreateDebugUtilsMessengerEXT: OK
+UpdateWindow: OK
+Entering Message Loop
+DrawScene called
+WM_CLOSE received
+vkDestroyInstance
+vkDestroyInstance(): Object Tracking - For VkInstance 0x1d1d8525a60, VkDebugUtilsMessengerEXT 0x10000000001 has not been destroyed.
+The Vulkan spec states: All child objects that were created with instance or with a VkPhysicalDevice retrieved from it, and that can be destroyed or freed, must have been destroyed or freed prior to destroying instance (https://docs.vulkan.org/spec/latest/chapters/initialization.html#VUID-vkDestroyInstance-instance-00629)
+: OK
+WM_DESTROY received
+Calling ExitProcess
