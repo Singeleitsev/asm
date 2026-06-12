@@ -1,0 +1,2 @@
+extern vkCreateRenderPass:proc
+extern vkDestroyRenderPass:proc

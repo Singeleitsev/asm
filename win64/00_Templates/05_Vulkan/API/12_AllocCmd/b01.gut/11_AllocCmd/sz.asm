@@ -1,0 +1,10 @@
+;Log
+szLogVkCreateCommandPool db "vkCreateCommandPool",0
+szLogVkDestroyCommandPool db "vkDestroyCommandPool",0
+szLogVkCreateSemaphoreImageAvailable db "vkCreateSemaphoreImageAvailable",0
+szLogVkDestroySemaphoreImageAvailable db "vkDestroySemaphoreImageAvailable",0
+szLogVkCreateSemaphoreRenderFinished db "vkCreateSemaphoreRenderFinished",0
+szLogVkDestroySemaphoreRenderFinished db "vkDestroySemaphoreRenderFinished",0
+szLogVkCreateFence db "vkCreateFence",0
+szLogVkDestroyFence db "vkDestroyFence",0
+szLogVkAllocateCommandBuffers db "vkAllocateCommandBuffers",0

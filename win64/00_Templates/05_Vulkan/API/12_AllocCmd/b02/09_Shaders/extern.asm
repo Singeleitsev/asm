@@ -1,0 +1,2 @@
+extern vkCreateShaderModule:proc
+extern vkDestroyShaderModule:proc

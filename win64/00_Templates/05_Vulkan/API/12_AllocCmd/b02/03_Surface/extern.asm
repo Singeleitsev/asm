@@ -1,0 +1,2 @@
+extern vkCreateWin32SurfaceKHR:proc
+extern vkDestroySurfaceKHR:proc

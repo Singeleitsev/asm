@@ -1,0 +1,3 @@
+;Menu IDs
+IDM_APP_EXIT equ 10Fh
+IDM_HELP_ABOUT equ 0F01h

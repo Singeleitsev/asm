@@ -1,0 +1,3 @@
+extern vkCreateDevice:proc
+extern vkDestroyDevice:proc
+extern vkGetDeviceQueue:proc

@@ -1,0 +1,2 @@
+extern vkCreateGraphicsPipelines:proc
+extern vkDestroyPipeline:proc

@@ -1,0 +1,2 @@
+extern vkCreateInstance:proc
+extern vkDestroyInstance:proc
