@@ -1,2 +1,0 @@
-extern vkGetPhysicalDeviceQueueFamilyProperties:proc
-extern vkGetPhysicalDeviceSurfaceSupportKHR:proc
