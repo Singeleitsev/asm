@@ -1,2 +1,0 @@
-extern vkEnumeratePhysicalDevices:proc
-extern vkGetPhysicalDeviceProperties:proc
