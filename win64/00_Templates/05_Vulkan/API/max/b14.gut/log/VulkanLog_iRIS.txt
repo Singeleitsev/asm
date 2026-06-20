@@ -1,0 +1,20 @@
+Application Started
+Entering WinMain
+RegisterClass: OK
+CreateMenu: OK
+CreateAcceleratorTable: OK
+CreateWindow: OK
+CreateStatusBar: OK
+vkEnumerateInstanceLayerProperties - First Pass: OK
+Memory Allocating: OK
+vkEnumerateInstanceLayerProperties - Second Pass: OK
+Memory Allocating: OK
+VK_LAYER_KHRONOS_validation is found
+vkEnumerateInstanceExtensionProperties - First Pass: OK
+Memory Allocating: OK
+vkEnumerateInstanceExtensionProperties - Second Pass: OK
+Memory Allocating: OK
+VK_EXT_debug_utils is found
+VK_KHR_surface is found
+VK_KHR_win32_surface is found
+vkCreateInstance

@@ -1,0 +1,20 @@
+Physical Device Properties:
+Device 0: 
+apiVersion:4211013
+driverVersion:2480242688
+vendorID:000010DE
+deviceID:00001F82
+deviceType:Discrete GPU
+deviceName:NVIDIA GeForce GTX 1650
+pipelineCacheUUID:E1 B1 51 61 91 A1 51 31 A1 F1 D1 C1 21 01 31 C1
+limits and sparseProperties: (skipped for brevity)
+
+Device 1: 
+apiVersion:4206807
+driverVersion:1656895
+vendorID:00008086
+deviceID:00009BC8
+deviceType:Integrated GPU
+deviceName:Intel(R) UHD Graphics 630
+pipelineCacheUUID:01 31 01 31 01 31 31 31 01 31 01 31 01 31 01 01
+limits and sparseProperties: (skipped for brevity)

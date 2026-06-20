@@ -1,0 +1,10 @@
+Application Started
+Entering WinMain
+RegisterClass: OK
+CreateMenu: OK
+CreateAcceleratorTable: OK
+CreateWindow: OK
+CreateStatusBar: OK
+vkCreateInstance Error: 0xFFFFFFFA
+vkGetInstanceProcAddr Error: 0xFFFFFFFA
+vkEnumeratePhysicalDevices
