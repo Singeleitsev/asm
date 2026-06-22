@@ -1,0 +1,21 @@
+Application Started
+Entering WinMain
+RegisterClass: OK
+CreateMenu: OK
+CreateAcceleratorTable: OK
+CreateWindow: OK
+CreateStatusBar: OK
+vkCreateInstance: OK
+vkEnumeratePhysicalDevices - First Pass: OK
+vkEnumeratePhysicalDevices - Second Pass: OK
+GetPhysicalDeviceProperties: NVIDIA GeForce GTX 1650
+GetPhysicalDeviceProperties: Intel(R) UHD Graphics 630
+vkCreateWin32SurfaceKHR: OK
+UpdateWindow: OK
+Entering Message Loop
+DrawScene called
+WM_CLOSE received
+vkDestroySurfaceKHR: OK
+vkDestroyInstance: OK
+WM_DESTROY received
+Calling ExitProcess

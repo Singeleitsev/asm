@@ -1,0 +1,2 @@
+extern vkCreatePipelineLayout:proc
+extern vkDestroyPipelineLayout:proc

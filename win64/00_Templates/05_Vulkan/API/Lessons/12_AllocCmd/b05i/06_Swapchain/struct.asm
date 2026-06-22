@@ -1,0 +1,61 @@
+;VkSurfaceCapabilitiesKHR
+align 10h
+surfaceCapabilities_minImageCount dd 0
+surfaceCapabilities_maxImageCount dd 0
+surfaceCapabilities_currentExtent_width dd 0
+surfaceCapabilities_currentExtent_height dd 0
+surfaceCapabilities_minImageExtent_width dd 0
+surfaceCapabilities_minImageExtent_height dd 0
+surfaceCapabilities_maxImageExtent_width dd 0
+surfaceCapabilities_maxImageExtent_height dd 0
+surfaceCapabilities_maxImageArrayLayers dd 0
+surfaceCapabilities_supportedTransforms dd 0
+surfaceCapabilities_currentTransform dd 0
+surfaceCapabilities_supportedCompositeAlpha dd 0
+surfaceCapabilities_supportedUsageFlags dd 0
+
+;VkSwapchainCreateInfoKHR
+align 10h
+swapchainInfo_sType dd 3B9ACDE8h ; VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR = 1000001000
+swapchainInfo_dummy0 dd 0
+swapchainInfo_pNext dq 0
+swapchainInfo_flags dd 0
+swapchainInfo_dummy1 dd 0
+swapchainInfo_surface dq 0 ;ghVkSurface
+swapchainInfo_minImageCount dd 2 ;Double Buffering
+swapchainInfo_imageFormat dd 0 ;chosenFormat
+swapchainInfo_imageColorSpace dd 0 ; VK_COLOR_SPACE_SRGB_NONLINEAR_KHR
+swapchainInfo_imageExtent_width dd 0 ;chosenExtent_width
+swapchainInfo_imageExtent_height dd 0 ;chosenExtent_height
+swapchainInfo_imageArrayLayers dd 1
+swapchainInfo_imageUsage dd 10h ;VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT
+swapchainInfo_imageSharingMode dd 0 ;VK_SHARING_MODE_EXCLUSIVE
+swapchainInfo_queueFamilyIndexCount dd 0
+swapchainInfo_dummy2 dd 0
+swapchainInfo_pQueueFamilyIndices dq 0
+swapchainInfo_preTransform dd 1 ;VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR
+swapchainInfo_compositeAlpha dd 1 ;VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR
+swapchainInfo_presentMode dd 0 ;chosenPresentMode
+swapchainInfo_clipped dd 1 ;VK_TRUE
+swapchainInfo_oldSwapchain dq 0
+
+;VkImageViewCreateInfo
+align 10h
+viewInfo_sType dd 0Fh ;VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO = 15
+viewInfo_dummy0 dd 0
+viewInfo_pNext dq 0
+viewInfo_flags dd 0
+viewInfo_dummy1 dd 0
+viewInfo_image dq 0
+viewInfo_viewType dd 1 ;VK_IMAGE_VIEW_TYPE_2D
+viewInfo_format dd 0 ;chosenFormat
+viewInfo_components_r dd 0 ;VK_COMPONENT_SWIZZLE_IDENTITY
+viewInfo_components_g dd 0
+viewInfo_components_b dd 0
+viewInfo_components_a dd 0
+viewInfo_subresourceRange_aspectMask dd 1 ;VK_IMAGE_ASPECT_COLOR_BIT
+viewInfo_subresourceRange_baseMipLevel dd 0
+viewInfo_subresourceRange_levelCount dd 1
+viewInfo_subresourceRange_baseArrayLayer dd 0
+viewInfo_subresourceRange_layerCount dd 1
+

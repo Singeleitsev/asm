@@ -1,0 +1,12 @@
+;VkPipelineLayoutCreateInfo
+align 10h
+pipelineLayoutInfo_sType dd 1Eh ; VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO = 30
+pipelineLayoutInfo_dummy0 dd 0
+pipelineLayoutInfo_pNext dq 0
+pipelineLayoutInfo_flags dd 0
+pipelineLayoutInfo_setLayoutCount dd 0 ;No descriptor sets
+pipelineLayoutInfo_pSetLayouts dq 0
+pipelineLayoutInfo_pushConstantRangeCount dd 0
+pipelineLayoutInfo_dummy1 dd 0
+pipelineLayoutInfo_pPushConstantRanges dq 0
+

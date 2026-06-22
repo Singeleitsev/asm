@@ -1,0 +1,30 @@
+Physical Device Properties:
+Device 0: 
+apiVersion:4206800
+driverVersion:1656476
+vendorID:00008086
+deviceID:00009A49
+deviceType:Integrated GPU
+deviceName:Intel(R) Iris(R) Xe Graphics
+pipelineCacheUUID:A1 31 A1 31 A1 31 91 31 A1 31 A1 31 A1 31 A1 01
+limits and sparseProperties: (skipped for brevity)
+
+Device 1: 
+apiVersion:4202846
+driverVersion:109056099
+vendorID:00008086
+deviceID:00009A49
+deviceType:Integrated GPU
+deviceName:Microsoft Direct3D12 (Intel(R) Iris(R) Xe Graphics)
+pipelineCacheUUID:91 71 E1 F1 21 81 11 61 11 C1 A1 D1 91 61 A1 E1
+limits and sparseProperties: (skipped for brevity)
+
+Device 2: 
+apiVersion:4202846
+driverVersion:109056099
+vendorID:00001414
+deviceID:0000008C
+deviceType:CPU
+deviceName:Microsoft Direct3D12 (Microsoft Basic Render Driver)
+pipelineCacheUUID:B1 F1 11 B1 F1 A1 21 81 41 11 91 81 D1 F1 E1 71
+limits and sparseProperties: (skipped for brevity)

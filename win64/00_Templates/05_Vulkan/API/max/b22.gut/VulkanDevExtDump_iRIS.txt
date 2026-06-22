@@ -1,0 +1,421 @@
+Available Vulkan Device Extensions:
+
+Device Extension 0: 
+Name: VK_EXT_full_screen_exclusive
+Spec Version: 4
+
+Device Extension 1: 
+Name: VK_KHR_swapchain
+Spec Version: 70
+
+Device Extension 2: 
+Name: VK_KHR_external_memory
+Spec Version: 1
+
+Device Extension 3: 
+Name: VK_KHR_external_memory_win32
+Spec Version: 1
+
+Device Extension 4: 
+Name: VK_EXT_external_memory_host
+Spec Version: 1
+
+Device Extension 5: 
+Name: VK_KHR_external_semaphore
+Spec Version: 1
+
+Device Extension 6: 
+Name: VK_KHR_external_semaphore_win32
+Spec Version: 1
+
+Device Extension 7: 
+Name: VK_KHR_external_fence
+Spec Version: 1
+
+Device Extension 8: 
+Name: VK_KHR_external_fence_win32
+Spec Version: 1
+
+Device Extension 9: 
+Name: VK_KHR_timeline_semaphore
+Spec Version: 2
+
+Device Extension 10: 
+Name: VK_KHR_win32_keyed_mutex
+Spec Version: 1
+
+Device Extension 11: 
+Name: VK_KHR_get_memory_requirements2
+Spec Version: 1
+
+Device Extension 12: 
+Name: VK_KHR_bind_memory2
+Spec Version: 1
+
+Device Extension 13: 
+Name: VK_KHR_dedicated_allocation
+Spec Version: 1
+
+Device Extension 14: 
+Name: VK_KHR_sampler_mirror_clamp_to_edge
+Spec Version: 3
+
+Device Extension 15: 
+Name: VK_KHR_maintenance1
+Spec Version: 1
+
+Device Extension 16: 
+Name: VK_KHR_maintenance2
+Spec Version: 1
+
+Device Extension 17: 
+Name: VK_KHR_maintenance3
+Spec Version: 1
+
+Device Extension 18: 
+Name: VK_KHR_maintenance4
+Spec Version: 2
+
+Device Extension 19: 
+Name: VK_KHR_synchronization2
+Spec Version: 1
+
+Device Extension 20: 
+Name: VK_KHR_shader_draw_parameters
+Spec Version: 1
+
+Device Extension 21: 
+Name: VK_KHR_push_descriptor
+Spec Version: 1
+
+Device Extension 22: 
+Name: VK_KHR_descriptor_update_template
+Spec Version: 1
+
+Device Extension 23: 
+Name: VK_KHR_multiview
+Spec Version: 1
+
+Device Extension 24: 
+Name: VK_KHR_shader_float16_int8
+Spec Version: 1
+
+Device Extension 25: 
+Name: VK_KHR_shader_float_controls
+Spec Version: 4
+
+Device Extension 26: 
+Name: VK_KHR_16bit_storage
+Spec Version: 1
+
+Device Extension 27: 
+Name: VK_KHR_8bit_storage
+Spec Version: 1
+
+Device Extension 28: 
+Name: VK_EXT_shader_subgroup_ballot
+Spec Version: 1
+
+Device Extension 29: 
+Name: VK_EXT_shader_subgroup_vote
+Spec Version: 1
+
+Device Extension 30: 
+Name: VK_KHR_storage_buffer_storage_class
+Spec Version: 1
+
+Device Extension 31: 
+Name: VK_KHR_variable_pointers
+Spec Version: 1
+
+Device Extension 32: 
+Name: VK_KHR_relaxed_block_layout
+Spec Version: 1
+
+Device Extension 33: 
+Name: VK_EXT_sampler_filter_minmax
+Spec Version: 2
+
+Device Extension 34: 
+Name: VK_KHR_device_group
+Spec Version: 4
+
+Device Extension 35: 
+Name: VK_EXT_ycbcr_2plane_444_formats
+Spec Version: 1
+
+Device Extension 36: 
+Name: VK_EXT_4444_formats
+Spec Version: 1
+
+Device Extension 37: 
+Name: VK_EXT_post_depth_coverage
+Spec Version: 1
+
+Device Extension 38: 
+Name: VK_EXT_shader_viewport_index_layer
+Spec Version: 1
+
+Device Extension 39: 
+Name: VK_EXT_shader_stencil_export
+Spec Version: 1
+
+Device Extension 40: 
+Name: VK_EXT_conservative_rasterization
+Spec Version: 1
+
+Device Extension 41: 
+Name: VK_EXT_sample_locations
+Spec Version: 1
+
+Device Extension 42: 
+Name: VK_KHR_draw_indirect_count
+Spec Version: 1
+
+Device Extension 43: 
+Name: VK_EXT_multi_draw
+Spec Version: 1
+
+Device Extension 44: 
+Name: VK_KHR_image_format_list
+Spec Version: 1
+
+Device Extension 45: 
+Name: VK_EXT_vertex_attribute_divisor
+Spec Version: 3
+
+Device Extension 46: 
+Name: VK_EXT_descriptor_indexing
+Spec Version: 2
+
+Device Extension 47: 
+Name: VK_EXT_inline_uniform_block
+Spec Version: 1
+
+Device Extension 48: 
+Name: VK_KHR_create_renderpass2
+Spec Version: 1
+
+Device Extension 49: 
+Name: VK_KHR_dynamic_rendering
+Spec Version: 1
+
+Device Extension 50: 
+Name: VK_KHR_swapchain_mutable_format
+Spec Version: 1
+
+Device Extension 51: 
+Name: VK_KHR_depth_stencil_resolve
+Spec Version: 1
+
+Device Extension 52: 
+Name: VK_KHR_driver_properties
+Spec Version: 1
+
+Device Extension 53: 
+Name: VK_KHR_vulkan_memory_model
+Spec Version: 3
+
+Device Extension 54: 
+Name: VK_EXT_conditional_rendering
+Spec Version: 2
+
+Device Extension 55: 
+Name: VK_EXT_hdr_metadata
+Spec Version: 2
+
+Device Extension 56: 
+Name: VK_KHR_fragment_shading_rate
+Spec Version: 2
+
+Device Extension 57: 
+Name: VK_EXT_depth_clip_enable
+Spec Version: 1
+
+Device Extension 58: 
+Name: VK_EXT_scalar_block_layout
+Spec Version: 1
+
+Device Extension 59: 
+Name: VK_KHR_imageless_framebuffer
+Spec Version: 1
+
+Device Extension 60: 
+Name: VK_KHR_buffer_device_address
+Spec Version: 1
+
+Device Extension 61: 
+Name: VK_EXT_buffer_device_address
+Spec Version: 2
+
+Device Extension 62: 
+Name: VK_EXT_host_query_reset
+Spec Version: 1
+
+Device Extension 63: 
+Name: VK_KHR_performance_query
+Spec Version: 1
+
+Device Extension 64: 
+Name: VK_NV_device_diagnostic_checkpoints
+Spec Version: 2
+
+Device Extension 65: 
+Name: VK_KHR_separate_depth_stencil_layouts
+Spec Version: 1
+
+Device Extension 66: 
+Name: VK_KHR_shader_clock
+Spec Version: 1
+
+Device Extension 67: 
+Name: VK_KHR_spirv_1_4
+Spec Version: 1
+
+Device Extension 68: 
+Name: VK_KHR_uniform_buffer_standard_layout
+Spec Version: 1
+
+Device Extension 69: 
+Name: VK_EXT_separate_stencil_usage
+Spec Version: 1
+
+Device Extension 70: 
+Name: VK_EXT_fragment_shader_interlock
+Spec Version: 1
+
+Device Extension 71: 
+Name: VK_EXT_index_type_uint8
+Spec Version: 1
+
+Device Extension 72: 
+Name: VK_EXT_primitive_topology_list_restart
+Spec Version: 1
+
+Device Extension 73: 
+Name: VK_KHR_shader_subgroup_extended_types
+Spec Version: 1
+
+Device Extension 74: 
+Name: VK_EXT_line_rasterization
+Spec Version: 1
+
+Device Extension 75: 
+Name: VK_EXT_memory_budget
+Spec Version: 1
+
+Device Extension 76: 
+Name: VK_EXT_memory_priority
+Spec Version: 1
+
+Device Extension 77: 
+Name: VK_EXT_texel_buffer_alignment
+Spec Version: 1
+
+Device Extension 78: 
+Name: VK_INTEL_performance_query
+Spec Version: 2
+
+Device Extension 79: 
+Name: VK_EXT_subgroup_size_control
+Spec Version: 2
+
+Device Extension 80: 
+Name: VK_EXT_shader_demote_to_helper_invocation
+Spec Version: 1
+
+Device Extension 81: 
+Name: VK_EXT_pipeline_creation_feedback
+Spec Version: 1
+
+Device Extension 82: 
+Name: VK_EXT_pipeline_creation_cache_control
+Spec Version: 3
+
+Device Extension 83: 
+Name: VK_KHR_pipeline_executable_properties
+Spec Version: 1
+
+Device Extension 84: 
+Name: VK_EXT_transform_feedback
+Spec Version: 1
+
+Device Extension 85: 
+Name: VK_EXT_provoking_vertex
+Spec Version: 1
+
+Device Extension 86: 
+Name: VK_EXT_extended_dynamic_state
+Spec Version: 1
+
+Device Extension 87: 
+Name: VK_EXT_extended_dynamic_state2
+Spec Version: 1
+
+Device Extension 88: 
+Name: VK_EXT_vertex_input_dynamic_state
+Spec Version: 2
+
+Device Extension 89: 
+Name: VK_EXT_custom_border_color
+Spec Version: 12
+
+Device Extension 90: 
+Name: VK_EXT_robustness2
+Spec Version: 1
+
+Device Extension 91: 
+Name: VK_EXT_image_robustness
+Spec Version: 1
+
+Device Extension 92: 
+Name: VK_EXT_calibrated_timestamps
+Spec Version: 1
+
+Device Extension 93: 
+Name: VK_KHR_shader_integer_dot_product
+Spec Version: 1
+
+Device Extension 94: 
+Name: VK_KHR_shader_subgroup_uniform_control_flow
+Spec Version: 1
+
+Device Extension 95: 
+Name: VK_KHR_shader_terminate_invocation
+Spec Version: 1
+
+Device Extension 96: 
+Name: VK_KHR_workgroup_memory_explicit_layout
+Spec Version: 1
+
+Device Extension 97: 
+Name: VK_EXT_shader_atomic_float
+Spec Version: 1
+
+Device Extension 98: 
+Name: VK_KHR_copy_commands2
+Spec Version: 1
+
+Device Extension 99: 
+Name: VK_KHR_shader_non_semantic_info
+Spec Version: 1
+
+Device Extension 100: 
+Name: VK_KHR_zero_initialize_workgroup_memory
+Spec Version: 1
+
+Device Extension 101: 
+Name: VK_EXT_shader_atomic_float2
+Spec Version: 1
+
+Device Extension 102: 
+Name: VK_EXT_global_priority
+Spec Version: 2
+
+Device Extension 103: 
+Name: VK_KHR_format_feature_flags2
+Spec Version: 1
+
+Device Extension 104: 
+Name: VK_EXT_private_data
+Spec Version: 1

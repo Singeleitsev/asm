@@ -1,0 +1,61 @@
+;VkRenderPassCreateInfo
+align 10h
+renderPassInfo_sType dd 26h ;VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO = 38
+renderPassInfo_dummy0 dd 0
+renderPassInfo_pNext dq 0
+renderPassInfo_flags dd 0
+renderPassInfo_attachmentCount dd 1
+renderPassInfo_pAttachments dq offset colorAttachment_flags
+renderPassInfo_subpassCount dd 1
+renderPassInfo_dummy1 dd 0
+renderPassInfo_pSubpasses dq offset subpass_flags
+renderPassInfo_dependencyCount dd 1
+renderPassInfo_dummy2 dd 0
+renderPassInfo_pDependencies dq offset dependency_srcSubpass
+
+;VkAttachmentDescription colorAttachment
+align 10h
+colorAttachment_flags dd 0
+colorAttachment_format dd 0 ;chosenFormat
+colorAttachment_samples dd 1 ;VK_SAMPLE_COUNT_1_BIT
+colorAttachment_loadOp dd 1 ;VK_ATTACHMENT_LOAD_OP_CLEAR
+colorAttachment_storeOp dd 0 ;VK_ATTACHMENT_STORE_OP_STORE
+colorAttachment_stencilLoadOp dd 2; VK_ATTACHMENT_LOAD_OP_DONT_CARE ;can be VK_ATTACHMENT_LOAD_OP_CLEAR
+colorAttachment_stencilStoreOp dd 1 ;VK_ATTACHMENT_STORE_OP_DONT_CARE ;can be VK_ATTACHMENT_STORE_OP_STORE
+colorAttachment_initialLayout dd 0 ;VK_IMAGE_LAYOUT_UNDEFINED
+colorAttachment_finalLayout dd 3B9ACDEAh ;VK_IMAGE_LAYOUT_PRESENT_SRC_KHR = 1000001002
+
+;VkAttachmentReference colorAttachmentRef
+align 10h
+colorAttachmentRef_attachment dd 0
+colorAttachmentRef_layout dd 2 ;VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
+
+;VkAttachmentDescription depthAttachment
+;VkAttachmentReference depthAttachmentRef
+
+;VkSubpassDescription
+align 10h
+subpass_flags dd 0
+subpass_pipelineBindPoint dd 0  ;VK_PIPELINE_BIND_POINT_GRAPHICS
+subpass_inputAttachmentCount dd 0
+subpass_dummy0 dd 0
+subpass_pInputAttachments dq 0
+subpass_colorAttachmentCount dd 1
+subpass_dummy1 dd 0
+subpass_pColorAttachments dq offset colorAttachmentRef_attachment
+subpass_pResolveAttachments dq 0
+subpass_pDepthStencilAttachment dq 0 ;&depthAttachmentRef
+subpass_preserveAttachmentCount dd 0
+subpass_dummy2 dd 0
+subpass_pPreserveAttachments dq 0
+
+;VkSubpassDependency
+align 10h
+dependency_srcSubpass dd 0FFFFFFFFh ;VK_SUBPASS_EXTERNAL
+dependency_dstSubpass dd 0
+dependency_srcStageMask dd 400h ;VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT = 1024
+dependency_dstStageMask dd 400h ;VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT
+dependency_srcAccessMask dd 0
+dependency_dstAccessMask dd 100h ;VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT = 256
+dependency_dependencyFlags dd 1 ;VK_DEPENDENCY_BY_REGION_BIT
+

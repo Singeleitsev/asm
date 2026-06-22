@@ -1,0 +1,10 @@
+extern vkGetPhysicalDeviceSurfaceCapabilitiesKHR:proc
+extern vkGetPhysicalDeviceSurfaceFormatsKHR:proc
+extern vkGetPhysicalDeviceSurfacePresentModesKHR:proc
+
+extern vkCreateSwapchainKHR:proc
+extern vkDestroySwapchainKHR:proc
+
+extern vkGetSwapchainImagesKHR:proc
+extern vkCreateImageView:proc
+extern vkDestroyImageView:proc

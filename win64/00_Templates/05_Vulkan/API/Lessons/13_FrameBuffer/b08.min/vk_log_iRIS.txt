@@ -1,0 +1,88 @@
+Application Started
+Entering WinMain
+RegisterClass: OK
+CreateMenu: OK
+CreateAcceleratorTable: OK
+CreateWindow: OK
+CreateStatusBar: OK
+vkCreateInstance: OK
+vkEnumeratePhysicalDevices - First Pass: OK
+vkEnumeratePhysicalDevices - Second Pass: OK
+GetPhysicalDeviceProperties: Intel(R) Iris(R) Xe Graphics
+GetPhysicalDeviceProperties: Microsoft Direct3D12 (Intel(R) Iris(R) Xe Graphics)
+vkCreateWin32SurfaceKHR: OK
+vkGetPhysicalDeviceQueueFamilyProperties - First Pass: OK
+Memory Allocating: OK
+vkGetPhysicalDeviceQueueFamilyProperties - Second Pass: OK
+Memory Allocating: OK
+vkGetPhysicalDeviceSurfaceSupportKHR: OK
+Queue Family Selected Successfully
+vkCreateDevice: OK
+vkGetDeviceQueue (Graphics Queue): OK
+vkGetDeviceQueue (Present Queue): OK
+vkGetPhysicalDeviceSurfaceCapabilitiesKHR: OK
+Extent Chosen Successfully
+vkGetPhysicalDeviceSurfaceFormatsKHR - First Pass: OK
+Memory Allocating: OK
+vkGetPhysicalDeviceSurfaceFormatsKHR - Second Pass: OK
+Format Chosen Successfully
+vkGetPhysicalDeviceSurfacePresentModesKHR - First Pass: OK
+Memory Allocating: OK
+vkGetPhysicalDeviceSurfacePresentModesKHR - Second Pass: OK
+Present Mode Chosen Successfully
+vkCreateSwapchainKHR: OK
+vkGetSwapchainImagesKHR - First Pass: OK
+Memory Allocating: OK
+vkGetSwapchainImagesKHR - Second Pass: OK
+Memory Allocating: OK
+vkCreateImageView: OK
+vkCreateImageView: OK
+vkCreateRenderPass: OK
+vkCreatePipelineLayout: OK
+Loading Vertex Shader: OK
+vkCreateShaderModule (Vertex): OK
+Loading Fragment Shader: OK
+vkCreateShaderModule (Fragment): OK
+vkCreateGraphicsPipelines: OK
+vkCreateCommandPool: OK
+vkCreateSemaphoreImageAvailable: OK
+vkCreateSemaphoreRenderFinished: OK
+vkCreateFence: OK
+Memory Allocating: OK
+vkAllocateCommandBuffers: OK
+Memory Allocating: OK
+vkCreateFramebuffer: OK
+vkCreateFramebuffer: OK
+Record Command BuffersvkBeginCommandBuffer: OK
+vkCmdBeginRenderPass: OK
+vkCmdBindPipeline: OK
+vkCmdDraw: OK
+vkCmdEndRenderPass: OK
+vkEndCommandBuffer: OK
+vkBeginCommandBuffer: OK
+vkCmdBeginRenderPass: OK
+vkCmdBindPipeline: OK
+vkCmdDraw: OK
+vkCmdEndRenderPass: OK
+vkEndCommandBuffer: OK
+UpdateWindow: OK
+Entering Message Loop
+DrawScene called
+WM_CLOSE received
+vkDestroyFramebuffer: OK
+vkDestroyFramebuffer: OK
+vkDestroyFence: OK
+vkDestroySemaphoreRenderFinished: OK
+vkDestroySemaphoreImageAvailable: OK
+vkDestroyCommandPool: OK
+vkDestroyPipeline: OK
+vkDestroyShaderModule (Fragment): OK
+vkDestroyShaderModule (Vertex): OK
+vkDestroyPipelineLayout: OK
+vkDestroyRenderPass: OK
+vkDestroySwapchainKHR: OK
+vkDestroyDevice: OK
+vkDestroySurfaceKHR: OK
+vkDestroyInstance: OK
+WM_DESTROY received
+Calling ExitProcess
