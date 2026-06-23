@@ -1,0 +1,50 @@
+createVkContext proc
+PROLOG 100h
+
+call createInstance
+call createSurface
+call enumeratePhysicalDevices
+call getQueueFamilyProperties
+call selectQueueFamily
+call getCapabilities
+call getFormats
+call choosePresentMode
+call createDevice
+call createSwapchain
+call createRenderPass
+call createPipelineLayout
+call createShaderModules
+call createGraphicsPipeline
+call createCommandPool
+call createSemaphores
+call createFence
+call allocateCommandBuffers
+call createFrameBuffers
+call recordCommandBuffers
+
+EPILOG
+createVkContext endp
+
+
+
+destroyVkContext proc
+PROLOG 100h
+
+mov rcx,ghVkLogicalDevice
+call vkDeviceWaitIdle
+
+call destroyFrameBuffers
+call destroyFence
+call destroySemaphores
+call destroyCommandPool
+call destroyGraphicsPipeline
+call destroyShaderModules
+call destroyPipelineLayout
+call destroyRenderPass
+call destroySwapchain
+call destroyDevice
+call destroySurface
+call destroyInstance
+
+EPILOG
+destroyVkContext endp
