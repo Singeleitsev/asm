@@ -77,15 +77,39 @@ mov r8,ghVkGraphicsPipeline
 call vkCmdBindPipeline
 LOG_TEXT szOK
 
-;Draw the Cube (36 vertices)
-LOG_TEXT szVkCmdDraw
-mov rdi,pCommand
-mov rcx,qword ptr[rdi]
-mov rdx,nVertexCount ;36 Vertices
+;Bind vertex buffer
+LOG_TEXT szVkCmdBindVertexBuffers
+mov rsi,pCommand
+mov rcx, qword ptr[rsi] ;command buffer
+xor rdx,rdx ;firstBinding = 0
+mov r8,1 ;bindingCount = 1
+lea r9,gpDeviceVertexBuffer ;pBuffers
+lea rax,gpVertexZeroOffset
+mov qword ptr[rsp+20h],rax
+call vkCmdBindVertexBuffers
+LOG_TEXT szOK
+	
+;Bind index buffer
+LOG_TEXT szVkCmdBindIndexBuffer
+mov rsi,pCommand
+mov rcx,qword ptr[rsi] ;command buffer
+mov rdx,gpDeviceIndexBuffer ;buffer
+mov r8,0 ;offset = 0
+mov r9,1 ;VK_INDEX_TYPE_UINT32
+call vkCmdBindIndexBuffer
+LOG_TEXT szOK
+
+;Draw indexed
+LOG_TEXT szVkCmdDrawIndexed
+mov rsi,pCommand
+mov rcx,qword ptr[rsi] ;command buffer
+xor rdx,rdx
+mov edx,gnCurrentIndexCount ;indexCount
 mov r8,1 ;instanceCount
-xor r9,r9 ;firstVertex = 0
-mov qword ptr[rsp+20h],0 ;firstInstance = 0
-call vkCmdDraw
+mov r9,0 ;firstIndex
+mov qword ptr[rsp+20h],0 ;vertexOffset
+mov qword ptr[rsp+28h],0 ;firstInstance
+call vkCmdDrawIndexed
 LOG_TEXT szOK
 
 ;End render pass

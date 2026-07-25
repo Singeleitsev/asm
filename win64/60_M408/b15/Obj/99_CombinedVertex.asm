@@ -10,7 +10,7 @@ push rsi
 ;Calculate position pointer
 xor rax,rax
 mov eax,ecx ;position index
-imul rcx,0Ch ;3 coordinates * 4 bytes = 12 bytes
+imul rax,0Ch ;3 coordinates * 4 bytes = 12 bytes
 add rax,gpObjVertices
 mov posPtr,rax
 
@@ -65,7 +65,7 @@ mov eax, r11d
 jmp lbl_Found
 
 lbl_Next:
-add r10,24
+add r10,18h ;24
 inc r11d
 cmp r11d,r8d
 jl lbl_SearchLoop
@@ -78,7 +78,7 @@ jge lbl_AddNew_Error
 
 ;destination pointer: gpCombinedVertices + count * 24
 mov rdi,gpObjCombined
-imul eax,24
+imul eax,18h ;24
 add rdi,rax
 
 ;save non-volatile registers used by rep movsd

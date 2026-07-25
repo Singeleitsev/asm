@@ -103,9 +103,6 @@ gpCodeShaderF dq 0
 ghVkVertexShaderModule dq 0
 ghVkFragmentShaderModule dq 0
 
-;Graphics Pipeline
-ghVkGraphicsPipeline dq 0
-
 ;Command Pool
 ghVkCommandPool dq 0
 ghVkSemaphoreImageAvailable dq 0
@@ -114,13 +111,33 @@ ghVkFence dq 0
 ;ghVkCommandBuffer dq 0 ;Use for a single buffer, not for an array
 gpCommandBuffers dq 0 ;Pointer to the Array of Command buffer handles
 
+;Model Buffers
+gnVertexSize dq 0
+gnIndexSize dq 0
+gpStagingVertexBuffer dq 0
+gpStagingVertexMem dq 0
+gpVertexMap dq 0
+gpDeviceVertexBuffer dq 0
+gpDeviceVertexBufferMem dq 0
+gpStagingIndexBuffer dq 0
+gpStagingIndexMem dq 0
+gpIndexMap dq 0
+gpDeviceIndexBuffer dq 0
+gpDeviceIndexBufferMem dq 0
+gpModelCmdBuffers dq 0
+gpModelFence dq 0
+
+;Graphics Pipeline
+ghVkGraphicsPipeline dq 0
+
 ;Framebuffer
 gpFramebuffers dq 0 ;Pointer to the Array of Framebuffer handles
 attachmentColor dq 0
 attachmentDepth dq 0
 
 ;Record
-nVertexCount dq 36
+;gnVertexCount dq 36
+gpVertexZeroOffset dq 0
 
 ;Render
 dwImageIndex dd 0

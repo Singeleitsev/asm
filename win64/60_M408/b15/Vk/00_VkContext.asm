@@ -15,9 +15,9 @@ call createDepthImage
 call createRenderPass
 call createPipelineLayout
 call createShaderModules
-call createGraphicsPipeline
 call createCommandPool
-;call createModelBuffers
+call createModelBuffers
+call createGraphicsPipeline
 call createSemaphores
 call createFence
 call allocateCommandBuffers
@@ -38,9 +38,9 @@ call vkDeviceWaitIdle
 call destroyFrameBuffers
 call destroyFence
 call destroySemaphores
-;call destroyModelBuffers
-call destroyCommandPool
 call destroyGraphicsPipeline
+call destroyModelBuffers
+call destroyCommandPool
 call destroyShaderModules
 call destroyPipelineLayout
 call destroyRenderPass

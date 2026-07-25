@@ -61,9 +61,9 @@ include Vk\10_Depth.asm
 include Vk\11_RenderPass.asm
 include Vk\12_PipelineLayout.asm
 include Vk\13_ShaderModules.asm
-include Vk\14_GraphicsPipeline.asm
-include Vk\15_CommandPool.asm
-;include Vk\16_ModelBuffers.asm
+include Vk\14_CommandPool.asm
+include Vk\15_ModelBuffers.asm
+include Vk\16_GraphicsPipeline.asm
 include Vk\17_Semaphores.asm
 include Vk\18_Fence.asm
 include Vk\19_CommandBuffers.asm

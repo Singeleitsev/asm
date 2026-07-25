@@ -256,11 +256,11 @@ colorViewInfo_subresourceRange_layerCount dd 1
 ;------------
 ;Depth Buffer
 
-;VkMemoryRequirements
+;VkMemoryRequirements for the Depth Buffer
 align 10h
-memReqs_size dq 0
-memReqs_alignment dq 0
-memReqs_memoryTypeBits dd 0
+depthMemReqs_size dq 0
+depthMemReqs_alignment dq 0
+depthMemReqs_memoryTypeBits dd 0
 
 ;VkPhysicalDeviceMemoryProperties
 align 10h
@@ -269,7 +269,7 @@ memProps_memoryTypes db 100h dup (0)
 memProps_memoryHeapCount dd 0
 memProps_memoryHeaps db 100h dup (0)
 
-;VkMemoryAllocateInfo
+;VkMemoryAllocateInfo for the Depth Buffer
 align 10h
 depthAllocInfo_sType dd 5 ;VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO
 depthAllocInfo_dummy0 dd 0
@@ -411,6 +411,238 @@ shaderModuleInfo_dummy1 dd 0
 shaderModuleInfo_codeSize dq 0
 shaderModuleInfo_pCode dq 0
 
+;------------
+;Command Pool
+
+;VkCommandPoolCreateInfo
+align 10h
+cmdPoolInfo_sType dd 27h ;VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO = 39
+cmdPoolInfo_dummy0 dd 0
+cmdPoolInfo_pNext  dq 0
+cmdPoolInfo_flags dd 2 ;VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT
+cmdPoolInfo_queueFamilyIndex dd 0
+
+;VkSemaphoreCreateInfo
+align 10h
+semaphoreInfo_sType dd 9 ;VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO
+semaphoreInfo_dummy0 dd 0
+semaphoreInfo_pNext dq 0
+semaphoreInfo_flags dd 0
+
+;VkFenceCreateInfo
+align 10h
+fenceInfo_sType dd 8 ;VK_STRUCTURE_TYPE_FENCE_CREATE_INFO
+fenceInfo_dummy0 dd 0
+fenceInfo_pNext dq 0
+fenceInfo_flags dd 1 ;VK_FENCE_CREATE_SIGNALED_BIT (start signaled)
+
+;VkCommandBufferAllocateInfo
+align 10h
+cmdAllocInfo_sType dd 28h ;VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO = 40
+cmdAllocInfo_dummy0 dd 0
+cmdAllocInfo_pNext dq 0
+cmdAllocInfo_commandPool dq 0
+cmdAllocInfo_level dd 0 ;VK_COMMAND_BUFFER_LEVEL_PRIMARY
+cmdAllocInfo_commandBufferCount dd 1
+
+;-------------
+;Model Buffers
+
+;VkBufferCreateInfo for Staging Vertex Data
+align 10h
+stagingVertexBufferInfo_sType dd 0Ch ;VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO = 12
+stagingVertexBufferInfo_dummy0 dd 0
+stagingVertexBufferInfo_pNext dq 0
+stagingVertexBufferInfo_flags dd 0
+stagingVertexBufferInfo_dummy1 dd 0
+stagingVertexBufferInfo_size dq 0
+stagingVertexBufferInfo_usage dd 1 ;VK_BUFFER_USAGE_TRANSFER_SRC_BIT
+stagingVertexBufferInfo_sharingMode dd 0 ;VK_SHARING_MODE_EXCLUSIVE
+stagingVertexBufferInfo_queueFamilyIndexCount dd 0
+stagingVertexBufferInfo_dummy2 dd 0
+stagingVertexBufferInfo_pQueueFamilyIndices dq 0
+
+;VkMemoryRequirements for Staging Vertex Buffer
+align 10h
+stagingVertexMemReqs_size dq 0
+stagingVertexMemReqs_alignment dq 0
+stagingVertexMemReqs_memoryTypeBits dd 0
+
+;VkMemoryAllocateInfo for Staging Vertex Buffer
+align 10h
+stagingVertexAllocInfo_sType dd 5 ;VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO
+stagingVertexAllocInfo_dummy0 dd 0
+stagingVertexAllocInfo_pNext dq 0
+stagingVertexAllocInfo_allocationSize dq 0
+stagingVertexAllocInfo_memoryTypeIndex dd 0
+
+;VkBufferCreateInfo for Device Local Vertex Buffer
+align 10h
+deviceVertexBufferInfo_sType dd 0Ch ;VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO = 12
+deviceVertexBufferInfo_dummy0 dd 0
+deviceVertexBufferInfo_pNext dq 0
+deviceVertexBufferInfo_flags dd 0
+deviceVertexBufferInfo_dummy1 dd 0
+deviceVertexBufferInfo_size dq 0
+;VK_BUFFER_USAGE_VERTEX_BUFFER_BIT = 128
+;VK_BUFFER_USAGE_TRANSFER_DST_BIT = 2
+deviceVertexBufferInfo_usage dd 82h ;128+2 = 130
+deviceVertexBufferInfo_sharingMode dd 0 ;VK_SHARING_MODE_EXCLUSIVE
+deviceVertexBufferInfo_queueFamilyIndexCount dd 0
+deviceVertexBufferInfo_dummy2 dd 0
+deviceVertexBufferInfo_pQueueFamilyIndices dq 0
+
+;VkMemoryRequirements for the Device Local Vertex Buffer
+align 10h
+deviceVertexMemReqs_size dq 0
+deviceVertexMemReqs_alignment dq 0
+deviceVertexMemReqs_memoryTypeBits dd 0
+
+;VkMemoryAllocateInfo for the Device Local Vertex Buffer
+align 10h
+deviceVertexAllocInfo_sType dd 5 ;VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO
+deviceVertexAllocInfo_dummy0 dd 0
+deviceVertexAllocInfo_pNext dq 0
+deviceVertexAllocInfo_allocationSize dq 0
+deviceVertexAllocInfo_memoryTypeIndex dd 0
+
+;VkBufferCreateInfo for Staging Index Data
+align 10h
+stagingIndexBufferInfo_sType dd 0Ch ;VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO = 12
+stagingIndexBufferInfo_dummy0 dd 0
+stagingIndexBufferInfo_pNext dq 0
+stagingIndexBufferInfo_flags dd 0
+stagingIndexBufferInfo_dummy1 dd 0
+stagingIndexBufferInfo_size dq 0
+stagingIndexBufferInfo_usage dd 1 ;VK_BUFFER_USAGE_TRANSFER_SRC_BIT
+stagingIndexBufferInfo_sharingMode dd 0 ;VK_SHARING_MODE_EXCLUSIVE
+stagingIndexBufferInfo_queueFamilyIndexCount dd 0
+stagingIndexBufferInfo_dummy2 dd 0
+stagingIndexBufferInfo_pQueueFamilyIndices dq 0
+
+;VkMemoryRequirements for Staging Index Buffer
+align 10h
+stagingIndexMemReqs_size dq 0
+stagingIndexMemReqs_alignment dq 0
+stagingIndexMemReqs_memoryTypeBits dd 0
+
+;VkMemoryAllocateInfo for Staging Index Buffer
+align 10h
+stagingIndexAllocInfo_sType dd 5 ;VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO
+stagingIndexAllocInfo_dummy0 dd 0
+stagingIndexAllocInfo_pNext dq 0
+stagingIndexAllocInfo_allocationSize dq 0
+stagingIndexAllocInfo_memoryTypeIndex dd 0
+
+;VkBufferCreateInfo for Device Local Index Buffer
+align 10h
+deviceIndexBufferInfo_sType dd 0Ch ;VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO = 12
+deviceIndexBufferInfo_dummy0 dd 0
+deviceIndexBufferInfo_pNext dq 0
+deviceIndexBufferInfo_flags dd 0
+deviceIndexBufferInfo_dummy1 dd 0
+deviceIndexBufferInfo_size dq 0
+;VK_BUFFER_USAGE_INDEX_BUFFER_BIT = 64
+;VK_BUFFER_USAGE_TRANSFER_DST_BIT = 2
+deviceIndexBufferInfo_usage dd 42h ;64+2 = 66
+deviceIndexBufferInfo_sharingMode dd 0 ;VK_SHARING_MODE_EXCLUSIVE
+deviceIndexBufferInfo_queueFamilyIndexCount dd 0
+deviceIndexBufferInfo_dummy2 dd 0
+deviceIndexBufferInfo_pQueueFamilyIndices dq 0
+
+;VkMemoryRequirements for the Device Local Index Buffer
+align 10h
+deviceIndexMemReqs_size dq 0
+deviceIndexMemReqs_alignment dq 0
+deviceIndexMemReqs_memoryTypeBits dd 0
+
+;VkMemoryAllocateInfo for the Device Local Index Buffer
+align 10h
+deviceIndexAllocInfo_sType dd 5 ;VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO
+deviceIndexAllocInfo_dummy0 dd 0
+deviceIndexAllocInfo_pNext dq 0
+deviceIndexAllocInfo_allocationSize dq 0
+deviceIndexAllocInfo_memoryTypeIndex dd 0
+
+;VkCommandBufferAllocateInfo
+align 10h
+modelCmdAllocInfo_sType dd 28h ;VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO = 40
+modelCmdAllocInfo_dummy0 dd 0
+modelCmdAllocInfo_pNext dq 0
+modelCmdAllocInfo_commandPool dq 0
+modelCmdAllocInfo_level dd 0 ;VK_COMMAND_BUFFER_LEVEL_PRIMARY
+modelCmdAllocInfo_commandBufferCount dd 1
+
+;VkCommandBufferBeginInfo
+align 10h
+modelCmdBufferBeginInfo_sType dd 2Ah ;VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO = 42
+modelCmdBufferBeginInfo_dummy0 dd 0
+modelCmdBufferBeginInfo_pNext dq 0
+modelCmdBufferBeginInfo_flags dd 1 ;VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT
+modelCmdBufferBeginInfo_dummy1 dd 0
+modelCmdBufferBeginInfo_pInheritanceInfo dq 0
+
+;VkBufferCopy
+align 10h
+vertexCopyBuffer_srcOffset dq 0
+vertexCopyBuffer_dstOffset dq 0
+vertexCopyBuffer_size dq 0
+
+;VkBufferCopy
+align 10h
+indexCopyBuffer_srcOffset dq 0
+indexCopyBuffer_dstOffset dq 0
+indexCopyBuffer_size dq 0
+
+;VkFenceCreateInfo
+align 10h
+modelFenceInfo_sType dd 8 ;VK_STRUCTURE_TYPE_FENCE_CREATE_INFO
+modelFenceInfo_dummy0 dd 0
+modelFenceInfo_pNext dq 0
+modelFenceInfo_flags dd 0
+
+;VkSubmitInfo
+align 10h
+modelSubmitInfo_sType dd 4 ;VK_STRUCTURE_TYPE_SUBMIT_INFO
+modelSubmitInfo_dummy0 dd 0
+modelSubmitInfo_pNext dq 0
+modelSubmitInfo_waitSemaphoreCount dd 0
+modelSubmitInfo_dummy1 dd 0
+modelSubmitInfo_pWaitSemaphores   dq 0
+modelSubmitInfo_pWaitDstStageMask dq 0
+modelSubmitInfo_commandBufferCount dd 1
+modelSubmitInfo_dummy2 dd 0
+modelSubmitInfo_pCommandBuffers dq 0
+modelSubmitInfo_signalSemaphoreCount dd 0
+modelSubmitInfo_dummy3 dd 0
+modelSubmitInfo_pSignalSemaphores dq 0
+
+;VkPhysicalDeviceMemoryProperties
+align 10h
+modelMemProps_memoryTypeCount dd 0
+modelMemProps_memoryTypes db 100h dup (0)
+modelMemProps_memoryHeapCount dd 0
+modelMemProps_memoryHeaps db 100h dup (0)
+
+;VkVertexInputBindingDescription
+align 10h
+;Binding 0, stride 24 bytes (position + normal), per-vertex
+vertBinding_binding dd 0
+vertBinding_stride dd 18h ;24
+vertBinding_inputRate dd 0   ;VK_VERTEX_INPUT_RATE_VERTEX
+;VkVertexInputAttributeDescription
+;position, location 0
+vertAttr0_location dd 0
+vertAttr0_binding dd 0
+vertAttr0_format dd 6Ah ;VK_FORMAT_R32G32B32_SFLOAT
+vertAttr0_offset dd 0
+;VkVertexInputAttributeDescription
+;normal, location 1
+vertAttr1_location dd 1
+vertAttr1_binding dd 0
+vertAttr1_format dd 6Ah ;VK_FORMAT_R32G32B32_SFLOAT
+vertAttr1_offset dd 12
+
 ;-----------------
 ;Graphics Pipeline
 
@@ -442,11 +674,11 @@ vertInputInfo_sType dd 13h ;VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE
 vertInputInfo_dummy0 dd 0
 vertInputInfo_pNext dq 0
 vertInputInfo_flags dd 0
-vertInputInfo_vertexBindingDescriptionCount dd 0
-vertInputInfo_pVertexBindingDescriptions dq 0
-vertInputInfo_vertexAttributeDescriptionCount dd 0
+vertInputInfo_vertexBindingDescriptionCount dd 1
+vertInputInfo_pVertexBindingDescriptions dq offset vertBinding_binding
+vertInputInfo_vertexAttributeDescriptionCount dd 2
 vertInputInfo_dummy1 dd 0
-vertInputInfo_pVertexAttributeDescriptions dq 0
+vertInputInfo_pVertexAttributeDescriptions dq offset vertAttr0_location
 
 ;VkPipelineInputAssemblyStateCreateInfo
 align 10h
@@ -590,40 +822,6 @@ pipelineInfo_subpass dd 0
 pipelineInfo_dummy1 dd 0
 pipelineInfo_basePipelineHandle dq 0
 pipelineInfo_basePipelineIndex dd -1
-
-;------------
-;Command Pool
-
-;VkCommandPoolCreateInfo
-align 10h
-cmdPoolInfo_sType dd 27h ;VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO = 39
-cmdPoolInfo_dummy0 dd 0
-cmdPoolInfo_pNext  dq 0
-cmdPoolInfo_flags dd 2 ;VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT
-cmdPoolInfo_queueFamilyIndex dd 0
-
-;VkSemaphoreCreateInfo
-align 10h
-semaphoreInfo_sType dd 9 ;VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO
-semaphoreInfo_dummy0 dd 0
-semaphoreInfo_pNext dq 0
-semaphoreInfo_flags dd 0
-
-;VkFenceCreateInfo
-align 10h
-fenceInfo_sType dd 8 ;VK_STRUCTURE_TYPE_FENCE_CREATE_INFO
-fenceInfo_dummy0 dd 0
-fenceInfo_pNext dq 0
-fenceInfo_flags dd 1 ;VK_FENCE_CREATE_SIGNALED_BIT (start signaled)
-
-;VkCommandBufferAllocateInfo
-align 10h
-cmdAllocInfo_sType dd 28h ;VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO = 40
-cmdAllocInfo_dummy0 dd 0
-cmdAllocInfo_pNext dq 0
-cmdAllocInfo_commandPool dq 0
-cmdAllocInfo_level dd 0 ;VK_COMMAND_BUFFER_LEVEL_PRIMARY
-cmdAllocInfo_commandBufferCount dd 1
 
 ;-----------
 ;Framebuffer

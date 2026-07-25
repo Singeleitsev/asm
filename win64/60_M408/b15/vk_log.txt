@@ -12,8 +12,8 @@ Memory Allocating: OK
 RAM allocated
 Vertices: 12193
 Normals: 12008
-Combined Vertices: 12188
-Indices: 53132
+Combined Vertices: 14909
+Indices: 53133
 OBJ loaded successfully
 vkCreateInstance: OK
 vkCreateWin32SurfaceKHR: OK
@@ -60,8 +60,45 @@ Loading Vertex Shader: OK
 vkCreateShaderModule (Vertex): OK
 Loading Fragment Shader: OK
 vkCreateShaderModule (Fragment): OK
-vkCreateGraphicsPipelines: OK
 vkCreateCommandPool: OK
+Creating the Staging Vertex Buffer
+vkCreateBuffer: OK
+vkGetBufferMemoryRequirements: OK
+vkGetPhysicalDeviceMemoryProperties: OK
+vkAllocateMemory: OK
+vkBindBufferMemory: OK
+vkMapMemory: OK
+vkUnmapMemory: OK
+Creating the Device Local Vertex Buffer
+vkCreateBuffer: OK
+vkGetBufferMemoryRequirements: OK
+vkGetPhysicalDeviceMemoryProperties: OK
+vkAllocateMemory: OK
+vkBindBufferMemory: OK
+Creating the Staging Index Buffer
+vkCreateBuffer: OK
+vkGetBufferMemoryRequirements: OK
+vkGetPhysicalDeviceMemoryProperties: OK
+vkAllocateMemory: OK
+vkBindBufferMemory: OK
+vkMapMemory: OK
+Creating the Device Local Index Buffer
+vkCreateBuffer: OK
+vkGetBufferMemoryRequirements: OK
+vkGetPhysicalDeviceMemoryProperties: OK
+vkAllocateMemory: OK
+vkBindBufferMemory: OK
+Transferring the Staging Buffers to the Device Local Buffers
+Memory Allocating: OK
+vkAllocateCommandBuffersvkAllocateCommandBuffers: OK
+vkBeginCommandBuffer: OK
+vkCmdCopyBuffer: OK
+vkCmdCopyBuffer: OK
+vkEndCommandBuffer: OK
+vkCreateFence: OK
+vkQueueSubmit: OK
+Model Buffers created successfully
+vkCreateGraphicsPipelines: OK
 vkCreateSemaphoreImageAvailable: OK
 vkCreateSemaphoreRenderFinished: OK
 vkCreateFence: OK
@@ -75,7 +112,9 @@ vkCmdBeginRenderPass: OK
 vkCmdSetViewport: OK
 vkCmdSetScissor: OK
 vkCmdBindPipeline: OK
-vkCmdDraw: OK
+vkCmdBindVertexBuffers: OK
+vkCmdBindIndexBuffer: OK
+vkCmdDrawIndexed: OK
 vkCmdEndRenderPass: OK
 vkEndCommandBuffer: OK
 vkBeginCommandBuffer: OK
@@ -83,7 +122,9 @@ vkCmdBeginRenderPass: OK
 vkCmdSetViewport: OK
 vkCmdSetScissor: OK
 vkCmdBindPipeline: OK
-vkCmdDraw: OK
+vkCmdBindVertexBuffers: OK
+vkCmdBindIndexBuffer: OK
+vkCmdDrawIndexed: OK
 vkCmdEndRenderPass: OK
 vkEndCommandBuffer: OK
 UpdateWindow: OK
@@ -98,8 +139,9 @@ vkDestroyFramebuffer: OK
 vkDestroyFramebuffer: OK
 vkDestroyFence: OK
 vkDestroySemaphoreImageAvailable: OK
-vkDestroyCommandPool: OK
 vkDestroyPipeline: OK
+Destroying the Model Buffers: OK
+vkDestroyCommandPool: OK
 vkDestroyShaderModule (Fragment): OK
 vkDestroyShaderModule (Vertex): OK
 vkDestroyPipelineLayout: OK

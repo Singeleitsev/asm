@@ -119,7 +119,7 @@ szNoDeviceMemory db 0Dh,0Ah,"Error: No proper Device Memory Types Found",0Dh,0Ah
 szVkAllocateMemory db "vkAllocateMemory",0
 szVkFreeMemory db "vkFreeMemory",0
 szVkBindImageMemory db "vkBindImageMemory",0
-szErrorZeroSize db "Allocation size is zero!", 0Dh, 0Ah, 0
+szErrorZeroSize db "Allocation size is zero!",0Dh,0Ah,0
 
 ;Render Pass
 
@@ -144,15 +144,6 @@ szVkDestroyVertexShader db "vkDestroyShaderModule (Vertex)",0
 szVkCreateFragmentShader db "vkCreateShaderModule (Fragment)",0
 szVkDestroyFragmentShader db "vkDestroyShaderModule (Fragment)",0
 
-;Graphics Pipeline
-
-;Shader Entry Points
-szEntryPointShaderV db "main",0
-szEntryPointShaderF db "main",0
-;Log
-szVkCreateGraphicsPipeline db "vkCreateGraphicsPipelines",0
-szVkDestroyGraphicsPipeline db "vkDestroyPipeline",0
-
 ;Command Pool
 
 szVkCreateCommandPool db "vkCreateCommandPool",0
@@ -165,29 +156,57 @@ szVkCreateFence db "vkCreateFence",0
 szVkDestroyFence db "vkDestroyFence",0
 szVkAllocateCommandBuffers db "vkAllocateCommandBuffers",0
 
+;Model Buffers
+
+szLogStagingVertexBuffer db "Creating the Staging Vertex Buffer",0Dh,0Ah,0
+szVkCreateBuffer db "vkCreateBuffer",0
+szVkGetBufferMemoryRequirements db "vkGetBufferMemoryRequirements",0
+szVkBindBufferMemory db "vkBindBufferMemory",0
+szVkMapMemory db "vkMapMemory",0
+szVkUnmapMemory db "vkUnmapMemory",0
+szLogDeviceVertexBuffer db "Creating the Device Local Vertex Buffer",0Dh,0Ah,0
+szLogStagingIndexBuffer db "Creating the Staging Index Buffer",0Dh,0Ah,0
+szLogDeviceIndexBuffer db "Creating the Device Local Index Buffer",0Dh,0Ah,0
+szLogAllocatingTransferCmdBuf db "Transferring the Staging Buffers to the Device Local Buffers",0Dh,0Ah,0
+szVkCmdCopyBuffer db "vkCmdCopyBuffer",0
+szLogModelBuffersOK db "Model Buffers created successfully",0Dh,0Ah,0
+szLogDestroyModelBuffers db "Destroying the Model Buffers",0
+
+;Graphics Pipeline
+
+;Shader Entry Points
+szEntryPointShaderV db "main",0
+szEntryPointShaderF db "main",0
+;Log
+szVkCreateGraphicsPipeline db "vkCreateGraphicsPipelines",0
+szVkDestroyGraphicsPipeline db "vkDestroyPipeline",0
+
 ;FrameBuffer
 
-szVkCreateFrameBuffer db 'vkCreateFramebuffer',0
-szVkDestroyFrameBuffer db 'vkDestroyFramebuffer',0
+szVkCreateFrameBuffer db "vkCreateFramebuffer",0
+szVkDestroyFrameBuffer db "vkDestroyFramebuffer",0
 
-;recordCommandBuffers
+;Command Buffers
 
-szLogRecordCommandBuffers db 'Record Command Buffers',0
-szVkBeginCommandBuffer db 'vkBeginCommandBuffer',0
-szVkCmdBeginRenderPass db 'vkCmdBeginRenderPass',0
-szVkCmdSetViewport db 'vkCmdSetViewport',0
-szVkCmdSetScissor db 'vkCmdSetScissor',0
-szVkCmdBindPipeline db 'vkCmdBindPipeline',0
-szVkCmdDraw db 'vkCmdDraw',0
-szVkCmdEndRenderPass db 'vkCmdEndRenderPass',0
-szVkEndCommandBuffer db 'vkEndCommandBuffer',0
+szLogRecordCommandBuffers db "Record Command Buffers",0
+szVkBeginCommandBuffer db "vkBeginCommandBuffer",0
+szVkCmdBeginRenderPass db "vkCmdBeginRenderPass",0
+szVkCmdSetViewport db "vkCmdSetViewport",0
+szVkCmdSetScissor db "vkCmdSetScissor",0
+szVkCmdBindPipeline db "vkCmdBindPipeline",0
+;szVkCmdDraw db "vkCmdDraw",0
+szVkCmdBindVertexBuffers db "vkCmdBindVertexBuffers",0
+szVkCmdBindIndexBuffer db "vkCmdBindIndexBuffer",0
+szVkCmdDrawIndexed db "vkCmdDrawIndexed",0
+szVkCmdEndRenderPass db "vkCmdEndRenderPass",0
+szVkEndCommandBuffer db "vkEndCommandBuffer",0
 
 ;Render
 
-szVkAcquireNextImageKHR db 'vkAcquireNextImageKHR',0
-szVkResetFences db 'vkResetFences',0
-szVkQueueSubmit db 'vkQueueSubmit',0
-szVkQueuePresentKHR db 'vkQueuePresentKHR',0
+szVkAcquireNextImageKHR db "vkAcquireNextImageKHR",0
+szVkResetFences db "vkResetFences",0
+szVkQueueSubmit db "vkQueueSubmit",0
+szVkQueuePresentKHR db "vkQueuePresentKHR",0
 
 ;OBJ Loader
 

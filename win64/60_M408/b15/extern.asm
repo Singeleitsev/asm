@@ -80,9 +80,6 @@ extern vkDestroyPipelineLayout:proc
 ;Shader Modules
 extern vkCreateShaderModule:proc
 extern vkDestroyShaderModule:proc
-;Graphics Pipeline
-extern vkCreateGraphicsPipelines:proc
-extern vkDestroyPipeline:proc
 ;Command Pool
 extern vkCreateCommandPool:proc
 extern vkDestroyCommandPool:proc
@@ -91,18 +88,33 @@ extern vkDestroySemaphore:proc
 extern vkCreateFence:proc
 extern vkDestroyFence:proc
 extern vkAllocateCommandBuffers:proc
+;ModelBuffers
+extern vkCreateBuffer:proc
+extern vkGetBufferMemoryRequirements:proc
+extern vkBindBufferMemory:proc
+extern vkMapMemory:proc
+extern vkUnmapMemory:proc
+extern vkDestroyBuffer:proc
+;Graphics Pipeline
+extern vkCreateGraphicsPipelines:proc
+extern vkDestroyPipeline:proc
 ;FrameBuffer
 extern vkCreateFramebuffer:proc
 extern vkDestroyFramebuffer:proc
-;recordCommandBuffers
+;CommandBuffers
 extern vkBeginCommandBuffer:proc
 extern vkCmdBeginRenderPass:proc
 extern vkCmdSetViewport:proc
 extern vkCmdSetScissor:proc
 extern vkCmdBindPipeline:proc
-extern vkCmdDraw:proc
+;extern vkCmdDraw:proc
+extern vkCmdBindVertexBuffers:proc
+extern vkCmdBindIndexBuffer:proc
+extern vkCmdDrawIndexed:proc
 extern vkCmdEndRenderPass:proc
 extern vkEndCommandBuffer:proc
+extern vkCmdCopyBuffer:proc
+extern vkFreeCommandBuffers:proc
 ;Render
 extern vkAcquireNextImageKHR:proc
 extern vkWaitForFences:proc

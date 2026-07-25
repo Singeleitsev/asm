@@ -27,11 +27,11 @@ LOG_TEXT szOK
 LOG_TEXT szVkGetImageMemoryRequirements
 mov rcx,ghVkLogicalDevice
 mov rdx,ghVkDepthImage
-lea r8,memReqs_size ;address of VkMemoryRequirements structure
+lea r8,depthMemReqs_size ;address of VkMemoryRequirements structure
 call vkGetImageMemoryRequirements
-cmp memReqs_size,0
+cmp depthMemReqs_size,0
 je lbl_Error_NoImgMemReqs
-cmp memReqs_alignment,0
+cmp depthMemReqs_alignment,0
 je lbl_Error_NoImgMemReqs
 LOG_TEXT szOK
 
@@ -53,7 +53,7 @@ search_memory_type:
 mov rax,1
 mov ecx,index
 shl eax,cl ;1 << index
-and eax,memReqs_memoryTypeBits
+and eax,depthMemReqs_memoryTypeBits
 jz next_memory_type
 
 ;Check if it has VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT (0x01)
@@ -78,7 +78,7 @@ fallback_search:
 mov rax,1
 mov ecx,index
 shl eax,cl ;1 << index
-and eax,memReqs_memoryTypeBits
+and eax,depthMemReqs_memoryTypeBits
 jnz found_memory_type
 
 inc index
@@ -96,8 +96,8 @@ mov depthAllocInfo_memoryTypeIndex,ecx
 LOG_TEXT szDeviceMemoryFound
 
 ;6. Align allocation size to the required alignment
-mov rax,memReqs_size
-mov rbx,memReqs_alignment
+mov rax,depthMemReqs_size
+mov rbx,depthMemReqs_alignment
 cmp rbx,0
 je lbl_Error_NoImgMemReqs
 
