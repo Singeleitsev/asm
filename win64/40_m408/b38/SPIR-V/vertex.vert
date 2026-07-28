@@ -51,7 +51,7 @@ mat4 mtxPersp = mat4(
 
 // --- Model transformations (scale + translate to fit view) ---
 float S = 0.01; // scale factor
-float dx = -0.25;
+float dx = 0.2;
 float dy = 0.2;
 float dz = -1.2;
 
@@ -80,7 +80,7 @@ mat4 rotX = mat4(
     vec4(0.0, 0.0, 0.0, 1.0)
 );
 
-float angleZ = radians(230.0);
+float angleZ = radians(135.0);
 float cZ = cos(angleZ);
 float sZ = sin(angleZ);
 mat4 rotZ = mat4(

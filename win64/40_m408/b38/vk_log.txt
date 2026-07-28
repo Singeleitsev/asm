@@ -80,7 +80,31 @@ Creating the Device Local Vertex Buffer
 vkCreateBuffer: OK
 vkGetBufferMemoryRequirements: OK
 vkGetPhysicalDeviceMemoryProperties: OK
- Error: 0xFFFFFFFF
+vkAllocateMemory: OK
+vkBindBufferMemory: OK
+Creating the Staging Index Buffer
+vkCreateBuffer: OK
+vkGetBufferMemoryRequirements: OK
+vkGetPhysicalDeviceMemoryProperties: OK
+vkAllocateMemory: OK
+vkBindBufferMemory: OK
+vkMapMemory: OK
+Creating the Device Local Index Buffer
+vkCreateBuffer: OK
+vkGetBufferMemoryRequirements: OK
+vkGetPhysicalDeviceMemoryProperties: OK
+vkAllocateMemory: OK
+vkBindBufferMemory: OK
+Transferring Staging Buffers to Device Local Buffers
+Memory Allocating: OK
+vkAllocateCommandBuffers: OK
+vkBeginCommandBuffer: OK
+vkCmdCopyBuffer: OK
+vkCmdCopyBuffer: OK
+vkEndCommandBuffer: OK
+vkCreateFence: OK
+vkQueueSubmit: OK
+Model Buffers created successfully
 vkCreateGraphicsPipelines: OK
 vkCreateSemaphoreImageAvailable: OK
 vkCreateSemaphoreRenderFinished: OK
@@ -96,4 +120,48 @@ vkCmdBeginRenderPass: OK
 vkCmdSetViewport: OK
 vkCmdSetScissor: OK
 vkCmdBindPipeline: OK
-vkCmdBindVertexBuffers
+vkCmdBindVertexBuffers: OK
+vkCmdBindIndexBuffer: OK
+vkCmdDrawIndexed: OK
+vkCmdEndRenderPass: OK
+vkEndCommandBuffer: OK
+vkBeginCommandBuffer: OK
+vkCmdBeginRenderPass: OK
+vkCmdSetViewport: OK
+vkCmdSetScissor: OK
+vkCmdBindPipeline: OK
+vkCmdBindVertexBuffers: OK
+vkCmdBindIndexBuffer: OK
+vkCmdDrawIndexed: OK
+vkCmdEndRenderPass: OK
+vkEndCommandBuffer: OK
+UpdateWindow: OK
+Entering Message Loop
+DrawScene called
+vkAcquireNextImageKHR: OK
+vkResetFences: OK
+vkQueueSubmit: OK
+vkQueuePresentKHR: OK
+WM_CLOSE received
+vkDestroyFramebuffer: OK
+vkDestroyFramebuffer: OK
+vkDestroyFence: OK
+vkDestroySemaphoreImageAvailable: OK
+vkDestroyPipeline: OK
+Destroying the Model Buffers: OK
+vkDestroyCommandPool: OK
+vkDestroyShaderModule (Fragment): OK
+vkDestroyShaderModule (Vertex): OK
+vkDestroyPipelineLayout: OK
+vkDestroyRenderPass: OK
+vkDestroyImageView: OK
+vkFreeMemory: OK
+vkDestroyImage: OK
+vkDestroyImageView: OK
+vkDestroyImageView: OK
+vkDestroySwapchainKHR: OK
+vkDestroyDevice: OK
+vkDestroySurfaceKHR: OK
+vkDestroyInstance: OK
+WM_DESTROY received
+ExitProcess

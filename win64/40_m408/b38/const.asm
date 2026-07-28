@@ -2,13 +2,13 @@
 ;Each color is 3 floats (12 bytes)
 align 10h
 gpTestDiffuseColors \
-    dd 0.0000, 0.0000, 0.0000 ;material 0: Glass (black diffuse)
-    dd 1.0000, 1.0000, 1.0000 ;material 1: Chrome (white)
-    dd 0.0314, 0.0314, 0.5333 ;material 2: BlueSpace
-    dd 0.3412, 0.0000, 0.0000 ;material 3: Lights_Red
-    dd 0.8431, 0.8431, 0.8431 ;material 4: Lights_Rear_White
-    dd 0.2627, 0.2627, 0.2627 ;material 5: Rusty
-    dd 0.8392, 0.8980, 0.6510 ;material 6: Black
+    dd 0.7500, 0.7500, 0.7500 ;material 0: Glass (black diffuse)
+    dd 0.6500, 0.6500, 0.6500 ;material 1: Chrome (white)
+    dd 0.1500, 0.2500, 0.6000 ;material 2: BlueSpace
+    dd 0.7500, 0.2500, 0.0000 ;material 3: Lights_Red
+    dd 0.8500, 0.8500, 0.8500 ;material 4: Lights_Rear_White
+    dd 0.2500, 0.2500, 0.2500 ;material 5: Rusty
+    dd 0.1000, 0.1000, 0.1000 ;material 6: Black
 
 ;Numeric Constants
 f32_neg1 dd 0BF800000h ;-1.0
