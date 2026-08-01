@@ -51,15 +51,9 @@ mat4 mtxPersp = mat4(
 
 // --- Model transformations (scale + translate to fit view) ---
 float S = 0.01; // scale factor
-<<<<<<<< HEAD:win64/40_m408/b45.gut/SPIR-V/vertex.vert
 float dx = 0.55;
 float dy = 0.0;
 float dz = -1.8;
-========
-float dx = 0.2;
-float dy = 0.2;
-float dz = -1.2;
->>>>>>>> 27ca85c5a0a48e8826538893f6cb7b46943c3daf:win64/40_m408/b38/SPIR-V/vertex.vert
 
 mat4 mtxTrans = mat4(
     vec4(1.0, 0.0, 0.0, 0.0),
@@ -86,11 +80,7 @@ mat4 rotX = mat4(
     vec4(0.0, 0.0, 0.0, 1.0)
 );
 
-<<<<<<<< HEAD:win64/40_m408/b45.gut/SPIR-V/vertex.vert
 float angleZ = radians(32.0);
-========
-float angleZ = radians(135.0);
->>>>>>>> 27ca85c5a0a48e8826538893f6cb7b46943c3daf:win64/40_m408/b38/SPIR-V/vertex.vert
 float cZ = cos(angleZ);
 float sZ = sin(angleZ);
 mat4 rotZ = mat4(

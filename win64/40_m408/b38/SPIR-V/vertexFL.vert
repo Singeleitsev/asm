@@ -7,16 +7,6 @@ layout(location = 1) in vec3 inNormal;
 // --- Output to fragment shader ---
 layout(location = 0) out vec3 fragColor;
 
-// Push constant block
-layout(push_constant) uniform MaterialPC {
-    vec3 Kd;
-    //vec3 Ks;
-    //vec3 Ka;
-    //float Ns;
-    //float d;
-} material;
-
-
 // --- Projection matrix (same as your cube version) ---
 float nearOrtho = 0.1;
 float farOrtho  = 10.0;
@@ -51,15 +41,9 @@ mat4 mtxPersp = mat4(
 
 // --- Model transformations (scale + translate to fit view) ---
 float S = 0.01; // scale factor
-<<<<<<<< HEAD:win64/40_m408/b45.gut/SPIR-V/vertex.vert
-float dx = 0.55;
-float dy = 0.0;
-float dz = -1.8;
-========
-float dx = 0.2;
+float dx = -0.25;
 float dy = 0.2;
 float dz = -1.2;
->>>>>>>> 27ca85c5a0a48e8826538893f6cb7b46943c3daf:win64/40_m408/b38/SPIR-V/vertex.vert
 
 mat4 mtxTrans = mat4(
     vec4(1.0, 0.0, 0.0, 0.0),
@@ -86,11 +70,7 @@ mat4 rotX = mat4(
     vec4(0.0, 0.0, 0.0, 1.0)
 );
 
-<<<<<<<< HEAD:win64/40_m408/b45.gut/SPIR-V/vertex.vert
-float angleZ = radians(32.0);
-========
-float angleZ = radians(135.0);
->>>>>>>> 27ca85c5a0a48e8826538893f6cb7b46943c3daf:win64/40_m408/b38/SPIR-V/vertex.vert
+float angleZ = radians(230.0);
 float cZ = cos(angleZ);
 float sZ = sin(angleZ);
 mat4 rotZ = mat4(
@@ -114,16 +94,8 @@ mat4 projView = mtxPersp * mtxTrans * mtxScale * rotX * rotZ * rotY;
 
 // --- main ---
 void main() {
-// Use the model vertex position
-gl_Position = projView * vec4(inPosition, 1.0);
-
-// solid blue
-//fragColor = vec3(0.0, 0.0, 0.9);   
-
-// Simple diffuse lighting
-vec3 lightDir = normalize(vec3(1.0, 1.0, 1.0));
-float diff = max(dot(inNormal, lightDir), 0.0);
-vec3 ambient = material.Kd * 0.2;
-fragColor = ambient + material.Kd * diff;
-
+    // Use the model vertex position
+    gl_Position = projView * vec4(inPosition, 1.0);
+    // Use normal as colour (gives a nice rainbow effect)
+    fragColor = inNormal * 0.5 + 0.5;
 }
