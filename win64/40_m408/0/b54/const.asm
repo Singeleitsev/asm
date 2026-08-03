@@ -1,0 +1,114 @@
+;Test Diffuse colors from m408.mtl, in order of materials (0..6)
+;Each color is 3 floats (12 bytes)
+align 10h
+gpTestDiffuseColors \
+ dd 0.7500, 0.7500, 0.7500 ;material 0: Glass (black diffuse)
+ dd 0.6500, 0.6500, 0.6500 ;material 1: Chrome (white)
+ dd 0.1500, 0.2500, 0.6000 ;material 2: BlueSpace
+ dd 0.7500, 0.2500, 0.0000 ;material 3: Lights_Red
+ dd 0.8500, 0.8500, 0.8500 ;material 4: Lights_Rear_White
+ dd 0.2500, 0.2500, 0.2500 ;material 5: Rusty
+ dd 0.1000, 0.1000, 0.1000 ;material 6: Black
+
+;Numeric Constants
+f32_neg1 dd 0BF800000h ;-1.0
+f32_0p1 dd 3DCCCCCDh ;0.1
+f32_1 dd 3F800000h ;1.0
+f32_10 dd 41200000h ;10.0
+
+;Application Limits
+NAME_BUFFER_SIZE equ 40h
+
+;Menu IDs
+IDM_FILE_SAVE equ 103h
+IDM_FILE_EXIT equ 10Fh
+IDM_HELP_ABOUT equ 0F01h
+
+;Object Metadata
+OFFSET_OBJECT_NAME equ 0
+OFFSET_OBJECT_GROUPS_POINTER equ OFFSET_OBJECT_NAME + 40h
+OFFSET_OBJECT_GROUPS_COUNT equ OFFSET_OBJECT_GROUPS_POINTER + 8
+OBJECT_METADATA_SIZE equ OFFSET_OBJECT_GROUPS_COUNT + 4
+
+;Group Metadata
+OFFSET_GROUP_NAME equ 0
+OFFSET_GROUP_SUBGROUPS_POINTER equ OFFSET_GROUP_NAME + 40h
+OFFSET_GROUP_SUBGROUPS_COUNT equ OFFSET_GROUP_SUBGROUPS_POINTER + 8
+OFFSET_GROUP_TRANSFORM_TYPE equ OFFSET_GROUP_SUBGROUPS_COUNT + 4
+OFFSET_GROUP_PIVOT_POINTER equ OFFSET_GROUP_TRANSFORM_TYPE + 4
+OFFSET_GROUP_AXIS_POINTER equ OFFSET_GROUP_PIVOT_POINTER + 8
+OFFSET_GROUP_MIN_ANGLE equ OFFSET_GROUP_AXIS_POINTER + 8
+OFFSET_GROUP_MAX_ANGLE equ OFFSET_GROUP_MIN_ANGLE + 4
+OFFSET_GROUP_CURRENT_ANGLE equ OFFSET_GROUP_MAX_ANGLE + 4
+OFFSET_GROUP_MATRIX_POINTER equ OFFSET_GROUP_CURRENT_ANGLE + 4
+GROUP_METADATA_SIZE equ OFFSET_GROUP_MATRIX_POINTER + 8
+
+;Group Transform types
+TRANSFORM_TYPE_STATIC equ 0 ;No animation (body, glass, chrome)
+TRANSFORM_TYPE_HINGE equ 1 ;Rotation around one axis (doors, hood, trunk)
+TRANSFORM_TYPE_SLIDER equ 2 ;Linear translation (windows, sunroof)
+TRANSFORM_TYPE_ROTARY equ 3 ;Full rotation (wheels, steering)
+
+;SubGroup Metadata
+OFFSET_SUBGROUP_NAME equ 0
+OFFSET_SUBGROUP_PARENT_INDEX equ OFFSET_SUBGROUP_NAME + 40h
+OFFSET_SUBGROUP_MATERIALS_POINTER equ OFFSET_SUBGROUP_PARENT_INDEX + 4
+OFFSET_SUBGROUP_MATERIALS_COUNT equ OFFSET_SUBGROUP_MATERIALS_POINTER + 8
+OFFSET_SUBGROUP_VERTICES_POINTER equ OFFSET_SUBGROUP_MATERIALS_COUNT + 4
+OFFSET_SUBGROUP_VERTICES_COUNT equ OFFSET_SUBGROUP_VERTICES_POINTER + 8
+OFFSET_SUBGROUP_NORMALS_POINTER equ OFFSET_SUBGROUP_VERTICES_COUNT + 4
+OFFSET_SUBGROUP_NORMALS_COUNT equ OFFSET_SUBGROUP_NORMALS_POINTER + 8
+OFFSET_SUBGROUP_FACES_POINTER equ OFFSET_SUBGROUP_NORMALS_COUNT + 4
+OFFSET_SUBGROUP_FACES_COUNT equ OFFSET_SUBGROUP_FACES_POINTER + 8
+OFFSET_SUBGROUP_INDICES_POINTER equ OFFSET_SUBGROUP_FACES_COUNT + 4
+OFFSET_SUBGROUP_INDICES_COUNT equ OFFSET_SUBGROUP_INDICES_POINTER + 8
+SUBGROUP_METADATA_SIZE equ OFFSET_SUBGROUP_INDICES_COUNT + 4
+
+;Material Metadata
+OFFSET_MATERIAL_NAME equ 0
+;Diffuse color (3 x float, Kd)
+OFFSET_KD equ OFFSET_MATERIAL_NAME + 40h
+;Specular color (3 x float, Ks)
+OFFSET_KS equ OFFSET_KD + 0Ch
+;Ambient color (3 x float, Ka)
+OFFSET_KA equ OFFSET_KS + 0Ch
+;Emission color (3 x float, Ke)
+OFFSET_KE equ OFFSET_KA + 0Ch
+;Shininess / specular exponent (float, Ns)
+OFFSET_NS equ OFFSET_KE + 4
+;Index of refraction (float, Ni)
+OFFSET_NI equ OFFSET_NS + 4
+;Dissolve / opacity (float, d)
+OFFSET_D equ OFFSET_NI + 4
+;Transparency (inverse of d, float, Tr)
+OFFSET_TR equ OFFSET_D + 4
+;Roughness (PBR, float, Pr)
+OFFSET_PR equ OFFSET_TR + 4
+;Metallic (PBR, float, Pm)
+OFFSET_PM equ OFFSET_PR + 4
+;Illumination model (DWORD, illum)
+OFFSET_ILLUM equ OFFSET_PM + 4
+;Transmission filter color (3 x float, Tf)
+OFFSET_TF equ OFFSET_ILLUM + 0Ch
+;Clearcoat / sheen (float, Pc)
+OFFSET_PC equ OFFSET_TF + 4
+;Clearcoat roughness (float, Pcr)
+OFFSET_PCR equ OFFSET_PC + 4
+;Diffuse texture map filename (pointer, map_Kd)
+OFFSET_MAP_KD equ OFFSET_PCR + 8
+;Specular texture map filename (pointer, map_Ks)
+OFFSET_MAP_KS equ OFFSET_MAP_KD + 8
+MATERIAL_METADATA_SIZE equ OFFSET_MAP_KS + 8
+
+
+
+;Legacy
+;MaterialGroup field offsets (used for grouping faces by material)
+OFFSET_MTL_GROUP_FIRST_INDEX equ 0 ;DWORD firstIndex
+OFFSET_MTL_GROUP_INDEX_COUNT equ 4 ;DWORD indexCount
+OFFSET_MTL_GROUP_MATERIAL_INDEX equ 8 ;DWORD materialIndex
+MTL_GROUP_STRUCT_SIZE equ 10h ;total size (aligned to 16 bytes)
+
+MTL_STRUCT_SIZE equ 90h ;Total block size (144 bytes, room to grow later)
+
+
