@@ -1,0 +1,149 @@
+Application Started
+Entering WinMain
+RegisterClass: OK
+CreateMenu: OK
+CreateAcceleratorTable: OK
+CreateWindow: OK
+CreateStatusBar: OK
+Loading OBJ file
+OBJ file opened, size: 1653348
+Loading MTL file
+MTL file opened, size: 1557
+Error. No Normals FoundNo TextureCoordinates FoundMemory Allocating: OK
+Memory Allocating: OK
+Objects: 89
+Memory Allocating: OK
+Memory Allocating: OK
+Groups: 89
+Memory Allocating: OK
+Memory Allocating: OK
+SubGroups: 8
+Memory Allocating: OK
+Memory Allocating: OK
+SubGroups: 8
+Memory Allocating: OK
+Memory Allocating: OK
+Texture Names: 0
+OBJ loaded successfully
+MTL loaded successfully
+vkCreateInstance: OK
+vkCreateWin32SurfaceKHR: OK
+vkEnumeratePhysicalDevices - First Pass: OK
+vkEnumeratePhysicalDevices - Second Pass: OK
+GetPhysicalDeviceProperties: NVIDIA GeForce GTX 1650
+GetPhysicalDeviceProperties: Intel(R) UHD Graphics 630
+vkGetPhysicalDeviceMemoryProperties: OK
+vkGetPhysicalDeviceQueueFamilyProperties - First Pass: OK
+Memory Allocating: OK
+vkGetPhysicalDeviceQueueFamilyProperties - Second Pass: OK
+Memory Allocating: OK
+vkGetPhysicalDeviceSurfaceSupportKHR: OK
+Queue Family Selected Successfully
+vkGetPhysicalDeviceSurfaceCapabilitiesKHR: OK
+Extent Chosen Successfully
+vkGetPhysicalDeviceSurfaceFormatsKHR - First Pass: OK
+Memory Allocating: OK
+vkGetPhysicalDeviceSurfaceFormatsKHR - Second Pass: OK
+Format Chosen Successfully
+vkGetPhysicalDeviceSurfacePresentModesKHR - First Pass: OK
+Memory Allocating: OK
+vkGetPhysicalDeviceSurfacePresentModesKHR - Second Pass: OK
+Present Mode Chosen Successfully
+vkCreateDevice: OK
+vkGetDeviceQueue (Graphics Queue): OK
+vkGetDeviceQueue (Present Queue): OK
+vkCreateSwapchainKHR: OK
+vkGetSwapchainImagesKHR - First Pass: OK
+Memory Allocating: OK
+vkGetSwapchainImagesKHR - Second Pass: OK
+Memory Allocating: OK
+vkCreateImageView: OK
+vkCreateImageView: OK
+vkCreateImage: OK
+vkGetImageMemoryRequirements: OK
+Device Memory Type Chosen Successfully
+vkAllocateMemory: OK
+vkBindImageMemory: OK
+vkCreateImageView: OK
+vkCreateRenderPass: OK
+vkCreatePipelineLayout: OK
+Loading Vertex Shader: OK
+vkCreateShaderModule (Vertex): OK
+Loading Fragment Shader: OK
+vkCreateShaderModule (Fragment): OK
+vkCreateCommandPool: OK
+vkCreateGraphicsPipelines: OK
+vkCreateSemaphoreImageAvailable: OK
+vkCreateSemaphoreRenderFinished: OK
+vkCreateFence: OK
+Memory Allocating: OK
+vkAllocateCommandBuffers: OK
+Memory Allocating: OK
+vkCreateFramebuffer: OK
+vkCreateFramebuffer: OK
+Record Command Buffers
+vkBeginCommandBuffer: OK
+vkCmdBeginRenderPass: OK
+vkCmdSetViewport: OK
+vkCmdSetScissor: OK
+vkCmdBindPipeline: OK
+vkCmdBindVertexBuffers: OK
+vkCmdBindIndexBuffer: OK
+vkCmdDrawIndexedNo Material groups passed
+vkCmdEndRenderPass: OK
+vkEndCommandBuffer: OK
+vkBeginCommandBuffer: OK
+vkCmdBeginRenderPass: OK
+vkCmdSetViewport: OK
+vkCmdSetScissor: OK
+vkCmdBindPipeline: OK
+vkCmdBindVertexBuffers: OK
+vkCmdBindIndexBuffer: OK
+vkCmdDrawIndexedNo Material groups passed
+vkCmdEndRenderPass: OK
+vkEndCommandBuffer: OK
+UpdateWindow: OK
+Entering Message Loop
+DrawScene called
+vkAcquireNextImageKHR: OK
+vkResetFences: OK
+vkQueueSubmit: OK
+vkQueuePresentKHR: OK
+Saving as Jpg
+vkCreateBuffer: OK
+vkGetBufferMemoryRequirements: OK
+vkAllocateMemory: OK
+vkBindBufferMemory: OK
+vkAllocateCommandBuffers: OK
+vkBeginCommandBuffer: OK
+vkCmdPipelineBarrier: OK
+vkCmdCopyImageToBuffer: OK
+vkCmdPipelineBarrier: OK
+vkEndCommandBuffer: OK
+vkCreateFence: OK
+vkQueueSubmit: OK
+vkMapMemory: OK
+GDI+ initialized
+The current view saved in the App folder
+WM_CLOSE received
+vkDestroyFramebuffer: OK
+vkDestroyFramebuffer: OK
+vkDestroyFence: OK
+vkDestroySemaphoreImageAvailable: OK
+vkDestroyPipeline: OK
+Destroying the Model BuffersvkDestroyCommandPool: OK
+vkDestroyShaderModule (Fragment): OK
+vkDestroyShaderModule (Vertex): OK
+vkDestroyPipelineLayout: OK
+vkDestroyRenderPass: OK
+vkDestroyImageView: OK
+vkFreeMemory: OK
+vkDestroyImage: OK
+vkDestroyImageView: OK
+vkDestroyImageView: OK
+vkDestroySwapchainKHR: OK
+vkDestroyDevice: OK
+vkDestroySurfaceKHR: OK
+vkDestroyInstance: OK
+WM_DESTROY received
+ExitProcess
