@@ -63,7 +63,6 @@ szCRLF db 0Dh,0Ah,0
 ;vkInstance
 
 szEngineName db "No Engine",0
-;Log
 szVkCreateInstance db "vkCreateInstance",0
 szVkDestroyInstance db "vkDestroyInstance",0
 
@@ -75,8 +74,8 @@ szVkDestroySurface db "vkDestroySurfaceKHR",0
 ;Physical
 
 szVkEnumeratePhysicalDevices db "vkEnumeratePhysicalDevices",0
-szErrNoPhysicalDevices db ". No physical devices found.",0
 szVkGetPhysicalDeviceProperties db "GetPhysicalDeviceProperties: ",0
+szErrNoPhysicalDevices db ". No physical devices found.",0
 
 ;Queue Family
 
@@ -100,7 +99,6 @@ szVkGetPhysicalDeviceSurfaceCapabilitiesKHR db "vkGetPhysicalDeviceSurfaceCapabi
 szLogExtentChosen db "Extent Chosen Successfully",0Dh,0Ah,0
 szVkGetPhysicalDeviceSurfaceFormatsKHR db "vkGetPhysicalDeviceSurfaceFormatsKHR",0
 szLogFormatChosen db "Format Chosen Successfully",0Dh,0Ah,0
-szErrFormat db "Format is NULL",0Dh,0Ah,0
 szVkGetPhysicalDeviceSurfacePresentModesKHR db "vkGetPhysicalDeviceSurfacePresentModesKHR",0
 szLogPresentModeChosen db "Present Mode Chosen Successfully",0Dh,0Ah,0
 szVkCreateSwapchainKHR db "vkCreateSwapchainKHR",0
@@ -108,6 +106,7 @@ szVkDestroySwapchainKHR db "vkDestroySwapchainKHR",0
 szVkGetSwapchainImagesKHR db "vkGetSwapchainImagesKHR",0
 szVkCreateImageView db "vkCreateImageView",0
 szVkDestroyImageView db "vkDestroyImageView",0
+szErrFormat db "Format is NULL",0Dh,0Ah,0
 
 ;Depth Buffer
 
@@ -172,14 +171,13 @@ szLogDeviceIndexBuffer db "Creating the Device Local Index Buffer",0Dh,0Ah,0
 szLogAllocatingTransferCmdBuf db "Transferring Staging Buffers to Device Local Buffers",0Dh,0Ah,0
 szVkCmdCopyBuffer db "vkCmdCopyBuffer",0
 szLogModelBuffersOK db "Model Buffers created successfully",0Dh,0Ah,0
-szLogDestroyModelBuffers db "Destroying the Model Buffers",0Dh,0Ah,0
+szLogDestroyModelBuffers db "Destroying the Model Buffers",0
 
 ;Graphics Pipeline
 
 ;Shader Entry Points
 szEntryPointShaderV db "main",0
 szEntryPointShaderF db "main",0
-;Log
 szVkCreateGraphicsPipeline db "vkCreateGraphicsPipelines",0
 szVkDestroyGraphicsPipeline db "vkDestroyPipeline",0
 
@@ -196,14 +194,17 @@ szVkCmdBeginRenderPass db "vkCmdBeginRenderPass",0
 szVkCmdSetViewport db "vkCmdSetViewport",0
 szVkCmdSetScissor db "vkCmdSetScissor",0
 szVkCmdBindPipeline db "vkCmdBindPipeline",0
-;szVkCmdDraw db "vkCmdDraw",0
 szVkCmdBindVertexBuffers db "vkCmdBindVertexBuffers",0
 szVkCmdBindIndexBuffer db "vkCmdBindIndexBuffer",0
 szPushConstants db "vkCmdPushConstants",0
 szVkCmdDrawIndexed db "vkCmdDrawIndexed",0
+szErrNoMtlGroups db "No Material groups passed",0Dh,0Ah,0
 szVkCmdEndRenderPass db "vkCmdEndRenderPass",0
 szVkEndCommandBuffer db "vkEndCommandBuffer",0
-szErrNoMtlGroups db "No Material groups passed",0Dh,0Ah,0
+
+;Push Data
+szLogOpaquePass db "Drawing Opaque Objects",0Dh,0Ah,0
+szLogTransparentPass db "Drawing Transparent Objects",0Dh,0Ah,0
 
 ;Render
 
@@ -214,80 +215,36 @@ szVkQueuePresentKHR db "vkQueuePresentKHR",0
 
 ;OBJ
 
-szFileNameObj db "Obj\m408.obj",0
 szLogObjLoad db "Loading OBJ file",0Dh,0Ah,0
+szFileNameObj db "Obj\m408.obj",0
 szLogObjOpened  db "OBJ file opened, size: ",0
-szLogObjectsCount db "Objects: ",0
-szLogGroupsCount db "Groups: ",0
-szLogSubGroupsCount db "SubGroups: ",0
-szLogMtlLibsCount db "Material Libraries Used: ",0
-szLogVerticesCount db "Vertices: ",0
-szLogNormalsCount db "Normals: ",0
-szLogTextureCoordsCount db "Texture coordinates: ",0
-szLogFacesCount db "Faces: ",0
-szLogVerticesParsed db "Vertices parsed: ",0
-szLogNormalsParsed db "Normals parsed: ",0
-szLogCombinedVertices db "Combined vertices: ",0
-szLogIndicesCount db "Indices: ",0
-szLogObjSuccess db "OBJ loaded successfully",0Dh,0Ah,0
-
-szLogFreeingSourceData db "Freeing source OBJ data...",0Dh,0Ah,0
-szLogFreedVertices db "  Freed vertices",0Dh,0Ah,0
-szLogFreedNormals db "  Freed normals",0Dh,0Ah,0
-szLogFreedCombinedVerts db "  Freed combined vertices: ",0
-szLogFreedCombinedIndices db "  Freed combined indices: ",0
-szLogFreedTextureCoords db "  Freed texture coordinates",0Dh,0Ah,0
-
-szErrLoadObjOpen db "Cannot open OBJ file",0Dh,0Ah,0
-szErrLoadObjFileSize db "OBJ file size error",0Dh,0Ah,0
-szErrLoadObjMap db "Mapping OBJ failed",0Dh,0Ah,0
-szErrNoObjects db "No Objects Found. Using Default Object Index",0Dh,0Ah,0
-szErrNoGroups db "No Groups Found. Using Default Group Index",0Dh,0Ah,0
-szErrNoSubGroups db "NoSubGroups Found. Using Default SubGroup Index",0Dh,0Ah,0
-szErrNoMtlLibs db "No Materials Libraries Links. Using Default Material",0Dh,0Ah,0
-szErrNoVertices db "No Vertices Found",0Dh,0Ah,0
-szErrNoNormals db "No Normals Found",0Dh,0Ah,0
-szErrNoTextureCoords db "No TextureCoordinates Found",0Dh,0Ah,0
-szErrNoFaces db "No Faces Found",0Dh,0Ah,0
-szErrNoIndices db "No Objects Computed",0Dh,0Ah,0
-szErrObjEncounter db "OBJ Encounter Error",0Dh,0Ah,0
-szErrObjAllocator db "OBJ Allocator Error",0Dh,0Ah,0
-szErrObjParser db "OBJ Parser Error",0Dh,0Ah,0
-szErrVertexCountMismatch db "Vertex count mismatch!",0Dh,0Ah,0
-szErrTooManyVerts db "Face has too many vertices (>16)",0Dh,0Ah,0
-szErrInvalidFace db "Invalid face (less than 3 vertices)",0Dh,0Ah,0
+szLogObjSizeOK  db "RAM size calculated",0Dh,0Ah,0
+szLogObjAllocOK db "RAM allocated",0Dh,0Ah,0
+szLogOBJVertices db "Vertices: ",0
+szLogOBJNormals db "Normals: ",0
+szLogOBJCombined db "Combined Vertices: ",0
+szLogOBJIndices db "Indices: ",0
+szLogOBJSuccess db "OBJ loaded successfully",0Dh,0Ah,0
+szErrLoadObjOpen db "Cannot open OBJ file",0
+szErrLoadObjFileSize db "OBJ file size error",0
+szErrLoadObjMap db "Mapping OBJ failed",0
 szErrOBJCapacity db "FindOrAddCombinedVertex: capacity exceeded",0Dh,0Ah,0
 szErrParseFace db "ParseFace: invalid face format",0Dh,0Ah,0
 
 ;MTL
 
-szFileNameMtl db "Obj\m408.mtl",0
-;szFileNameChrome db "Obj\Chrome.tga",0
 szLogMtlLoad db "Loading MTL file",0Dh,0Ah,0
+szFileNameMat db "Obj\m408.mtl",0
+;szFileNameChrome db "Obj\Chrome.tga",0
 szLogMtlOpened db "MTL file opened, size: ",0
-szLogMaterialsCount db "Materials: ",0
-szLogTextureNamesCount db "Texture Names: ",0
-szLogTextureCoordsParsed db "Texture coords parsed: ",0
+szLogMaterials db "Materials: ",0
 szLogMtlSuccess db "MTL loaded successfully",0Dh,0Ah,0
-
-szErrLoadMtlOpen db "Cannot open MTL file",0Dh,0Ah,0
-szErrLoadMtlFileSize db "MTL file size error",0Dh,0Ah,0
-szErrNoMaterials db "No materials found",0Dh,0Ah,0
-szErrMtlEncounter db "MTL Encounter Error",0Dh,0Ah,0
-szErrMtlAllocator db "MTL Allocator Error",0Dh,0Ah,0
-szErrMtlParser db "MTL Parser Error",0Dh,0Ah,0
-szDefaultMaterialName db "Default",0
-szErrLoadMtlMap db "Mapping MTL failed",0Dh,0Ah,0
-szErrNoTextureNames db "No Texture Names Found",0Dh,0Ah,0
-
-;MTL to OBJ Linking
-
-szLogLinkingMaterials db "Linking OBJ materials to MTL definitions...",0Dh,0Ah,0
-szLogLinkingMaterial db "  Linking ",0
-szLogTo db " -> ",0
-szLogLinkingSuccess db "Successfully linked ",0
-szLogMaterialsLinked db " materials",0Dh,0Ah,0
-szErrSubGroupNotFound db "Warning: SubGroup not found, using default",0Dh,0Ah,0
+szErrLoadMtlOpen db "Cannot open MTL file",0
+szErrLoadMtlFileSize db "MTL file size error",0
+szErrLoadMtlMap db "Mapping MTL failed",0
+szErrMtlCapacity db "Error: MTL capacity exceeded!",0Dh,0Ah,0
+szLogGroupingMaterials db "Grouping faces by materials",0Dh,0Ah,0
+szLogMaterialGroups db "Material Groups: ",0
 
 ;JPG
 

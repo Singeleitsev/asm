@@ -85,8 +85,7 @@ call CompareStrings
 test eax,eax
 jz lbl_NextTexture
 
-mov eax,textureIndex
-mov currentTexture,eax
+mov currentTexture,textureIndex
 jmp lbl_StoreTexture
 
 lbl_NextTexture:

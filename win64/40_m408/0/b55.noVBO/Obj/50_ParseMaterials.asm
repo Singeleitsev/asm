@@ -108,8 +108,7 @@ call CompareStrings
 test eax,eax
 jz lbl_NextMaterial
 
-mov eax,materialIndex
-mov currentMaterial,eax
+mov currentMaterial,materialIndex
 jmp lbl_SkipLine
 
 lbl_NextMaterial:
