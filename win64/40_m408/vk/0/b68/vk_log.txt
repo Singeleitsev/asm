@@ -1,0 +1,31 @@
+Application Started
+Entering WinMain
+RegisterClass: OK
+CreateMenu: OK
+CreateAcceleratorTable: OK
+CreateWindow: OK
+CreateStatusBar: OK
+Loading OBJ file
+OBJ file opened, size: 1653344
+Objects: 89
+Groups: 89
+SubGroups: 89
+Faces: 17711
+Vertices: 12193
+Normals: 12008
+Texture vectors: 7525
+Material Libraries Used: 1
+Memory Allocating: OK
+Memory Allocating: OK
+Unique Objects: 89
+Memory Allocating: OK
+Memory Allocating: OK
+Unique Groups: 89
+Memory Allocating: OK
+Memory Allocating: OK
+Unique SubGroups: 8
+Memory Allocating: OK
+Memory Allocating: OK
+Memory Allocating: OK
+Memory Allocating: OK
+Parsing Object

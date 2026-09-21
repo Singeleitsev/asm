@@ -1,0 +1,14 @@
+Application Started
+Entered WinMain
+GetModuleHandleA: OK
+RegisterClassExA: OK
+Creating the Menu: OK
+CreateAcceleratorTableA: OK
+CreateWindowExA: OK
+Creating the Status Bar: OK
+GetDC: OK
+ChoosePixelFormat: OK
+SetPixelFormat: OK
+wglCreateContext: OK
+wglMakeCurrent: OK
+ExitProcess

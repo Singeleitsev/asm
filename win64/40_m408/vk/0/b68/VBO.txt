@@ -1,0 +1,993 @@
+;------------------------------------------------------------------|
+;                         VBO SYSTEM                               |
+;------------------------------------------------------------------|
+;  Vertex Layout (Interleaved):                                    |
+;  -------------------------------------------------------------|  |
+;  | Position (vec3) | Normal (vec3) | UV (vec2) | Color (vec4) |  |
+;  |   12 bytes      |   12 bytes    |  8 bytes  |  16 bytes    |  |
+;  -------------------------------------------------------------|  |
+;  Total: 48 bytes per vertex                                      |
+;------------------------------------------------------------------|
+;  Index Buffer: UINT32                                            |
+;------------------------------------------------------------------|
+;  Material Buffer: Uniform Buffer with all properties             |
+;  -------------------------------------------------------------|  |
+;  |  Kd (vec4) | Ka (vec4) | Ks (vec4) | Ni (float) | illum    |  |
+;  |  16 bytes  | 16 bytes  | 16 bytes  |  4 bytes   | 4 bytes  |  |
+;  -------------------------------------------------------------|  |
+;  Total: 64 bytes per material                                    |
+;------------------------------------------------------------------|
+
+
+;===========================================================
+; Vertex Layout Constants
+;===========================================================
+VERTEX_POSITION_OFFSET  equ 0      ; 12 bytes (vec3)
+VERTEX_NORMAL_OFFSET    equ 12     ; 12 bytes (vec3)
+VERTEX_UV_OFFSET        equ 24     ; 8 bytes  (vec2)
+VERTEX_COLOR_OFFSET     equ 32     ; 16 bytes (vec4)
+VERTEX_STRIDE           equ 48     ; Total: 48 bytes
+
+;===========================================================
+; VBO Buffer Usage Flags
+;===========================================================
+VBO_USAGE_STATIC_DRAW   equ 1      ; VK_BUFFER_USAGE_VERTEX_BUFFER_BIT
+VBO_USAGE_DYNAMIC_DRAW  equ 2      ; VK_BUFFER_USAGE_TRANSFER_DST_BIT
+VBO_USAGE_INDEX_BUFFER  equ 4      ; VK_BUFFER_USAGE_INDEX_BUFFER_BIT
+
+;===========================================================
+; Material Uniform Buffer Layout (64 bytes)
+;===========================================================
+MATERIAL_UBO_KD_OFFSET  equ 0      ; 16 bytes (vec4: rgb + alpha)
+MATERIAL_UBO_KA_OFFSET  equ 16     ; 16 bytes (vec4: ambient)
+MATERIAL_UBO_KS_OFFSET  equ 32     ; 16 bytes (vec4: rgb + shininess)
+MATERIAL_UBO_NI_OFFSET  equ 48     ; 4 bytes  (float: IOR)
+MATERIAL_UBO_ILLUM_OFFSET equ 52   ; 4 bytes  (uint: illum model)
+MATERIAL_UBO_PADDING    equ 56     ; 8 bytes  (padding for alignment)
+MATERIAL_UBO_SIZE       equ 64     ; Total: 64 bytes
+
+
+;===========================================================
+; Vertex Input Binding Description
+;===========================================================
+align 10h
+vboBinding_binding dd 0
+vboBinding_stride dd VERTEX_STRIDE
+vboBinding_inputRate dd 0   ; VK_VERTEX_INPUT_RATE_VERTEX
+
+;===========================================================
+; Vertex Attribute Descriptions (4 attributes)
+;===========================================================
+; Attribute 0: Position (vec3)
+vboAttr0_location dd 0
+vboAttr0_binding dd 0
+vboAttr0_format dd 6Ah     ; VK_FORMAT_R32G32B32_SFLOAT
+vboAttr0_offset dd VERTEX_POSITION_OFFSET
+
+; Attribute 1: Normal (vec3)
+vboAttr1_location dd 1
+vboAttr1_binding dd 0
+vboAttr1_format dd 6Ah     ; VK_FORMAT_R32G32B32_SFLOAT
+vboAttr1_offset dd VERTEX_NORMAL_OFFSET
+
+; Attribute 2: UV (vec2)
+vboAttr2_location dd 2
+vboAttr2_binding dd 0
+vboAttr2_format dd 6Bh     ; VK_FORMAT_R32G32_SFLOAT
+vboAttr2_offset dd VERTEX_UV_OFFSET
+
+; Attribute 3: Vertex Color (vec4)
+vboAttr3_location dd 3
+vboAttr3_binding dd 0
+vboAttr3_format dd 6Ch     ; VK_FORMAT_R32G32B32A32_SFLOAT
+vboAttr3_offset dd VERTEX_COLOR_OFFSET
+
+;===========================================================
+; VkPipelineVertexInputStateCreateInfo
+;===========================================================
+align 10h
+vertInputInfo_sType dd 13h
+vertInputInfo_dummy0 dd 0
+vertInputInfo_pNext dq 0
+vertInputInfo_flags dd 0
+vertInputInfo_vertexBindingDescriptionCount dd 1
+vertInputInfo_pVertexBindingDescriptions dq offset vboBinding_binding
+vertInputInfo_vertexAttributeDescriptionCount dd 4  ; < 4 attributes!
+vertInputInfo_dummy1 dd 0
+vertInputInfo_pVertexAttributeDescriptions dq offset vboAttr0_location
+
+
+;--------------------------------------------------------
+; createVBO - Create Vertex Buffer Object with full materials
+; Input: gpObjCombined (vertices), gpObjIndices (indices)
+;        gpDataMaterials (material properties)
+;        gnMtlGroupCount (number of material groups)
+; Output: gpVBO (vertex buffer), gpIBO (index buffer)
+;         gpMaterialUBO (material uniform buffer)
+;--------------------------------------------------------
+createVBO proc
+LOCAL hHeap:QWORD
+LOCAL vertexCount:DWORD, indexCount:DWORD
+LOCAL materialCount:DWORD
+PROLOG 100h
+
+call GetProcessHeap
+test rax,rax
+jz lbl_WinError
+mov hHeap,rax
+
+;===========================================================
+; 1. Calculate Buffer Sizes
+;===========================================================
+xor rax,rax
+mov eax,gnCurrentCombinedCount
+imul rax,VERTEX_STRIDE
+mov gnVertexSize,rax
+
+xor rcx,rcx
+mov ecx,gnCurrentIndexCount
+shl rcx,2  ; *4 bytes for UINT32
+mov gnIndexSize,rcx
+
+;===========================================================
+; 2. Create Staging Vertex Buffer (Host Visible)
+;===========================================================
+LOG_TEXT szLogStagingVertexBuffer
+
+; Fill VkBufferCreateInfo
+mov rax,gnVertexSize
+mov stagingVertexBufferInfo_size,rax
+mov stagingVertexBufferInfo_usage,1  ; VK_BUFFER_USAGE_TRANSFER_SRC_BIT
+
+; Create buffer
+LOG_TEXT szVkCreateBuffer
+mov rcx,ghVkLogicalDevice
+lea rdx,stagingVertexBufferInfo_sType
+xor r8,r8
+lea r9,gpStagingVertexBuffer
+call vkCreateBuffer
+test eax,eax
+jnz lbl_VkError
+cmp gpStagingVertexBuffer,0
+je lbl_VkError
+LOG_TEXT szOK
+
+; Get memory requirements
+LOG_TEXT szVkGetBufferMemoryRequirements
+mov rcx,ghVkLogicalDevice
+mov rdx,gpStagingVertexBuffer
+lea r8,stagingVertexMemReqs_size
+call vkGetBufferMemoryRequirements
+LOG_TEXT szOK
+
+; Find host visible memory type
+mov ecx,stagingVertexMemReqs_memoryTypeBits
+call FindHostVisibleMemoryType
+cmp eax,-1
+je lbl_VkError
+mov stagingVertexAllocInfo_memoryTypeIndex,eax
+mov rax,stagingVertexMemReqs_size
+mov stagingVertexAllocInfo_allocationSize,rax
+
+; Allocate memory
+LOG_TEXT szVkAllocateMemory
+mov rcx,ghVkLogicalDevice
+lea rdx,stagingVertexAllocInfo_sType
+xor r8,r8
+lea r9,gpStagingVertexMem
+call vkAllocateMemory
+test eax,eax
+jnz lbl_VkError
+LOG_TEXT szOK
+
+; Bind memory
+LOG_TEXT szVkBindBufferMemory
+mov rcx,ghVkLogicalDevice
+mov rdx,gpStagingVertexBuffer
+mov r8,gpStagingVertexMem
+xor r9,r9
+call vkBindBufferMemory
+test eax,eax
+jnz lbl_VkError
+LOG_TEXT szOK
+
+; Map and copy vertex data
+LOG_TEXT szVkMapMemory
+mov rcx,ghVkLogicalDevice
+mov rdx,gpStagingVertexMem
+xor r8,r8
+mov r9,0FFFFFFFFh
+mov qword ptr[rsp+20h],0
+lea rax,gpVertexMap
+mov qword ptr[rsp+28h],rax
+call vkMapMemory
+test eax,eax
+jnz lbl_VkError
+LOG_TEXT szOK
+
+; Copy combined vertices to staging buffer
+mov rsi,gpObjCombined
+mov rdi,gpVertexMap
+mov rcx,gnVertexSize
+rep movsb
+
+; Unmap
+LOG_TEXT szVkUnmapMemory
+mov rcx,ghVkLogicalDevice
+mov rdx,gpStagingVertexMem
+call vkUnmapMemory
+LOG_TEXT szOK
+
+;===========================================================
+; 3. Create Device Local Vertex Buffer
+;===========================================================
+LOG_TEXT szLogDeviceVertexBuffer
+
+mov rax,gnVertexSize
+mov deviceVertexBufferInfo_size,rax
+mov deviceVertexBufferInfo_usage,82h  ; VERTEX_BUFFER | TRANSFER_DST
+
+; Create buffer
+LOG_TEXT szVkCreateBuffer
+mov rcx,ghVkLogicalDevice
+lea rdx,deviceVertexBufferInfo_sType
+xor r8,r8
+lea r9,gpDeviceVertexBuffer
+call vkCreateBuffer
+test eax,eax
+jnz lbl_VkError
+LOG_TEXT szOK
+
+; Get memory requirements
+LOG_TEXT szVkGetBufferMemoryRequirements
+mov rcx,ghVkLogicalDevice
+mov rdx,gpDeviceVertexBuffer
+lea r8,deviceVertexMemReqs_size
+call vkGetBufferMemoryRequirements
+LOG_TEXT szOK
+
+; Find device local memory type
+mov ecx,deviceVertexMemReqs_memoryTypeBits
+call FindDeviceLocalMemoryType
+cmp eax,-1
+je lbl_VkError
+mov deviceVertexAllocInfo_memoryTypeIndex,eax
+mov rax,deviceVertexMemReqs_size
+mov deviceVertexAllocInfo_allocationSize,rax
+
+; Allocate memory
+LOG_TEXT szVkAllocateMemory
+mov rcx,ghVkLogicalDevice
+lea rdx,deviceVertexAllocInfo_sType
+xor r8,r8
+lea r9,gpDeviceVertexBufferMem
+call vkAllocateMemory
+test eax,eax
+jnz lbl_VkError
+LOG_TEXT szOK
+
+; Bind memory
+LOG_TEXT szVkBindBufferMemory
+mov rcx,ghVkLogicalDevice
+mov rdx,gpDeviceVertexBuffer
+mov r8,gpDeviceVertexBufferMem
+xor r9,r9
+call vkBindBufferMemory
+test eax,eax
+jnz lbl_VkError
+LOG_TEXT szOK
+
+;===========================================================
+; 4. Create Staging Index Buffer
+;===========================================================
+LOG_TEXT szLogStagingIndexBuffer
+
+mov rax,gnIndexSize
+mov stagingIndexBufferInfo_size,rax
+mov stagingIndexBufferInfo_usage,1  ; TRANSFER_SRC
+
+; Create buffer
+LOG_TEXT szVkCreateBuffer
+mov rcx,ghVkLogicalDevice
+lea rdx,stagingIndexBufferInfo_sType
+xor r8,r8
+lea r9,gpStagingIndexBuffer
+call vkCreateBuffer
+test eax,eax
+jnz lbl_VkError
+LOG_TEXT szOK
+
+; Get memory requirements
+LOG_TEXT szVkGetBufferMemoryRequirements
+mov rcx,ghVkLogicalDevice
+mov rdx,gpStagingIndexBuffer
+lea r8,stagingIndexMemReqs_size
+call vkGetBufferMemoryRequirements
+LOG_TEXT szOK
+
+; Find host visible memory
+mov ecx,stagingIndexMemReqs_memoryTypeBits
+call FindHostVisibleMemoryType
+cmp eax,-1
+je lbl_VkError
+mov stagingIndexAllocInfo_memoryTypeIndex,eax
+mov rax,stagingIndexMemReqs_size
+mov stagingIndexAllocInfo_allocationSize,rax
+
+; Allocate memory
+LOG_TEXT szVkAllocateMemory
+mov rcx,ghVkLogicalDevice
+lea rdx,stagingIndexAllocInfo_sType
+xor r8,r8
+lea r9,gpStagingIndexMem
+call vkAllocateMemory
+test eax,eax
+jnz lbl_VkError
+LOG_TEXT szOK
+
+; Bind memory
+LOG_TEXT szVkBindBufferMemory
+mov rcx,ghVkLogicalDevice
+mov rdx,gpStagingIndexBuffer
+mov r8,gpStagingIndexMem
+xor r9,r9
+call vkBindBufferMemory
+test eax,eax
+jnz lbl_VkError
+LOG_TEXT szOK
+
+; Map and copy index data
+LOG_TEXT szVkMapMemory
+mov rcx,ghVkLogicalDevice
+mov rdx,gpStagingIndexMem
+xor r8,r8
+mov r9,0FFFFFFFFh
+mov qword ptr[rsp+20h],0
+lea rax,gpIndexMap
+mov qword ptr[rsp+28h],rax
+call vkMapMemory
+test eax,eax
+jnz lbl_VkError
+LOG_TEXT szOK
+
+mov rsi,gpObjIndices
+mov rdi,gpIndexMap
+mov rcx,gnIndexSize
+rep movsb
+
+mov rcx,ghVkLogicalDevice
+mov rdx,gpStagingIndexMem
+call vkUnmapMemory
+
+;===========================================================
+; 5. Create Device Local Index Buffer
+;===========================================================
+LOG_TEXT szLogDeviceIndexBuffer
+
+mov rax,gnIndexSize
+mov deviceIndexBufferInfo_size,rax
+mov deviceIndexBufferInfo_usage,42h  ; INDEX_BUFFER | TRANSFER_DST
+
+; Create buffer
+LOG_TEXT szVkCreateBuffer
+mov rcx,ghVkLogicalDevice
+lea rdx,deviceIndexBufferInfo_sType
+xor r8,r8
+lea r9,gpDeviceIndexBuffer
+call vkCreateBuffer
+test eax,eax
+jnz lbl_VkError
+LOG_TEXT szOK
+
+; Get memory requirements
+LOG_TEXT szVkGetBufferMemoryRequirements
+mov rcx,ghVkLogicalDevice
+mov rdx,gpDeviceIndexBuffer
+lea r8,deviceIndexMemReqs_size
+call vkGetBufferMemoryRequirements
+LOG_TEXT szOK
+
+; Find device local memory
+mov ecx,deviceIndexMemReqs_memoryTypeBits
+call FindDeviceLocalMemoryType
+cmp eax,-1
+je lbl_VkError
+mov deviceIndexAllocInfo_memoryTypeIndex,eax
+mov rax,deviceIndexMemReqs_size
+mov deviceIndexAllocInfo_allocationSize,rax
+
+; Allocate memory
+LOG_TEXT szVkAllocateMemory
+mov rcx,ghVkLogicalDevice
+lea rdx,deviceIndexAllocInfo_sType
+xor r8,r8
+lea r9,gpDeviceIndexBufferMem
+call vkAllocateMemory
+test eax,eax
+jnz lbl_VkError
+LOG_TEXT szOK
+
+; Bind memory
+LOG_TEXT szVkBindBufferMemory
+mov rcx,ghVkLogicalDevice
+mov rdx,gpDeviceIndexBuffer
+mov r8,gpDeviceIndexBufferMem
+xor r9,r9
+call vkBindBufferMemory
+test eax,eax
+jnz lbl_VkError
+LOG_TEXT szOK
+
+;===========================================================
+; 6. Transfer Staging > Device
+;===========================================================
+LOG_TEXT szLogAllocatingTransferCmdBuf
+
+; Allocate command buffer
+call GetProcessHeap
+test rax,rax
+jz lbl_WinError
+mov rcx,rax
+mov rdx,8
+xor r8,r8
+mov r8d,1
+shl r8,3
+call HeapAlloc
+test rax,rax
+jz lbl_WinError
+mov gpModelCmdBuffers,rax
+
+mov rax,ghVkCommandPool
+mov modelCmdAllocInfo_commandPool,rax
+
+LOG_TEXT szVkAllocateCommandBuffers
+mov rcx,ghVkLogicalDevice
+lea rdx,modelCmdAllocInfo_sType
+mov r8,gpModelCmdBuffers
+call vkAllocateCommandBuffers
+test eax,eax
+jnz lbl_VkError
+LOG_TEXT szOK
+
+; Begin command buffer
+mov rsi,gpModelCmdBuffers
+mov rcx,qword ptr[rsi]
+lea rdx,modelCmdBufferBeginInfo_sType
+call vkBeginCommandBuffer
+test eax,eax
+jnz lbl_VkError
+
+; Copy vertex buffer
+mov rax,gnVertexSize
+mov vertexCopyBuffer_size,rax
+mov rsi,gpModelCmdBuffers
+mov rcx,qword ptr[rsi]
+mov rdx,gpStagingVertexBuffer
+mov r8,gpDeviceVertexBuffer
+mov r9,1
+lea rax,vertexCopyBuffer_srcOffset
+mov qword ptr[rsp+20h],rax
+call vkCmdCopyBuffer
+
+; Copy index buffer
+mov rax,gnIndexSize
+mov indexCopyBuffer_size,rax
+mov rsi,gpModelCmdBuffers
+mov rcx,qword ptr[rsi]
+mov rdx,gpStagingIndexBuffer
+mov r8,gpDeviceIndexBuffer
+mov r9,1
+lea rax,indexCopyBuffer_srcOffset
+mov qword ptr[rsp+20h],rax
+call vkCmdCopyBuffer
+
+; End command buffer
+mov rsi,gpModelCmdBuffers
+mov rcx,qword ptr[rsi]
+call vkEndCommandBuffer
+test eax,eax
+jnz lbl_VkError
+
+;===========================================================
+; 7. Submit and Wait
+;===========================================================
+LOG_TEXT szVkCreateFence
+mov rcx,ghVkLogicalDevice
+lea rdx,modelFenceInfo_sType
+xor r8,r8
+lea r9,gpModelFence
+call vkCreateFence
+test eax,eax
+jnz lbl_VkError
+
+mov rax,gpModelCmdBuffers
+mov modelSubmitInfo_pCommandBuffers,rax
+
+LOG_TEXT szVkQueueSubmit
+mov rcx,ghVkGraphicsQueue
+mov rdx,1
+lea r8,modelSubmitInfo_sType
+mov r9,gpModelFence
+call vkQueueSubmit
+test eax,eax
+jnz lbl_VkError
+
+mov rcx,ghVkLogicalDevice
+mov rdx,1
+lea r8,gpModelFence
+mov r9,1
+mov qword ptr[rsp+20h],-1
+call vkWaitForFences
+test eax,eax
+jnz lbl_VkError
+
+;===========================================================
+; 8. Cleanup Staging Resources
+;===========================================================
+mov rcx,ghVkLogicalDevice
+mov rdx,gpModelFence
+xor r8,r8
+call vkDestroyFence
+
+mov rcx,ghVkLogicalDevice
+mov rdx,ghVkCommandPool
+mov r8,1
+mov r9,gpModelCmdBuffers
+call vkFreeCommandBuffers
+
+mov rcx,ghVkLogicalDevice
+mov rdx,gpStagingVertexBuffer
+xor r8,r8
+call vkDestroyBuffer
+mov rcx,ghVkLogicalDevice
+mov rdx,gpStagingVertexMem
+xor r8,r8
+call vkFreeMemory
+
+mov rcx,ghVkLogicalDevice
+mov rdx,gpStagingIndexBuffer
+xor r8,r8
+call vkDestroyBuffer
+mov rcx,ghVkLogicalDevice
+mov rdx,gpStagingIndexMem
+xor r8,r8
+call vkFreeMemory
+
+;===========================================================
+; 9. Create Material Uniform Buffer
+;===========================================================
+LOG_TEXT szLogCreatingMaterialUBO
+
+; Calculate material buffer size
+mov eax,gnMtlGroupCount
+imul eax,eax,MATERIAL_UBO_SIZE
+mov gnMaterialUBOSize,rax
+
+; Create material UBO
+mov rcx,ghVkLogicalDevice
+lea rdx,materialUBOInfo_sType
+xor r8,r8
+lea r9,gpMaterialUBO
+call vkCreateBuffer
+test eax,eax
+jnz lbl_VkError
+
+; Get memory requirements
+mov rcx,ghVkLogicalDevice
+mov rdx,gpMaterialUBO
+lea r8,materialUBOMemReqs_size
+call vkGetBufferMemoryRequirements
+
+; Find host visible memory (for CPU updates)
+mov ecx,materialUBOMemReqs_memoryTypeBits
+call FindHostVisibleMemoryType
+cmp eax,-1
+je lbl_VkError
+mov materialUBOAllocInfo_memoryTypeIndex,eax
+mov rax,materialUBOMemReqs_size
+mov materialUBOAllocInfo_allocationSize,rax
+
+; Allocate memory
+mov rcx,ghVkLogicalDevice
+lea rdx,materialUBOAllocInfo_sType
+xor r8,r8
+lea r9,gpMaterialUBOMem
+call vkAllocateMemory
+test eax,eax
+jnz lbl_VkError
+
+; Bind memory
+mov rcx,ghVkLogicalDevice
+mov rdx,gpMaterialUBO
+mov r8,gpMaterialUBOMem
+xor r9,r9
+call vkBindBufferMemory
+test eax,eax
+jnz lbl_VkError
+
+; Map for CPU updates
+mov rcx,ghVkLogicalDevice
+mov rdx,gpMaterialUBOMem
+xor r8,r8
+mov r9,gnMaterialUBOSize
+mov qword ptr[rsp+20h],0
+lea rax,gpMaterialUBOMap
+mov qword ptr[rsp+28h],rax
+call vkMapMemory
+test eax,eax
+jnz lbl_VkError
+
+;===========================================================
+; 10. Upload Material Data to UBO
+;===========================================================
+LOG_TEXT szLogUploadingMaterials
+
+mov rsi,gpMaterialUBOMap
+xor rbx,rbx
+mov materialIndex,rbx
+
+lbl_UploadMaterial:
+; Get material base
+mov eax,materialIndex
+imul eax,eax,MATERIAL_METADATA_SIZE
+add rax,gpDataMaterials
+mov r8,rax
+
+; Kd (diffuse + opacity) - offset 0
+add r8,OFFSET_KD
+movss xmm0,dword ptr[r8]       ; Kd.r
+movss xmm1,dword ptr[r8+4]     ; Kd.g
+movss xmm2,dword ptr[r8+8]     ; Kd.b
+movss dword ptr[rsi],xmm0
+movss dword ptr[rsi+4],xmm1
+movss dword ptr[rsi+8],xmm2
+
+; Opacity (d)
+add r8,OFFSET_D - OFFSET_KD
+movss xmm3,dword ptr[r8]       ; d (opacity)
+movss dword ptr[rsi+12],xmm3
+
+; Ka (ambient) - offset 16
+mov r8,rax
+add r8,OFFSET_KA
+movss dword ptr[rsi+16],xmm0
+movss dword ptr[rsi+20],xmm1
+movss dword ptr[rsi+24],xmm2
+movss dword ptr[rsi+28],xmm3   ; alpha = 0
+
+; Ks (specular + shininess) - offset 32
+mov r8,rax
+add r8,OFFSET_KS
+movss xmm0,dword ptr[r8]       ; Ks.r
+movss xmm1,dword ptr[r8+4]     ; Ks.g
+movss xmm2,dword ptr[r8+8]     ; Ks.b
+movss dword ptr[rsi+32],xmm0
+movss dword ptr[rsi+36],xmm1
+movss dword ptr[rsi+40],xmm2
+
+; Shininess (Ns)
+add r8,OFFSET_NS - OFFSET_KS
+movss xmm3,dword ptr[r8]       ; Ns
+movss dword ptr[rsi+44],xmm3
+
+; Ni (IOR) - offset 48
+add r8,OFFSET_NI - OFFSET_NS
+movss xmm0,dword ptr[r8]       ; Ni
+movss dword ptr[rsi+48],xmm0
+
+; Illum - offset 52
+add r8,OFFSET_ILLUM - OFFSET_NI
+mov eax,dword ptr[r8]          ; illum
+mov dword ptr[rsi+52],eax
+
+add rsi,MATERIAL_UBO_SIZE
+inc materialIndex
+mov eax,materialIndex
+cmp eax,gnMtlGroupCount
+jl lbl_UploadMaterial
+
+LOG_TEXT szOK
+
+;===========================================================
+; 11. Create Descriptor Set for Material UBO
+;===========================================================
+LOG_TEXT szLogCreatingDescriptorSet
+
+; Create descriptor set layout
+LOG_TEXT szVkCreateDescriptorSetLayout
+mov rcx,ghVkLogicalDevice
+lea rdx,descSetLayoutInfo_sType
+xor r8,r8
+lea r9,ghVkDescriptorSetLayout
+call vkCreateDescriptorSetLayout
+test eax,eax
+jnz lbl_VkError
+LOG_TEXT szOK
+
+; Create descriptor pool
+LOG_TEXT szVkCreateDescriptorPool
+mov rcx,ghVkLogicalDevice
+lea rdx,descPoolInfo_sType
+xor r8,r8
+lea r9,ghVkDescriptorPool
+call vkCreateDescriptorPool
+test eax,eax
+jnz lbl_VkError
+LOG_TEXT szOK
+
+; Allocate descriptor set
+mov rax,ghVkDescriptorPool
+mov descSetAllocInfo_descriptorPool,rax
+mov rax,ghVkDescriptorSetLayout
+mov descSetAllocInfo_pSetLayouts,rax
+
+LOG_TEXT szVkAllocateDescriptorSets
+mov rcx,ghVkLogicalDevice
+lea rdx,descSetAllocInfo_sType
+lea r8,ghVkDescriptorSet
+call vkAllocateDescriptorSets
+test eax,eax
+jnz lbl_VkError
+LOG_TEXT szOK
+
+; Update descriptor set with material UBO
+mov rax,gpMaterialUBO
+mov descBufferInfo_buffer,rax
+mov rax,gnMaterialUBOSize
+mov descBufferInfo_range,rax
+mov rax,ghVkDescriptorSet
+mov writeDescSet_dstSet,rax
+
+LOG_TEXT szVkUpdateDescriptorSets
+mov rcx,ghVkLogicalDevice
+mov rdx,1
+lea r8,writeDescSet_sType
+xor r9,r9
+call vkUpdateDescriptorSets
+LOG_TEXT szOK
+
+;===========================================================
+; 12. Update Pipeline Layout with Descriptor Set
+;===========================================================
+; Update pipeline layout to include descriptor set
+mov pipelineLayoutInfo_setLayoutCount,1
+mov rax,ghVkDescriptorSetLayout
+mov pipelineLayoutInfo_pSetLayouts,rax
+mov pipelineLayoutInfo_pushConstantRangeCount,0
+mov pipelineLayoutInfo_pPushConstantRanges,0
+
+; Recreate pipeline layout
+cmp ghVkPipelineLayout,0
+je @f
+mov rcx,ghVkLogicalDevice
+mov rdx,ghVkPipelineLayout
+xor r8,r8
+call vkDestroyPipelineLayout
+@@:
+
+LOG_TEXT szVkCreatePipelineLayout
+mov rcx,ghVkLogicalDevice
+lea rdx,pipelineLayoutInfo_sType
+xor r8,r8
+lea r9,ghVkPipelineLayout
+call vkCreatePipelineLayout
+test eax,eax
+jnz lbl_VkError
+LOG_TEXT szOK
+
+;===========================================================
+; 13. Recreate Graphics Pipeline (if needed)
+;===========================================================
+; Update pipeline with new layout
+mov rax,ghVkPipelineLayout
+mov pipelineInfo_layout,rax
+
+; Destroy old pipeline
+cmp ghVkGraphicsPipeline,0
+je @f
+mov rcx,ghVkLogicalDevice
+mov rdx,ghVkGraphicsPipeline
+xor r8,r8
+call vkDestroyPipeline
+@@:
+
+; Create new pipeline
+LOG_TEXT szVkCreateGraphicsPipeline
+mov rcx,ghVkLogicalDevice
+xor rdx,rdx
+mov r8,1
+lea r9,pipelineInfo_sType
+mov qword ptr[rsp+20h],0
+lea rax,ghVkGraphicsPipeline
+mov qword ptr[rsp+28h],rax
+call vkCreateGraphicsPipelines
+test eax,eax
+jnz lbl_VkError
+LOG_TEXT szOK
+
+;===========================================================
+; 14. Cleanup CPU Data
+;===========================================================
+; Free combined vertex data (already uploaded to GPU)
+cmp gpObjCombined,0
+je @f
+call GetProcessHeap
+test rax,rax
+jz @f
+mov rcx,rax
+xor rdx,rdx
+mov r8,gpObjCombined
+call HeapFree
+mov gpObjCombined,0
+LOG_TEXT szLogFreedCombinedVerts
+@@:
+
+cmp gpObjIndices,0
+je @f
+call GetProcessHeap
+test rax,rax
+jz @f
+mov rcx,rax
+xor rdx,rdx
+mov r8,gpObjIndices
+call HeapFree
+mov gpObjIndices,0
+LOG_TEXT szLogFreedCombinedIndices
+@@:
+
+LOG_TEXT szLogModelBuffersOK
+jmp lbl_End
+
+;===========================================================
+; Errors
+;===========================================================
+lbl_WinError:
+call SpellWinError
+jmp lbl_End
+
+lbl_VkError:
+call SpellVkError
+
+lbl_End:
+EPILOG
+createVBO endp
+
+
+createVkContext proc
+PROLOG 100h
+
+call createInstance
+call createSurface
+call enumeratePhysicalDevices
+call getQueueFamilyProperties
+call selectQueueFamily
+call getCapabilities
+call getFormats
+call choosePresentMode
+call createDevice
+call createSwapchain
+call createDepthImage
+call createRenderPass
+call createPipelineLayout
+call createShaderModules
+call createCommandPool
+call createVBO              ; < Replace createModelBuffers
+call createGraphicsPipeline
+call createSemaphores
+call createFence
+call allocateCommandBuffers
+call createFrameBuffers
+call recordCommandBuffers
+
+EPILOG
+createVkContext endp
+
+
+
+;--------------------------------------------------------
+; pushData - Draw with VBO and material UBO
+; Input: pCommand = command buffer handle
+;--------------------------------------------------------
+pushData proc pCommand:QWORD
+LOCAL pCurrentGroup:QWORD, groupIndex:DWORD
+LOCAL firstIndex:DWORD, indexCount:DWORD, materialIndex:DWORD
+PROLOG 100h
+
+mov pCommand,rcx
+
+;===========================================================
+; 1. Bind Vertex and Index Buffers
+;===========================================================
+; Bind vertex buffer
+mov rdi,pCommand
+mov rcx,qword ptr[rdi]
+xor rdx,rdx                    ; firstBinding = 0
+mov r8,1                       ; bindingCount = 1
+lea r9,gpDeviceVertexBuffer    ; pBuffers
+lea rax,gpVertexZeroOffset
+mov qword ptr[rsp+20h],rax
+call vkCmdBindVertexBuffers
+
+; Bind index buffer
+mov rdi,pCommand
+mov rcx,qword ptr[rdi]
+mov rdx,gpDeviceIndexBuffer
+mov r8,0                       ; offset = 0
+mov r9,1                       ; VK_INDEX_TYPE_UINT32
+call vkCmdBindIndexBuffer
+
+;===========================================================
+; 2. Bind Descriptor Set (Material UBO)
+;===========================================================
+mov rdi,pCommand
+mov rcx,qword ptr[rdi]
+xor rdx,rdx                    ; VK_PIPELINE_BIND_POINT_GRAPHICS
+mov r8,ghVkPipelineLayout
+xor r9,r9                      ; firstSet = 0
+mov qword ptr[rsp+20h],1       ; descriptorSetCount
+lea rax,ghVkDescriptorSet
+mov qword ptr[rsp+28h],rax     ; pDescriptorSets
+mov qword ptr[rsp+30h],0       ; dynamicOffsetCount
+mov qword ptr[rsp+38h],0       ; pDynamicOffsets
+call vkCmdBindDescriptorSets
+
+;===========================================================
+; 3. Draw Each Material Group
+;===========================================================
+mov r12,gpMtlGroups
+mov pCurrentGroup,r12
+xor r13,r13
+mov groupIndex,r13d
+xor r14,r14
+mov r14d,gnMtlGroupCount
+test r14d,r14d
+jz lbl_Error_NoMtlGroups
+
+lbl_DrawGroup:
+; Read MaterialGroup structure
+mov r12,pCurrentGroup
+mov eax,dword ptr[r12]                     ; firstIndex
+mov firstIndex,eax
+mov ebx,dword ptr[r12+4]                   ; indexCount
+mov indexCount,ebx
+mov ecx,dword ptr[r12+8]                   ; materialIndex
+mov materialIndex,ecx
+
+; ===============================================================
+; Update material UBO for this group (dynamic indexing)
+; ===============================================================
+; Calculate offset into material UBO
+xor r10,r10
+mov r10d,indexCount
+imul r10,r10,MATERIAL_UBO_SIZE
+
+; Use dynamic offset in descriptor set
+; (Or update the entire UBO before rendering)
+
+; Draw indexed
+mov rdi,pCommand
+mov rcx,qword ptr[rdi]
+xor rdx,rdx
+mov edx,indexCount
+mov r8,1                       ; instanceCount
+xor r9,r9
+mov r9d,firstIndex
+mov qword ptr[rsp+20h],0       ; vertexOffset
+mov qword ptr[rsp+28h],0       ; firstInstance
+call vkCmdDrawIndexed
+
+; Advance to next group
+add pCurrentGroup,MTL_GROUP_STRUCT_SIZE
+inc groupIndex
+mov r13d,groupIndex
+cmp r13d,gnMtlGroupCount
+jl lbl_DrawGroup
+
+jmp lbl_pushData_End
+
+lbl_Error_NoMtlGroups:
+LOG_TEXT szErrNoMtlGroups
+
+lbl_pushData_End:
+EPILOG
+pushData endp
