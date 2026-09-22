@@ -63,7 +63,7 @@ pfd_nSize dw 28h ;sizeof.PIXELFORMATDESCRIPTOR
 pfd_nVersion dw 1
 pfd_dwFlags dd 25h ;PFD_SUPPORT_OPENGL+PFD_DOUBLEBUFFER+PFD_DRAW_TO_WINDOW
 pfd_iPixelType db 0 ;PFD_TYPE_RGBA
-pfd_cColorBits db 18h ;Color Depth = 24 bits per pixel
+pfd_cColorBits db 10h ;Color Depth = 16 bits per pixel
 pfd_cRedBits db 0 ;Color Bits Ignored
 pfd_cRedShift db 0 ;Color Bits Ignored
 pfd_cGreenBits db 0 ;Color Bits Ignored
@@ -77,7 +77,7 @@ pfd_cAccumRedBits db 0 ;Accumulation Bits Ignored
 pfd_cAccumGreenBits db 0 ;Accumulation Bits Ignored
 pfd_cAccumBlueBits db 0 ;Accumulation Bits Ignored
 pfd_cAccumAlphaBits db 0 ;Accumulation Bits Ignored
-pfd_cDepthBits db 18h ;24 Bit z-Buffer (Depth Buffer)
+pfd_cDepthBits db 10h ;16 Bit z-Buffer (Depth Buffer)
 pfd_cStencilBits db 0 ;No Stencil Buffer
 pfd_cAuxBuffers db 0 ;No Auxiliary Buffer
 pfd_iLayerType db 0 ;PFD_MAIN_PLANE
@@ -93,17 +93,36 @@ OFFSET_PFD TEXTEQU <offset pfd_nSize>
 ;POINT2D ENDS
 
 POINT4D STRUCT
-x dd ?
-y dd ?
-z dd ?
-w dd ?
+x real4 0.0
+y real4 0.0
+z real4 0.0
+w real4 0.0
 POINT4D ENDS
 
 RGBA STRUCT
-r dd ?
-g dd ?
-b dd ?
-a dd ?
+r real4 0.0
+g real4 0.0
+b real4 0.0
+a real4 0.0
 RGBA ENDS
+
+mat4 STRUCT
+m00 real4 1.0 ;Column 0
+m01 real4 0.0
+m02 real4 0.0
+m03 real4 0.0
+m10 real4 0.0 ;Column 1
+m11 real4 1.0
+m12 real4 0.0
+m13 real4 0.0
+m20 real4 0.0 ;Column 2
+m21 real4 0.0
+m22 real4 1.0
+m23 real4 0.0
+m30 real4 0.0 ;Column 3
+m31 real4 0.0
+m32 real4 0.0
+m33 real4 1.0
+mat4 ENDS
 
 

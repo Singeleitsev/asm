@@ -40,7 +40,7 @@ fstp gRectClientAspect
 invoke SendMessageA,ghwndStatusBar,5,0,0
 
 ;xStatusParts(i) = xStatusProportions(i)*RectWidth/1024
-mov cl,8
+mov cl,STATUS_BAR_PARTS-1
 mov ebx,gRectClientWidth
 lea esi,xStatusProportions
 lea edi,xStatusParts
@@ -61,6 +61,11 @@ push 9 ;wParam = Number of Parts
 push 404h ;Msg = SB_SETPARTS = WM_USER + 4
 push ghwndStatusBar
 call SendMessageA
+
+;Update OpenGL Viewport
+cmp ghRC,0
+je wmSize_End
+invoke glViewport,0,0,gRectClientWidth,gRectClientHeight
 
 wmSize_End:
 ;Set the Flag to ReDraw the Scene

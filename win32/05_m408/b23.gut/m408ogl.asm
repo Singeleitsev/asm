@@ -1,4 +1,5 @@
 .686
+.xmm
 .model flat, stdcall
 option casemap:none
 
@@ -34,6 +35,7 @@ include app\03_Timer.asm
 ;include app\04_CheckKeys.asm
 include app\10_000_WndProc.asm
 ;include app\10_005_Size.asm ;inlined by 10_WndProc.asm
+;include app\10_100_KeyDown.asm ;inlined by 10_WndProc.asm
 ;include app\10_111_Command.asm ;inlined by 10_WndProc.asm
 include app\18_About.asm
 include app\19_Close.asm
@@ -49,19 +51,11 @@ include app\90_Logger.asm
 ;include app\98_SpellEAX.asm
 include app\99_SpellError.asm
 
-include ogl\00_InitializeGL.asm
-include ogl\01_SetView.asm
-;include ogl\02_CheckAngle.asm
-;include ogl\03_CamMode_0.asm ;<--
-;include ogl\04_CamMove2D.asm ;<--
-;include ogl\05_CamMode_1.asm ;<--
-;include ogl\06_CamMove3D.asm
-;include ogl\07_CheckDist.asm
-include ogl\10_DrawGLScene.asm
-;include ogl\20_SetView.asm
-;include ogl\21_DrawObject.asm
-;include ogl\22_CalcNormal.asm
-;include ogl\23_Lighting.asm ;<--
+include ogl\00_InitGL.asm
+include ogl\01_GetDefaults.asm
+include ogl\02_ResetScene.asm
+include ogl\10_Move.asm
+include ogl\80_DrawScene.asm
 include ogl\90_CloseGL.asm
 
 include obj\00_ParseObjFile.asm

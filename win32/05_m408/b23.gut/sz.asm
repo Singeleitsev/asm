@@ -76,9 +76,7 @@ szChoosePixelFormat db "ChoosePixelFormat",0
 szSetPixelFormat db "SetPixelFormat",0
 szWglCreateContext db "wglCreateContext",0
 szWglMakeCurrent db "wglMakeCurrent",0
-
-
-
+szGlViewport db "glViewport",0
 
 ;Message Box
 ;szCaption db "",0

@@ -1,15 +1,19 @@
 ;Application procedures
+AboutProc PROTO
+CameraWalk PROTO distance:REAL4, axis:DWORD
+CloseGL PROTO hWnd:DWORD
+CloseWndProc PROTO hWnd:DWORD
+DrawScene PROTO
+GetDefaults PROTO
+InitGL PROTO
 InitLogger PROTO
-WriteLog PROTO pszText:DWORD
+ModelRotate PROTO angle:REAL4, xVector:REAL4,yVector:REAL4,zVector:REAL4
+parseMtlFile PROTO
+parseObjFile PROTO
+ResetScene PROTO
 Tick PROTO
 WndProc PROTO hWnd:DWORD, uMsg:DWORD, wParam:DWORD, lParam:DWORD
-AboutProc PROTO
-CloseWndProc PROTO hWnd:DWORD
-InitializeGL PROTO
-DrawGLScene PROTO
-CloseGL PROTO hWnd:DWORD
-parseObjFile PROTO
-parseMtlFile PROTO
+WriteLog PROTO pszText:DWORD
 
 ;Kernel32
 CloseHandle PROTO hObject:DWORD
@@ -69,6 +73,7 @@ SwapBuffers PROTO hdc:DWORD
 wglCreateContext PROTO hdc:DWORD
 wglDeleteContext PROTO hGLRC:DWORD
 wglMakeCurrent PROTO hdc:DWORD, hGLRC:DWORD
+;wglGetLastError
 
 ;Opengl32 state / matrices
 glClear PROTO dwMask:DWORD
@@ -80,7 +85,9 @@ glFrontFace PROTO eMode:DWORD
 glGetFloatv PROTO pname:DWORD, params:DWORD
 glHint PROTO target:DWORD, eMode:DWORD
 glLoadIdentity PROTO
+glLoadMatrixf PROTO m:DWORD
 glMatrixMode PROTO eMode:DWORD
+glMultMatrixf PROTO m:DWORD
 glPopMatrix PROTO
 glPushMatrix PROTO
 glRotatef PROTO Angle:REAL4, x:REAL4, y:REAL4, z:REAL4

@@ -37,7 +37,7 @@ jz WinMain_Error
 mov gnWndClass,eax
 LOG_TEXT szOK
 
-;2. Menu
+;2. Build the Menu without an .rc file
 include 01_Menu.asm
 
 ;3. Create the Window
@@ -65,27 +65,24 @@ LOG_TEXT szOK
 ;4. Create the Status Bar
 include 02_StatusBar.asm
 
-;5. Create OpenGL Environment
-call InitializeGL
+;5. Prepare the Window
+invoke UpdateWindow,ghWnd
+invoke SetForegroundWindow,ghWnd
+invoke SetFocus,ghWnd
+
+;6. Initialize OpenGL Environment
+call InitGL
 test eax,eax
 jnz WinMain_End
-
-;6. Set the Projection and ModelView Matrices
-call SetView
 
 ;7. Read Input Files
 call parseObjFile
 call parseMtlFile
 
-;8. Prepare the Window
-invoke UpdateWindow,ghWnd
-invoke SetForegroundWindow,ghWnd
-invoke SetFocus,ghWnd
-
-;9. Set Timer
+;8. Set Timer
 call InitTimer
 
-;10. Enter the Loop
+;9. Enter the Loop
 WinMain_Loop:
 invoke PeekMessageA, OFFSET_MSG,0,0,0,1 ;PM_REMOVE
 test eax,eax ;Is there a Message?
@@ -104,7 +101,7 @@ cmp isRefreshed,0
 jne Wait16ms
 
 ;WinMain_ReDraw:
-call DrawGLScene
+call DrawScene
 jmp WinMain_Loop
 
 ProceedMessage:
@@ -125,9 +122,8 @@ jmp WinMain_Loop
 
 Wait16ms:
 invoke Sleep,10h
-lea eax,qpcPrev
-mov dword ptr [eax],0
-mov dword ptr [eax+4],0
+mov dword ptr [qpcPrev],0
+mov dword ptr [qpcPrev+4],0
 jmp WinMain_Loop
 
 WinMain_Error:

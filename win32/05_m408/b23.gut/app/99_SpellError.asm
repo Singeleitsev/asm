@@ -39,3 +39,7 @@ lbl_SpellError_End:
 mov eax,gnLastError
 ret
 SpellError endp
+
+
+
+;wglGetLastError

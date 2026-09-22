@@ -86,7 +86,7 @@ jmp WndProc_Return0
 
 ;WM_GETMINMAXINFO = 24h
 wmGetMinMaxInfo:
-;lParam = address of MINMAXINFO created by the System
+;lParam = address of the Temporary MINMAXINFO created by the System
 mov eax,lParam
 ;lParam+24 is an offset of ptMinTrackSize.x
 mov dword ptr [eax+24],MIN_WND_WIDTH ;ptMinTrackSize.x
@@ -96,9 +96,16 @@ jmp WndProc_Return0
 
 ;WM_KEYDOWN = 100h
 wmKeyDown:
+include 10_100_KeyDown.asm
+jmp WndProc_Return0
 
 ;WM_KEYUP = 101h
 wmKeyUp:
+mov eax,wParam
+cmp eax,0FFh ;VK codes are 0...0xFE
+jae WndProc_Return0
+mov byte ptr[key+eax],0
+jmp WndProc_Return0
 
 ;WM_COMMAND = 111h
 wmCommand:
