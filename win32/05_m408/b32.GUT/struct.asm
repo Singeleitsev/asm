@@ -106,23 +106,28 @@ b real4 0.0
 a real4 0.0
 RGBA ENDS
 
+;x|00|10|20|30| |x|00|04|08|12|
+;y|01|11|21|31| |y|01|05|09|13|
+;z|02|12|22|32| |z|02|06|10|14|
+;w|03|13|23|33| |w|03|07|11|15|
+
 mat4 STRUCT
-m00 real4 1.0 ;Column 0
-m01 real4 0.0
-m02 real4 0.0
-m03 real4 0.0
-m10 real4 0.0 ;Column 1
-m11 real4 1.0
-m12 real4 0.0
-m13 real4 0.0
-m20 real4 0.0 ;Column 2
-m21 real4 0.0
-m22 real4 1.0
-m23 real4 0.0
-m30 real4 0.0 ;Column 3
-m31 real4 0.0
-m32 real4 0.0
-m33 real4 1.0
+m00 real4 1.0 ;m00 ;Column 0
+m01 real4 0.0 ;m01
+m02 real4 0.0 ;m02
+m03 real4 0.0 ;m03
+m04 real4 0.0 ;m10 ;Column 1
+m05 real4 1.0 ;m11
+m06 real4 0.0 ;m12
+m07 real4 0.0 ;m13
+m08 real4 0.0 ;m20 ;Column 2
+m09 real4 0.0 ;m21
+m10 real4 1.0 ;m22
+m11 real4 0.0 ;m23
+m12 real4 0.0 ;m30 ;Column 3
+m13 real4 0.0 ;m31
+m14 real4 0.0 ;m32
+m15 real4 1.0 ;m33
 mat4 ENDS
 
 

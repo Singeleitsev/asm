@@ -1,45 +1,54 @@
 ;CameraWalk
-;Moves the camera along one of its own axes by a signed
-;distance, updating the translation column of mtxCameraVolatile.
-;Parameters (stdcall):
-; axis:
-;  0 = local X (right)
-;  1 = local Y (up)
-;  2 = local Z (forward/back)
-; distance: signed REAL4, in world units
 
-;------------------------------------------------------------
-;Camera convention for this project:
-;- Camera looks along world +y (not the OpenGL default -z)
-;- Camera is tilted down slightly (~ -z component)
-;- "Forward" in the code = the camera's own forward axis,
-;  which corresponds to matrix column indices 2,6,10 here.
-;- Pressing Up walks the camera forward; on screen the
-;  world appears to move backward. That is intended.
-;------------------------------------------------------------
+;Moves the camera along one of its own axes
+;by in a signed direction
+;updating the translation column of mtxCameraVolatile.
+;Parameters (stdcall):
+; direction: signed REAL4, either -1.0 or 1.0
+; axis:
+;  0 = Local X (right)
+;  1 = Local Y (up)
+;  2 = Local Z (forward/back)
+
 ;x|00|10|20|30| |x|00|04|08|12|
 ;y|01|11|21|31| |y|01|05|09|13|
 ;z|02|12|22|32| |z|02|06|10|14|
 ;w|03|13|23|33| |w|03|07|11|15|
 
-CameraWalk proc distance:REAL4, axis:DWORD
+CameraWalk proc direction:REAL4, axis:DWORD
 
-;1. Compute the Chosen Axis offset
+;1.1. Get the Relular Speed
+;xStep = LinearSpeed
+movss xmm0,LinearSpeed
+
+;1.2. Check for Linear Boost
+cmp byte ptr[key+10h],0 ;Shift
+je UseDirection
+
+;1.3. Linear Boost
+;xStep = xStep * LinearBoost
+mulss xmm0,LinearBoost
+
+;1.4. Use the Direction
+UseDirection:
+;xStep = xStep * Direction
+mulss xmm0,direction ;xmm0 = xStep (signed)
+
+;1.5. Store the Magnitudes:
+movss xmm1,xmm0 ;xmm1 = yStep (signed)
+movss xmm2,xmm0 ;xmm2 = zStep (signed)
+
+;2.1. Compute the Chosen Axis offset
 mov eax,axis
 shl eax,2 ;axis_index * 4 bytes
 
-;2. Point to the Camera Matrix
+;2.2. Point to the Camera Matrix
 lea ecx,mtxCameraVolatile
 
-;3. Compute the Chosen Axis address
+;2.3. Compute the Chosen Axis address
 add eax,ecx
 
-;4. Load the three components, scale each by distance.
-movss xmm0,distance
-movss xmm1,xmm0
-movss xmm2,xmm0
-
-;5. world = distance * column[axis]
+;3. world = distance * column[axis]
 
 ;dx_world = dStep * mtxCameraVolatile(0i)
 mulss xmm0,dword ptr[eax+0*4]
@@ -48,12 +57,12 @@ mulss xmm1,dword ptr[eax+4*4]
 ;dz_world = dStep * mtxCameraVolatile(2i)
 mulss xmm2,dword ptr[eax+8*4]
 
-;6. Do the full basis transform
+;4. Do the full basis transform
 
 ;Accumulate world-space displacement
-;xmm3 = xmm0*m00 + xmm1*m10 + xmm2*m20
-;xmm4 = xmm0*m01 + xmm1*m11 + xmm2*m21
-;xmm5 = xmm0*m02 + xmm1*m12 + xmm2*m22
+;xmm3 = xmm0*m00 + xmm1*m04 + xmm2*m08
+;xmm4 = xmm0*m01 + xmm1*m05 + xmm2*m09
+;xmm5 = xmm0*m02 + xmm1*m06 + xmm2*m10
 
 ;dx contributes to world via column 0
 ;m00
@@ -97,7 +106,7 @@ movss xmm6,xmm2
 mulss xmm6,dword ptr[ecx+10*4]
 addss xmm5,xmm6
 
-;7. Add to the Translation Column
+;5. Add to the Translation Column
 
 ;dx_local (index 12, member 30)
 addss xmm3,dword ptr[ecx+12*4]

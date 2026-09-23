@@ -55,6 +55,7 @@ include ogl\00_InitGL.asm
 include ogl\01_GetDefaults.asm
 include ogl\02_ResetScene.asm
 include ogl\10_Move.asm
+include ogl\11_Rotate.asm
 include ogl\80_DrawScene.asm
 include ogl\90_CloseGL.asm
 
