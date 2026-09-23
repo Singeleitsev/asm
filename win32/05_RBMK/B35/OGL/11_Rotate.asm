@@ -1,18 +1,13 @@
 ;ModelRotate
-;Rotation about one of the object's own axes onto mtxObjectVolatile
-;Only the upper-left 3x3 block is modified
-;the translation column is preserved.
+
+;Rotation about the specified object's Local axis
+;with mtxObjectVolatile
 ;Parameters (stdcall):
 ; direction: signed REAL4, either -1.0 or 1.0
 ; axis:
-;  0 = rotate about Local X
-;  1 = rotate about Local Y
-;  2 = rotate about Local Z
-
-;x|00|10|20|30| |x|00|04|08|12|
-;y|01|11|21|31| |y|01|05|09|13|
-;z|02|12|22|32| |z|02|06|10|14|
-;w|03|13|23|33| |w|03|07|11|15|
+;  0 = rotate about Model +x = OpenGL +x
+;  1 = rotate about Model +y = OpenGL -z
+;  2 = rotate about Model +z = OpenGL +y
 
 ModelRotate proc direction:REAL4, axis:DWORD
 
@@ -38,7 +33,7 @@ mulss xmm0,direction ;Only Sine can be Negative
 shufps xmm0,xmm0,0
 shufps xmm1,xmm1,0
 
-;2. Load Objet Matrix Address
+;2. Load Object Matrix Address
 lea ecx,mtxObjectVolatile
 
 ;3. Dispatch on axis
@@ -51,6 +46,11 @@ cmp eax,2
 je Rz
 jmp ModelRotate_End ;invalid axis - no-op
 
+;x|00|04|08|12|
+;y|01|05|09|13|
+;z|02|06|10|14|
+;w|03|07|11|15|
+
 Rx:
 ;1   0    0 0 
 ;0 cos -sin 0
@@ -58,8 +58,8 @@ Rx:
 ;0   0    0 1
 
 ;Load Values
-movups xmm2,oword ptr[ecx+4*4] ;old[04..07]
-movups xmm3,oword ptr[ecx+8*4] ;old[08..11]
+movaps xmm2,oword ptr[ecx+4*4] ;old[04..07]
+movaps xmm3,oword ptr[ecx+8*4] ;old[08..11]
 movaps xmm4,xmm2 ;old[04..07]
 movaps xmm5,xmm3 ;old[08..11]
 
@@ -70,7 +70,7 @@ movaps xmm5,xmm3 ;old[08..11]
 mulps xmm2,xmm1 ;old[04..07]*cos
 mulps xmm3,xmm0 ;old[08..11]*sin
 addps xmm2,xmm3
-movups oword ptr[ecx+4*4],xmm2 ;new[04..07]
+movaps oword ptr[ecx+4*4],xmm2 ;new[04..07]
 
 ;new[08] = c * old[08] - s * old[04]
 ;new[09] = c * old[09] - s * old[05]
@@ -79,7 +79,7 @@ movups oword ptr[ecx+4*4],xmm2 ;new[04..07]
 mulps xmm5,xmm1 ;old[08..11]*cos
 mulps xmm4,xmm0 ;old[04..07]*sin
 subps xmm5,xmm4
-movups oword ptr[ecx+8*4],xmm5 ;new[08..11]
+movaps oword ptr[ecx+8*4],xmm5 ;new[08..11]
 
 jmp ModelRotate_End
 
@@ -90,8 +90,8 @@ Ry:
 ;   0 0   0 1
 
 ;Load Values
-movups xmm2,oword ptr[ecx+0*4] ;old[00..03]
-movups xmm3,oword ptr[ecx+8*4] ;old[08..11]
+movaps xmm2,oword ptr[ecx+0*4] ;old[00..03]
+movaps xmm3,oword ptr[ecx+8*4] ;old[08..11]
 movaps xmm4,xmm2 ;old[00..03]
 movaps xmm5,xmm3 ;old[08..11]
 
@@ -102,7 +102,7 @@ movaps xmm5,xmm3 ;old[08..11]
 mulps xmm2,xmm1 ;old[00..03]*cos
 mulps xmm3,xmm0 ;old[08..11]*sin
 subps xmm2,xmm3
-movups oword ptr[ecx+0*4],xmm2 ;new[00..03]
+movaps oword ptr[ecx+0*4],xmm2 ;new[00..03]
 
 ;new[08] =  s * old[00] + c * old[08]
 ;new[09] =  s * old[01] + c * old[09]
@@ -111,7 +111,7 @@ movups oword ptr[ecx+0*4],xmm2 ;new[00..03]
 mulps xmm4,xmm0 ;old[00..03]*sin
 mulps xmm5,xmm1 ;old[08..11]*cos
 addps xmm4,xmm5
-movups oword ptr[ecx+8*4],xmm4 ;new[08..11]
+movaps oword ptr[ecx+8*4],xmm4 ;new[08..11]
 
 jmp ModelRotate_End
 
@@ -122,8 +122,8 @@ Rz:
 ;  0    0 0 1
 
 ;Load Values
-movups xmm2,oword ptr[ecx+0*4] ;old[00..03]
-movups xmm3,oword ptr[ecx+4*4] ;old[04..07]
+movaps xmm2,oword ptr[ecx+0*4] ;old[00..03]
+movaps xmm3,oword ptr[ecx+4*4] ;old[04..07]
 movaps xmm4,xmm2 ;old[00..03]
 movaps xmm5,xmm3 ;old[04..07]
 
@@ -134,7 +134,7 @@ movaps xmm5,xmm3 ;old[04..07]
 mulps xmm2,xmm1 ;old[00..03]*cos
 mulps xmm3,xmm0 ;old[04..07]*sin
 addps xmm2,xmm3
-movups oword ptr[ecx+0*4],xmm2 ;new[00..03]
+movaps oword ptr[ecx+0*4],xmm2 ;new[00..03]
 
 ;new[04] = c * old[04] - s * old[00]
 ;new[05] = c * old[05] - s * old[01]
@@ -143,7 +143,7 @@ movups oword ptr[ecx+0*4],xmm2 ;new[00..03]
 mulps xmm4,xmm0 ;old[00..03]*sin
 mulps xmm5,xmm1 ;old[04..07]*cos
 subps xmm5,xmm4
-movups oword ptr[ecx+4*4],xmm5 ;new[04..07]
+movaps oword ptr[ecx+4*4],xmm5 ;new[04..07]
 
 jmp ModelRotate_End
 
