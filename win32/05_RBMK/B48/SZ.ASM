@@ -34,7 +34,7 @@ sz_aXZ_ModelText db "aXZ_Model = "
 sz_aXZ_ModelValue db 10 dup (0)
 
 ;Log
-szLogFileName db "m408ogl.log",0
+szLogFileName db "RBMK32.log",0
 szLogBuffer db 100h dup (0)
 szOK db ": OK",0Dh,0Ah,0
 szError db " Error",0Dh,0Ah,0
@@ -63,11 +63,30 @@ szExitProcess db "ExitProcess",0Dh,0Ah,0
 ;WndProc
 
 ;About
-szAboutMsgTitle db "MASM32 OpenGL template",0
-szAboutMsgText db "About",0
+szAboutMsgTitle db "About MASM32 OpenGL Demo",0
+szAboutMsgText db "Controls:",0Dh,0Ah ;No Zero Terminator
+db "Left Mouse Button - Rotate the Camera in place",0Dh,0Ah
+db "Right Mouse Button - Rotate the Object around its origin",0Dh,0Ah
+db "Mouse Wheel Down - Move Camera Left-Right, Up-Down",0Dh,0Ah
+db "Mouse Scroll - Move Camera Forward-Backward",0Dh,0Ah
+db 0Dh,0Ah
+db "Arrow Up - Move the Camera Forward",0Dh,0Ah
+db "Arrow Down - Move the Camera Backward",0Dh,0Ah
+db "Arrow Left - Move the Camera Left",0Dh,0Ah
+db "Arrow Right - Move the Camera Right",0Dh,0Ah
+db "Page Up - Move the Camera Up",0Dh,0Ah
+db "Page Down - Move the Camera Down",0Dh,0Ah
+db 0Dh,0Ah
+db "Object Rotation:",0Dh,0Ah
+db "W,S - Tilt the Object",0Dh,0Ah
+db "A,D - Turn the Object",0Dh,0Ah
+db "Q,E - Roll the Object",0Dh,0Ah
+db 0Dh,0Ah
+db "Shift - Boost",0Dh,0Ah
+db "Space, Esc - Reset Scene",0
 
 ;Close
-szMsgCloseTitle db "MASM32 OpenGL template",0
+szMsgCloseTitle db "MASM32 OpenGL Demo",0
 szMsgCloseText db "Exit?",0
 
 ;InitializeGL

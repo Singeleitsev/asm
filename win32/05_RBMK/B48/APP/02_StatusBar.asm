@@ -1,5 +1,5 @@
 ;CreateStatusBar:
-LOG_TEXT szLogCreatingStatusBar
+invoke WriteLog,offset szLogCreatingStatusBar
 
 ;1. Initialize the Common Controls
 invoke InitCommonControlsEx,OFFSET_ICCE
@@ -32,6 +32,6 @@ test eax,eax
 jz WinMain_Error
 
 ;Success
-LOG_TEXT szOK
+invoke WriteLog,offset szOK
 
 

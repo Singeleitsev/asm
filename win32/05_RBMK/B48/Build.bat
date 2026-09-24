@@ -1,6 +1,6 @@
 @echo off
 
-set filename=m408ogl
+set filename=RBMK32
 
 \masm32\bin\ml /c /coff /Cp %filename%.asm
 

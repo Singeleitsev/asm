@@ -15,7 +15,7 @@ test eax,eax
 jz InitLogger_Error
 mov ghLogFile,eax
 
-LOG_TEXT szLogInit
+invoke WriteLog,offset szLogInit
 
 jmp InitLogger_End
 

@@ -35,6 +35,16 @@ fild gRectClientHeight ;st0 = Height, st1 = Width
 fdivp st(1),st(0) ;st0 = Aspect
 fstp gRectClientAspect
 
+;Trackball Radius
+;Radius = min(clientWidth, clientHeight) / 2
+mov eax,gRectClientWidth
+cmp eax,gRectClientHeight
+jbe @f
+mov eax, gRectClientHeight
+@@:
+shr eax,1
+mov Radius,eax
+
 ;Force the Status Bar to recompute its parts layout
 ;WM_SIZE = 5
 invoke SendMessageA,ghwndStatusBar,5,0,0

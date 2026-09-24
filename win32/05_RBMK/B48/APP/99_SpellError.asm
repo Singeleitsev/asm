@@ -27,7 +27,7 @@ dec cl
 cmp cl,0
 jg lbl_NextErrHexDigit
 
-LOG_TEXT szErrCode
+invoke WriteLog,offset szErrCode
 
 push 0 ;MB_OK
 push offset szError

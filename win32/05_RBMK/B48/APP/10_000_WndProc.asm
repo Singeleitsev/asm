@@ -89,9 +89,9 @@ wmGetMinMaxInfo:
 ;lParam = address of the Temporary MINMAXINFO created by the System
 mov eax,lParam
 ;lParam+24 is an offset of ptMinTrackSize.x
-mov dword ptr [eax+24],MIN_WND_WIDTH ;ptMinTrackSize.x
+mov dword ptr [eax+24],MIN_WND_WIDTH
 ;lParam+28 is an offset of ptMinTrackSize.y
-mov dword ptr [eax+28],MIN_WND_HEIGHT;ptMinTrackSize.y
+mov dword ptr [eax+28],MIN_WND_HEIGHT
 jmp WndProc_Return0
 
 ;WM_KEYDOWN = 100h
@@ -114,30 +114,76 @@ jmp WndProc_Return0
 
 ;WM_MOUSEMOVE = 200h
 wmMouseMove:
+;Select Mode
+cmp gnMouseMode,MOUSE_MODE_FREE
+je WndProc_Return0
+cmp gnMouseMode,MOUSE_MODE_ORBIT
+jne @f
+invoke Drift,lParam
+;invoke Orbit,lParam
+jmp WndProc_Return0
+@@:
+cmp gnMouseMode,MOUSE_MODE_PAN
+jne @f
+invoke Pan,lParam
+jmp WndProc_Return0
+@@:
+cmp gnMouseMode,MOUSE_MODE_GEOCENTRIC
+jne WndProc_Return0
+invoke Geocentric,lParam
+jmp WndProc_Return0
 
 ;WM_LBUTTONDOWN = 201h
 wmLButtonDown:
+mov gnMouseMode,MOUSE_MODE_ORBIT
+GET_REFERENCE_CURSOR_POSITION
+;Set Flags
+mov isInitialPosition,0
+mov isRefreshed,0
+jmp WndProc_Return0
 
 ;WM_LBUTTONUP = 202h
 wmLButtonUp:
+mov gnMouseMode,MOUSE_MODE_FREE
+jmp WndProc_Return0
 
 ;WM_RBUTTONDOWN = 204h
 wmRButtonDown:
+mov gnMouseMode,MOUSE_MODE_GEOCENTRIC
+GET_REFERENCE_CURSOR_POSITION
+;Set Flags
+mov isInitialPosition,0
+mov isRefreshed,0
+jmp WndProc_Return0
 
 ;WM_RBUTTONUP = 205h
 wmRButtonUp:
+mov gnMouseMode,MOUSE_MODE_FREE
+jmp WndProc_Return0
 
 ;WM_MBUTTONDOWN = 207h
 wmMButtonDown:
+mov gnMouseMode,MOUSE_MODE_PAN
+GET_REFERENCE_CURSOR_POSITION
+;Set Flags
+mov isInitialPosition,0
+mov isRefreshed,0
+jmp WndProc_Return0
 
 ;WM_MBUTTONUP = 208h
 wmMButtonUp:
+mov gnMouseMode,MOUSE_MODE_FREE
+jmp WndProc_Return0
 
 ;WM_MBUTTONDBLCLK = 209h
 wmMButtonDblClk:
+call ResetScene
+jmp WndProc_Return0
 
 ;WM_MOUSEWHEEL = 20Ah
 wmMouseWheel:
+invoke Dolly,wParam
+jmp WndProc_Return0
 
 WndProc_Return0:
 xor eax,eax
@@ -150,6 +196,5 @@ call SpellError
 WndProc_End:
 ret
 WndProc endp
-
 
 

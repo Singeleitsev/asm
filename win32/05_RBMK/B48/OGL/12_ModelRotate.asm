@@ -1,5 +1,3 @@
-;ModelRotate
-
 ;Rotation about the specified object's Local axis
 ;with mtxObjectVolatile
 ;Parameters (stdcall):
@@ -63,19 +61,19 @@ movaps xmm3,oword ptr[ecx+8*4] ;old[08..11]
 movaps xmm4,xmm2 ;old[04..07]
 movaps xmm5,xmm3 ;old[08..11]
 
-;new[04] = c * old[04] + s * old[08]
-;new[05] = c * old[05] + s * old[09]
-;new[06] = c * old[06] + s * old[10]
-;new[07] = c * old[07] + s * old[11]
+;new[04] = cos*old[04] + sin*old[08]
+;new[05] = cos*old[05] + sin*old[09]
+;new[06] = cos*old[06] + sin*old[10]
+;new[07] = cos*old[07] + sin*old[11]
 mulps xmm2,xmm1 ;old[04..07]*cos
 mulps xmm3,xmm0 ;old[08..11]*sin
 addps xmm2,xmm3
 movaps oword ptr[ecx+4*4],xmm2 ;new[04..07]
 
-;new[08] = c * old[08] - s * old[04]
-;new[09] = c * old[09] - s * old[05]
-;new[10] = c * old[10] - s * old[06]
-;new[11] = c * old[11] - s * old[07]
+;new[08] = cos*old[08] - sin*old[04]
+;new[09] = cos*old[09] - sin*old[05]
+;new[10] = cos*old[10] - sin*old[06]
+;new[11] = cos*old[11] - sin*old[07]
 mulps xmm5,xmm1 ;old[08..11]*cos
 mulps xmm4,xmm0 ;old[04..07]*sin
 subps xmm5,xmm4
@@ -95,19 +93,19 @@ movaps xmm3,oword ptr[ecx+8*4] ;old[08..11]
 movaps xmm4,xmm2 ;old[00..03]
 movaps xmm5,xmm3 ;old[08..11]
 
-;new[00] =  c * old[00] - s * old[08]
-;new[01] =  c * old[01] - s * old[09]
-;new[02] =  c * old[02] - s * old[10]
-;new[03] =  c * old[03] - s * old[11]
+;new[00] =  cos*old[00] - sin*old[08]
+;new[01] =  cos*old[01] - sin*old[09]
+;new[02] =  cos*old[02] - sin*old[10]
+;new[03] =  cos*old[03] - sin*old[11]
 mulps xmm2,xmm1 ;old[00..03]*cos
 mulps xmm3,xmm0 ;old[08..11]*sin
 subps xmm2,xmm3
 movaps oword ptr[ecx+0*4],xmm2 ;new[00..03]
 
-;new[08] =  s * old[00] + c * old[08]
-;new[09] =  s * old[01] + c * old[09]
-;new[10] =  s * old[02] + c * old[10]
-;new[11] =  s * old[03] + c * old[11]
+;new[08] =  sin*old[00] + cos*old[08]
+;new[09] =  sin*old[01] + cos*old[09]
+;new[10] =  sin*old[02] + cos*old[10]
+;new[11] =  sin*old[03] + cos*old[11]
 mulps xmm4,xmm0 ;old[00..03]*sin
 mulps xmm5,xmm1 ;old[08..11]*cos
 addps xmm4,xmm5
@@ -127,19 +125,19 @@ movaps xmm3,oword ptr[ecx+4*4] ;old[04..07]
 movaps xmm4,xmm2 ;old[00..03]
 movaps xmm5,xmm3 ;old[04..07]
 
-;new[00] = c * old[00] + s * old[04]
-;new[01] = c * old[01] + s * old[05]
-;new[02] = c * old[02] + s * old[06]
-;new[03] = c * old[03] + s * old[07]
+;new[00] = cos*old[00] + sin*old[04]
+;new[01] = cos*old[01] + sin*old[05]
+;new[02] = cos*old[02] + sin*old[06]
+;new[03] = cos*old[03] + sin*old[07]
 mulps xmm2,xmm1 ;old[00..03]*cos
 mulps xmm3,xmm0 ;old[04..07]*sin
 addps xmm2,xmm3
 movaps oword ptr[ecx+0*4],xmm2 ;new[00..03]
 
-;new[04] = c * old[04] - s * old[00]
-;new[05] = c * old[05] - s * old[01]
-;new[06] = c * old[06] - s * old[02]
-;new[07] = c * old[07] - s * old[03]
+;new[04] = cos*old[04] - sin*old[00]
+;new[05] = cos*old[05] - sin*old[01]
+;new[06] = cos*old[06] - sin*old[02]
+;new[07] = cos*old[07] - sin*old[03]
 mulps xmm4,xmm0 ;old[00..03]*sin
 mulps xmm5,xmm1 ;old[04..07]*cos
 subps xmm5,xmm4
@@ -148,8 +146,11 @@ movaps oword ptr[ecx+4*4],xmm5 ;new[04..07]
 jmp ModelRotate_End
 
 ModelRotate_End:
+
+;Set Flags
 mov isInitialPosition,0
 mov isRefreshed,0
+
 ret
 ModelRotate endp
 

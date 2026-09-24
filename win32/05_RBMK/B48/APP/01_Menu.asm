@@ -1,5 +1,5 @@
 ;CreateMenu:
-LOG_TEXT szLogCreatingMenu
+invoke WriteLog,offset szLogCreatingMenu
 
 ;Main Menu
 call CreateMenu
@@ -36,12 +36,12 @@ invoke AppendMenuA,ghMenuHelp,0,IDM_HELP_ABOUT,offset szMenuHelpAbout
 ;invoke DrawMenuBar,ghWnd
 
 ;Success
-LOG_TEXT szOK
+invoke WriteLog,offset szOK
 
 
 
 ;.CreateAccel:
-LOG_TEXT szCreateAcceleratorTableA
+invoke WriteLog,offset szCreateAcceleratorTableA
 
 ;The number of ACCEL structures in the array = 2:
 ;IDM_FILE_EXIT and IDM_HELP_ABOUT (see struct.asm)
@@ -51,6 +51,6 @@ je WinMain_Error
 mov ghAccTable,eax
 
 ;Success
-LOG_TEXT szOK
+invoke WriteLog,offset szOK
 
 

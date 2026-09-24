@@ -1,42 +1,42 @@
 InitGL proc
 
 ;Get the Handle to a Device Context for the Client Area of the Main Window
-LOG_TEXT szGetDC
+invoke WriteLog,offset szGetDC
 invoke GetDC,ghWnd
 test eax,eax
 jz InitGL_Error
 mov ghDC,eax
-LOG_TEXT szOK
+invoke WriteLog,offset szOK
 
 ;Match an appropriate pixel format supported by a device context
-LOG_TEXT szChoosePixelFormat
+invoke WriteLog,offset szChoosePixelFormat
 invoke ChoosePixelFormat,ghDC,OFFSET_PFD
 mov giPixelFormat,eax
 test eax,eax
 jz InitGL_Error
-LOG_TEXT szOK
+invoke WriteLog,offset szOK
 
 ;Set the pixel format of the specified device context to the specified format
-LOG_TEXT szSetPixelFormat
+invoke WriteLog,offset szSetPixelFormat
 invoke SetPixelFormat,ghDC,giPixelFormat,OFFSET_PFD
 test eax,eax
 jz InitGL_Error
-LOG_TEXT szOK
+invoke WriteLog,offset szOK
 
 ;Create a new OpenGL rendering context
-LOG_TEXT szWglCreateContext
+invoke WriteLog,offset szWglCreateContext
 invoke wglCreateContext,ghDC
 test eax,eax
 jz InitGL_Error
 mov ghRC,eax
-LOG_TEXT szOK
+invoke WriteLog,offset szOK
 
 ;Make a specified OpenGL rendering context the calling thread's current rendering context
-LOG_TEXT szWglMakeCurrent
+invoke WriteLog,offset szWglMakeCurrent
 invoke wglMakeCurrent,ghDC,ghRC
 test eax,eax
 jz InitGL_Error
-LOG_TEXT szOK
+invoke WriteLog,offset szOK
 
 ;Ensure Counter-Clockwise Winding is on
 invoke glFrontFace,901h ;GL_CCW

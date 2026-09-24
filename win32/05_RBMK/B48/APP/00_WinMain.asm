@@ -1,20 +1,20 @@
 WinMain proc
 
 call InitLogger
-LOG_TEXT szLogEnterWinMain
+invoke WriteLog,offset szLogEnterWinMain
 
 ;1. Register Main Window Class
 
 ;1.1. Fill the rest of WNDCLASSEX32 Structure
 
 ;1.1.1. Load Instance Handle
-LOG_TEXT szGetModuleHandleA
+invoke WriteLog,offset szGetModuleHandleA
 invoke GetModuleHandleA,0
 test eax,eax
 jz WinMain_Error
 mov ghInst,eax
 mov wcx_hInstance,eax
-LOG_TEXT szOK
+invoke WriteLog,offset szOK
 
 ;1.1.2. Load Icon Handle
 invoke LoadIconA,0,7F00h ;hIcon = IDI_APPLICATION = 32512 = 7F00h
@@ -30,19 +30,18 @@ invoke GetStockObject,4 ;BLACK_BRUSH
 mov wcx_hbrBackground,eax
 
 ;1.2. Now call to the Registering Function
-LOG_TEXT szRegisterClassExA
+invoke WriteLog,offset szRegisterClassExA
 invoke RegisterClassExA,OFFSET_WCX
 test eax,eax
 jz WinMain_Error
 mov gnWndClass,eax
-LOG_TEXT szOK
+invoke WriteLog,offset szOK
 
 ;2. Build the Menu without an .rc file
 include 01_Menu.asm
 
 ;3. Create the Window
-;LOG_TEXT szLogCreatingMainWnd
-LOG_TEXT szCreateWindowExA
+invoke WriteLog,offset szCreateWindowExA
 push 0 ;lpParam = 0 ;Don't Pass Anything To WM_CREATE
 push ghInst
 push ghMenu
@@ -59,8 +58,7 @@ call CreateWindowExA
 test eax,eax
 jz WinMain_Error
 mov ghWnd,eax
-;LOG_TEXT szLogMainWndCreated
-LOG_TEXT szOK
+invoke WriteLog,offset szOK
 
 ;4. Create the Status Bar
 include 02_StatusBar.asm
@@ -131,7 +129,7 @@ call SpellError
 jmp WinMain_End
 
 WinMain_End:
-LOG_TEXT szExitProcess
+invoke WriteLog,offset szExitProcess
 call CloseLogger
 invoke ExitProcess,0
 

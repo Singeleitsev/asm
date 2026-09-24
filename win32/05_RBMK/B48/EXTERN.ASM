@@ -1,13 +1,19 @@
 ;Application procedures
 AboutProc PROTO
-CameraWalk PROTO direction:REAL4, axis:DWORD
+CameraMove PROTO magnitude:REAL4, axis:DWORD
 CloseGL PROTO hWnd:DWORD
 CloseWndProc PROTO hWnd:DWORD
+ComputeWalkMagnitude PROTO direction:REAL4
 DrawScene PROTO
+Dolly PROTO wParam:DWORD
+Drift PROTO lParam:DWORD
+Geocentric PROTO lParam:DWORD
 GetDefaults PROTO
 InitGL PROTO
 InitLogger PROTO
-ModelRotate PROTO direction:REAL4, axis:DWORD
+ModelRotate PROTO speed:REAL4, axis:DWORD
+Orbit PROTO lParam:DWORD
+Pan PROTO lParam:DWORD
 parseMtlFile PROTO
 parseObjFile PROTO
 ResetScene PROTO
