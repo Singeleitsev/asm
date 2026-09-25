@@ -77,6 +77,7 @@ zVectorOld real4 1.0
 wVectorOld real4 1.0 ;Padding
 align 16
 mtxArcball mat4 <>
+mtxTemp mat4 <>
 eps real4 0.001 ;1 micrometer
 
 ;Pan

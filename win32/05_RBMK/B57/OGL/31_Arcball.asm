@@ -1,5 +1,5 @@
 ArcballRotation proc
-; Computes the arcball rotation
+;Computes the arcball rotation
 ;from two unit vectors (VectorOld and VectorNew)
 ;on the virtual sphere, expressed in Camera's Local Coordinates
 ;and produces a 3x3 rotation matrix in WORLD coordinates
@@ -81,23 +81,39 @@ lea eax,mtxCameraVolatile
 ;yWorld = m04 * xCam + m05 * yCam + m06 * zCam
 ;zWorld = m08 * xCam + m09 * yCam + m10 * zCam
 movaps xmm5,xmm2
-shufps xmm5,xmm5,00000000b ;Broadcast xCam
 movaps xmm6,xmm2
-shufps xmm6,xmm6,01010101b ;Broadcast yCam
 movaps xmm7,xmm2
-shufps xmm7,xmm7,10101010b ;Broadcast zCam
 
 mulps xmm5,oword ptr[eax+00*4] ;m[00..03] * xCam
 mulps xmm6,oword ptr[eax+04*4] ;m[04..07] * yCam
 mulps xmm7,oword ptr[eax+08*4] ;m[08..11] * zCam
 
-addps xmm5,xmm6
-addps xmm5,xmm7 ;xmm5 = vecWorld
+movaps xmm0,xmm5 ;wx[0]
+movaps xmm1,xmm5
+shufps xmm1,xmm1,01010101b ;wx[1]
+addss xmm0,xmm1
+movaps xmm1,xmm5
+shufps xmm1,xmm1,10101010b ;wx[2]
+addss xmm0,xmm1
+movss xmm5,xmm0 ;xWorld
 
-movaps xmm6,xmm5
-shufps xmm6,xmm6,01010101b ;wy
-movaps xmm7,xmm5
-shufps xmm7,xmm7,10101010b ;wz
+movaps xmm0,xmm6 ;wy[0]
+movaps xmm1,xmm6
+shufps xmm1,xmm1,01010101b ;wy[1]
+addss xmm0,xmm1
+movaps xmm1,xmm6
+shufps xmm1,xmm1,10101010b ;wy[2]
+addss xmm0,xmm1
+movss xmm6,xmm0 ;yWorld
+
+movaps xmm0,xmm7 ;wz[0]
+movaps xmm1,xmm7
+shufps xmm1,xmm1,01010101b ;wz[1]
+addss xmm0,xmm1
+movaps xmm1,xmm7
+shufps xmm1,xmm1,10101010b ;wz[2]
+addss xmm0,xmm1
+movss xmm7,xmm0 ;zWorld
 
 ;8. Build the Rodrigues 3x3 rotation matrix (world space)
 ;c = cosA = xmm3
@@ -194,6 +210,7 @@ jmp Success
 
 ;Failure
 Degenerate:
+invoke WriteLog,offset szErrArcball
 mov eax,-1
 ret
 

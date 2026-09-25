@@ -18,8 +18,8 @@ mov eax,yScrCenter
 sub eax,yMouse
 cvtsi2ss xmm1,eax ;xmm1 = dy (float)
 
-;5. Convert Sphere Radius to float (once)
-cvtsi2ss xmm2,Radius
+;5. Load Sphere Radius
+movss xmm2,Radius
 
 ;6. Divide by radius
 divss xmm0,xmm2 ;xf = dx / Radius
@@ -66,6 +66,7 @@ jmp Success
 
 ;10. Radius = 0 is Failure
 Degenerate:
+invoke WriteLog,offset szErrMouseToVector
 ;Return Unit Vector along z
 mov dword ptr[ecx+0],0
 mov dword ptr[ecx+4],0
