@@ -42,8 +42,9 @@ cmp eax,gRectClientHeight
 jbe @f
 mov eax, gRectClientHeight
 @@:
-shr eax,1
-mov Radius,eax
+shr eax,1 ;Quick Integer Division by 2
+cvtsi2ss xmm0,eax ;Convert to Float
+movss Radius,xmm0
 
 ;Force the Status Bar to recompute its parts layout
 ;WM_SIZE = 5

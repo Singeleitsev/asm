@@ -1,17 +1,19 @@
 ;Application procedures
 AboutProc PROTO
+ArcballRotation PROTO
 CameraMove PROTO magnitude:REAL4, axis:DWORD
 CloseGL PROTO hWnd:DWORD
 CloseWndProc PROTO hWnd:DWORD
 ComputeWalkMagnitude PROTO direction:REAL4
 DrawScene PROTO
 Dolly PROTO wParam:DWORD
-Drift PROTO lParam:DWORD
 Geocentric PROTO lParam:DWORD
 GetDefaults PROTO
 InitGL PROTO
 InitLogger PROTO
+Mat4byMat4 PROTO pMtxSrc0:DWORD,pMtxSrc1:DWORD,pMtxDst:DWORD
 ModelRotate PROTO speed:REAL4, axis:DWORD
+MouseToVector PROTO xMouse:DWORD, yMouse:DWORD, pVecOut:DWORD
 Orbit PROTO lParam:DWORD
 Pan PROTO lParam:DWORD
 parseMtlFile PROTO

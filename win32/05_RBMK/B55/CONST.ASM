@@ -1,3 +1,6 @@
+;Numeric
+EPS equ 0.001 ;Epsilon
+
 ;Default Sizes
 DEFAULT_WND_WIDTH equ 800
 DEFAULT_WND_HEIGHT equ 600

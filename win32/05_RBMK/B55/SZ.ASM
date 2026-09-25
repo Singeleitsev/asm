@@ -65,10 +65,10 @@ szExitProcess db "ExitProcess",0Dh,0Ah,0
 ;About
 szAboutMsgTitle db "About MASM32 OpenGL Demo",0
 szAboutMsgText db "Controls:",0Dh,0Ah ;No Zero Terminator
-db "Left Mouse Button - Rotate the Camera in place",0Dh,0Ah
-db "Right Mouse Button - Rotate the Object around its origin",0Dh,0Ah
-db "Mouse Wheel Down - Move Camera Left-Right, Up-Down",0Dh,0Ah
-db "Mouse Scroll - Move Camera Forward-Backward",0Dh,0Ah
+db "Left Mouse Button - Spin the Object",0Dh,0Ah
+db "Mouse Wheel Down - Move the Camera Left-Right, Up-Down",0Dh,0Ah
+db "Mouse Scroll - Dolly the Camera",0Dh,0Ah
+db "Right Mouse Button - Rotate the Camera",0Dh,0Ah
 db 0Dh,0Ah
 db "Arrow Up - Move the Camera Forward",0Dh,0Ah
 db "Arrow Down - Move the Camera Backward",0Dh,0Ah

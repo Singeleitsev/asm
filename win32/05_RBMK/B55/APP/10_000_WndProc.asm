@@ -119,8 +119,7 @@ cmp gnMouseMode,MOUSE_MODE_FREE
 je WndProc_Return0
 cmp gnMouseMode,MOUSE_MODE_ORBIT
 jne @f
-invoke Drift,lParam
-;invoke Orbit,lParam
+invoke Orbit,lParam
 jmp WndProc_Return0
 @@:
 cmp gnMouseMode,MOUSE_MODE_PAN
@@ -137,6 +136,7 @@ jmp WndProc_Return0
 wmLButtonDown:
 mov gnMouseMode,MOUSE_MODE_ORBIT
 GET_REFERENCE_CURSOR_POSITION
+invoke MouseToVector,xMouseOld,yMouseOld,offset xVectorOld
 ;Set Flags
 mov isInitialPosition,0
 mov isRefreshed,0
@@ -151,6 +151,7 @@ jmp WndProc_Return0
 wmRButtonDown:
 mov gnMouseMode,MOUSE_MODE_GEOCENTRIC
 GET_REFERENCE_CURSOR_POSITION
+invoke MouseToVector,xMouseOld,yMouseOld,offset xVectorOld
 ;Set Flags
 mov isInitialPosition,0
 mov isRefreshed,0

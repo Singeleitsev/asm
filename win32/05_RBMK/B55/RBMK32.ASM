@@ -53,12 +53,12 @@ include ogl\02_ResetScene.asm
 include ogl\10_CameraMove.asm
 include ogl\11_ModelMove.asm
 include ogl\12_ModelRotate.asm
-include ogl\20_Drift.asm
-;include ogl\20_Orbit.asm
+include ogl\20_Orbit.asm
 include ogl\21_Pan.asm
 include ogl\22_Dolly.asm
 include ogl\23_Geocentric.asm
-include ogl\30_Arcball.asm
+include ogl\30_Sphere.asm
+include ogl\31_Arcball.asm
 include ogl\80_DrawScene.asm
 include ogl\90_CloseGL.asm
 

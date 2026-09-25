@@ -37,3 +37,11 @@ mov eax,yMouseNew
 sub eax,yMouseOld
 mov dyMouse,eax
 endm
+
+;Copies new into old, in preparation for the next move
+SAVE_OLD_SPHERE_VECTOR macro
+movaps xmm0,oword ptr[xVectorNew]
+movaps oword ptr[xVectorOld],xmm0
+endm
+
+

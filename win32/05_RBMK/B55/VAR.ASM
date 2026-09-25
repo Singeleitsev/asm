@@ -62,17 +62,27 @@ xMouseOld dd 0
 yMouseOld dd 0
 dxMouse dd 0
 dyMouse dd 0
-Radius dd 0
-;Camera Rotate
-MouseSensitivity real4 0.5 ;degrees per pixel
-dAngleX dd 0
-sinX dd 0
-cosX dd 0
-dAngleY dd 0
-sinY dd 0
-cosY dd 0
+;Arcball
+SpinSpeed real4 0.5 ;degrees per pixel
+Radius real4 0.0
+;Arcball pipeline coordinate stack
+align 16
+xVectorNew real4 0.0
+yVectorNew real4 0.0
+zVectorNew real4 1.0
+wVectorNew real4 0.0 ;Padding
+xVectorOld real4 0.0
+yVectorOld real4 0.0
+zVectorOld real4 1.0
+wVectorOld real4 1.0 ;Padding
+align 16
+mtxArcball mat4 <>
+eps real4 0.001 ;1 micrometer
+
 ;Pan
-PanSpeed real4 16.0
+PanSpeed real4 20.0
+PanMagnitudeX real4 1.0
+PanMagnitudeY real4 1.0
 ;Dolly
 DollySpeed real4 1.0
 DollyMagnitude real4 0.0
