@@ -37,7 +37,7 @@ fstp gRectClientAspect
 
 ;Force the Status Bar to recompute its parts layout
 ;WM_SIZE = 5
-invoke SendMessageA,ghwndStatusBar,5,0,0
+invoke SendMessageA,ghWndStatusBar,5,0,0
 
 ;xStatusParts(i) = xStatusProportions(i)*RectWidth/1024
 mov cl,STATUS_BAR_PARTS-1
@@ -59,7 +59,7 @@ jg lbl_NextStatusPart
 push offset xStatusParts
 push 9 ;wParam = Number of Parts
 push 404h ;Msg = SB_SETPARTS = WM_USER + 4
-push ghwndStatusBar
+push ghWndStatusBar
 call SendMessageA
 
 ;Update OpenGL Viewport

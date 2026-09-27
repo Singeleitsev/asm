@@ -48,7 +48,7 @@ szMsgCloseText db "Exit?",0
 
 ;Log
 szLogFileName db "RBMK32.log",0
-szLogBuffer db 100h dup (0)
+;szLogBuffer db 100h dup (0)
 szOK db ": OK",0Dh,0Ah,0
 szError db " Error",0Dh,0Ah,0
 szErrInitLogger db "InitLogger Error",0

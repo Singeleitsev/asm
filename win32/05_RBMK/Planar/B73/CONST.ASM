@@ -13,7 +13,7 @@ IDM_FILE_EXIT equ 109h
 IDM_HELP_ABOUT equ 901h
 
 ;Status Bar
-STATUS_BAR_PARTS equ 9
+STATUS_BAR_PARTS equ 6
 
 ;Mouse Modes
 MOUSE_MODE_FREE equ 0

@@ -120,8 +120,6 @@ jmp WinMain_Loop
 
 Wait16ms:
 invoke Sleep,10h
-mov dword ptr [qpcPrev],0
-mov dword ptr [qpcPrev+4],0
 jmp WinMain_Loop
 
 WinMain_Error:

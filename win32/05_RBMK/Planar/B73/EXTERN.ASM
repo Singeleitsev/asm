@@ -7,6 +7,7 @@ CameraWalkMagnitude PROTO direction:REAL4
 CameraRotate PROTO lParam:DWORD
 CloseGL PROTO hWnd:DWORD
 CloseWndProc PROTO hWnd:DWORD
+ConvertFloat PROTO f32_Value:REAL4, pszOutput:DWORD
 DrawScene PROTO
 GetDefaults PROTO
 GetGlobalOrigin PROTO pMtxLocal:DWORD, pVecGlobal:DWORD
@@ -17,9 +18,7 @@ ObjectMoveMagnitude PROTO direction:REAL4
 ObjectRotate PROTO lParam:DWORD
 parseMtlFile PROTO
 parseObjFile PROTO
-SetCapture PROTO hWnd:DWORD
 SetGlobalOrigin PROTO pMtxLocal:DWORD, pVecGlobal:DWORD
-ReleaseCapture PROTO 
 ResetScene PROTO
 Tick PROTO
 WndProc PROTO hWnd:DWORD, uMsg:DWORD, wParam:DWORD, lParam:DWORD
@@ -57,9 +56,11 @@ LoadIconA PROTO hInstance:DWORD, lpIconName:DWORD
 MessageBoxA PROTO hWnd:DWORD, lpText:DWORD, lpCaption:DWORD, uType:DWORD
 PeekMessageA PROTO lpMsg:DWORD, hWnd:DWORD, wMsgFilterMin:DWORD, wMsgFilterMax:DWORD, wRemoveMsg:DWORD
 PostQuitMessage PROTO nExitCode:DWORD
+ReleaseCapture PROTO 
 ReleaseDC PROTO hWnd:DWORD, hdc:DWORD
 RegisterClassExA PROTO lpWndClass:DWORD
 SendMessageA PROTO hWnd:DWORD, Msg:DWORD, wParam:DWORD, lParam:DWORD
+SetCapture PROTO hWnd:DWORD
 SetFocus PROTO hWnd:DWORD
 SetForegroundWindow PROTO hWnd:DWORD
 SetMenu PROTO hWnd:DWORD, hMenu:DWORD

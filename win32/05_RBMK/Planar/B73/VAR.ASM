@@ -13,11 +13,11 @@ ghMenuHelp dd 0
 ghAccTable dd 0
 
 ;StatusBar
-ghwndStatusBar dd 0
+ghWndStatusBar dd 0
 ;Divide Status Bar by 9 parts
 xStatusParts dd STATUS_BAR_PARTS-1 dup (0),-1
 ;Proportions Empirically Counted for Width = 1024
-xStatusProportions dd 102,204,307,430,552,675,788,901 ;(n-1) constants
+xStatusProportions dd 170,340,510,680,850 ;(n-1) constants
 
 ;WinGDI
 ghDC dd 0
@@ -40,12 +40,15 @@ gnFrame dd 0
 
 ;Timer
 align 8
-qpcFreq dq 0
-qpcPrev dq 0
-gDeltaT dq 0
-tStatusAcc dq 0
-tTitleAcc dq 0
-nTitleFrames dd 0
+qpcFreq dq 0 ;Ticks per Second
+qpcPrev dq 0 ;Last Sample
+qpcNow dq 0 ;Current Sample
+qpcDelta dq 0 ;Scratch for the Tick Delta
+gDeltaT real8 0.0 ;Seconds, Clamped to [0, 0.1]
+;tStatusAcc real8 0.0 ;Accumulator for status updates
+tTitleAcc real8 0.0 ;Accumulator for title updates
+MaxDeltaT real8 0.1 ;Clamp Threshold
+nTitleFrames dd 0 ;Special Counter for FPS
 
 ;Input
 
@@ -110,6 +113,8 @@ ObjCosVer real4 0.0
 ;Numeric
 PiOver180 real4 0.017453292519943295
 eps real4 0.001 ;One micrometer
+;Unnamed
+f32_10K real4 10000.0
 
 ;Logger
 ghLogFile dd 0

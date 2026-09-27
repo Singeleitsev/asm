@@ -20,13 +20,13 @@ push 0 ;dwExStyle = 0
 call CreateWindowExA
 test eax,eax
 jz WinMain_Error
-mov ghwndStatusBar,eax
+mov ghWndStatusBar,eax
 
 ;3. Set Status Bar Parts
 push offset xStatusParts ;lParam = address of the Array of Coordinates
-push STATUS_BAR_PARTS ;wParam = 9 parts
+push STATUS_BAR_PARTS ;wParam = 6 parts
 push 404h ;Msg = SB_SETPARTS = WM_USER + 4 = 404h
-push ghwndStatusBar ;hWnd
+push ghWndStatusBar ;hWnd
 call SendMessageA
 test eax,eax
 jz WinMain_Error

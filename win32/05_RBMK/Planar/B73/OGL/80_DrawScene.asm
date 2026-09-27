@@ -67,7 +67,16 @@ call glEnd
 push ghDC
 call SwapBuffers
 
-;6. Mark the frame as drawn
+;6. Update the Indicators
+call RefreshTitle
+
+;Get the Camera's World Position
+invoke GetGlobalOrigin,offset mtxCameraVolatile,offset vecCamPos
+;Get the Object's World Position
+invoke GetGlobalOrigin,offset mtxObjectVolatile,offset vecObjPos
+call RefreshStatus
+
+;7. Mark the frame as drawn
 mov isRefreshed,1
 
 DrawScene_End:
