@@ -1,6 +1,7 @@
 ;Application procedures
 AboutProc PROTO
 ArcballRotation PROTO
+ArcToCamera PROTO
 CameraMove PROTO magnitude:REAL4, axis:DWORD
 CloseGL PROTO hWnd:DWORD
 CloseWndProc PROTO hWnd:DWORD

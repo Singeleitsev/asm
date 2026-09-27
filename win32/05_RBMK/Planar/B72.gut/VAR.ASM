@@ -33,6 +33,7 @@ yScrCenter dd 0 ;Integer
 isActive db 1
 isInitialPosition db 1
 isRefreshed db 0
+gnMouseMode dd MOUSE_MODE_FREE
 
 ;Counters
 gnFrame dd 0
@@ -53,58 +54,62 @@ align 4
 key db 255 dup (0)
 nKeyCode dd 0
 
-;Mouse
+;Screen Coordinates
 align 4
-gnMouseMode dd 0
 xMouseNew dd 0
 yMouseNew dd 0
 xMouseOld dd 0
 yMouseOld dd 0
 dxMouse dd 0
 dyMouse dd 0
-;Arcball
-SpinSpeed real4 0.5 ;degrees per pixel
-Radius real4 0.0
-;Arcball pipeline coordinate stack
-align 16
-xVectorNew real4 0.0
-yVectorNew real4 0.0
-zVectorNew real4 1.0
-wVectorNew real4 0.0 ;Padding
-xVectorOld real4 0.0
-yVectorOld real4 0.0
-zVectorOld real4 1.0
-wVectorOld real4 1.0 ;Padding
-align 16
-mtxArcball mat4 <>
-mtxTemp mat4 <>
-eps real4 0.001 ;1 micrometer
 
-;Pan
-PanSpeed real4 20.0
-PanMagnitudeX real4 1.0
-PanMagnitudeY real4 1.0
-;Dolly
-DollySpeed real4 1.0
-DollyMagnitude real4 0.0
-
-;Motion
 ;Direction
 posOne real4 1.0
 negOne real4 -1.0
-;Move
-WalkSpeed real4 20.0
-WalkBoost real4 10.0
-WalkMagnitude real4 0.0
+
+;Camera
+align 16
+vecCamPos vec4 <>
+;Walk
+CamWalkSpeed real4 20.0
+CamWalkBoost real4 10.0
+CamWalkMagnitude real4 0.0
+;Drag
+CamDragSpeed real4 20.0
+CamDragMagnitude real4 0.0
+;Dolly
+CamDollySpeed real4 1.0
+CamDollyMagnitude real4 0.0
 ;Rotate
-sinSlow real4 0.017452406 ;sin(1deg)
-cosSlow real4 0.999847695 ;cos(1deg)
-;AngularBoost
-sinFast real4 0.173648178 ;sin(10deg)
-cosFast real4 0.984807753 ;cos(10deg)
+CamRotateSpeedHor real4 0.1 ;Degrees by Pixel
+CamAngleHor real4 0.0
+CamSinHor real4 0.0
+CamCosHor real4 0.0
+CamRotateSpeedVer real4 0.1 ;Degrees by Pixel
+CamAngleVer real4 0.0
+CamSinVer real4 0.0
+CamCosVer real4 0.0
+
+;Object
+align 16
+vecObjPos vec4 <>
+;Move
+ObjMoveSpeed real4 20.0
+ObjMoveBoost real4 10.0
+ObjMoveMagnitude real4 0.0
+;Rotate
+ObjRotateSpeedVer real4 0.1 ;Degrees by Pixel
+ObjAngleHor real4 0.0
+ObjSinHor real4 0.0
+ObjCosHor real4 0.0
+ObjRotateSpeedHor real4 0.1 ;Degrees by Pixel
+ObjAngleVer real4 0.0
+ObjSinVer real4 0.0
+ObjCosVer real4 0.0
 
 ;Numeric
 PiOver180 real4 0.017453292519943295
+eps real4 0.001 ;One micrometer
 
 ;Logger
 ghLogFile dd 0
@@ -130,7 +135,7 @@ gnLastError dd 0
 ;w|03|13|23|33| |w|03|07|11|15|
 
 ;gluPerspective Arguments
-fovy real8 90.0
+fovy real8 45.0
 zNear real8 1.0
 zFar real8 1000000.0
 
@@ -155,9 +160,9 @@ mtxCameraDefault mat4 < \
  0.8660254,	\ ;m21 = sin(300) = sqrt(3)/2
  0.5,		\ ;m22 = cos(300)
  0.0,		\ ;m23
- 0.0,		\ ;m30 = dxCam
- 1500.0,	\ ;m31 = dyCam
--9000.0,	\ ;m32 = dzCam
+ 0.0,		\ ;m30 = xCamLocal
+ 1500.0,	\ ;m31 = yCamLocal
+-12000.0,	\ ;m32 = zCamLocal
  1.0 		> ;m33 = 1.0
 
 ;The Object is initially Turned 20 degrees about its local Z Axis
@@ -175,9 +180,9 @@ mtxObjectDefault mat4 < \
  0.0,		\ ;m21
  1.0,		\ ;m22 = 1.0
  0.0,		\ ;m23
- 0.0,		\ ;m30
- 0.0,		\ ;m31
- 0.0,		\ ;m32
+ 0.0,		\ ;m30 = xObjLocal
+ 0.0,		\ ;m31 = yObjLocal
+ 0.0,		\ ;m32 = zObjLocal
  1.0		> ;m33 = 1.0
 
 mtxProjectionVolatile mat4 <>
@@ -186,7 +191,7 @@ mtxObjectVolatile mat4 <>
 
 ;Lighting
 align 4
-lightPosition POINT4D <-2000.0,-1000.0,2000.0,1.0>
+lightPosition vec4 <-2000.0,-1000.0,2000.0,1.0>
 lightDiffuse RGBA <0.4,0.4,0.35,0.0>
 lightAmbient RGBA <0.4,0.4,0.35,0.0>
 

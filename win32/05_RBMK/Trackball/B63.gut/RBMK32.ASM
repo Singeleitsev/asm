@@ -60,6 +60,7 @@ include ogl\23_Geocentric.asm
 include ogl\30_Sphere.asm
 include ogl\31_Arcball.asm
 include ogl\32_Mat4byMat4.asm
+include ogl\33_ArcToCamera.asm
 include ogl\80_DrawScene.asm
 include ogl\90_CloseGL.asm
 

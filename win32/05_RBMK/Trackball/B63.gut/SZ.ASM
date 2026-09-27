@@ -99,6 +99,7 @@ szGlViewport db "glViewport",0
 szErrMouseToVector db "Failed to convert Screen cordinates to Sphere",0Dh,0Ah
 szErrArcball db "Arcball Failed",0Dh,0Ah
 szErrOrbit db "Orbit Failed",0Dh,0Ah
+szErrGeocentric db "Geocentric Failed",0Dh,0Ah
 
 ;Message Box
 ;szCaption db "",0

@@ -134,7 +134,7 @@ jmp WndProc_Return0
 
 ;WM_LBUTTONDOWN = 201h
 wmLButtonDown:
-mov gnMouseMode,MOUSE_MODE_ORBIT
+mov gnMouseMode,MOUSE_MODE_GEOCENTRIC
 GET_REFERENCE_CURSOR_POSITION
 invoke MouseToVector,xMouseOld,yMouseOld,offset xVectorOld
 ;Set Flags
@@ -149,7 +149,7 @@ jmp WndProc_Return0
 
 ;WM_RBUTTONDOWN = 204h
 wmRButtonDown:
-mov gnMouseMode,MOUSE_MODE_GEOCENTRIC
+mov gnMouseMode,MOUSE_MODE_ORBIT
 GET_REFERENCE_CURSOR_POSITION
 invoke MouseToVector,xMouseOld,yMouseOld,offset xVectorOld
 ;Set Flags
