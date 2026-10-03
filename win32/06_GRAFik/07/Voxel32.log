@@ -1,0 +1,18 @@
+Application Started
+Entered WinMain
+GetModuleHandleA: OK
+RegisterClassExA: OK
+Creating the Menu: OK
+CreateAcceleratorTableA: OK
+CreateAcceleratorTableA: OK
+CreateWindowExA: OK
+Creating the Status Bar: OK
+GetDC: OK
+ChoosePixelFormat: OK
+SetPixelFormat: OK
+wglCreateContext: OK
+wglMakeCurrent: OK
+NVIDIA Corporation
+NVIDIA GeForce GTX 1650/PCIe/SSE2
+4.6.0 NVIDIA 591.86
+ExitProcess
