@@ -1,0 +1,167 @@
+BuildGeometry proc
+LOCAL xCell:DWORD, yCell:DWORD
+LOCAL nBytesWritten:DWORD, nIndicesWritten:DWORD
+LOCAL pLut:DWORD, baseVertex:DWORD
+
+call GetProcessHeap
+mov ghProcessHeap,eax
+
+;-- Allocate vertex array --
+push RBMK_ARRAY_SIZE
+push 8
+push ghProcessHeap
+call HeapAlloc
+test eax,eax
+jz BuildGeometry_Error
+mov edi,eax
+mov gpVertices,eax
+add eax,12
+mov gpNormals,eax
+add eax,12
+mov gpColors,eax
+
+;-- Allocate index array --
+push RBMK_INDEX_SIZE
+push 8
+push ghProcessHeap
+call HeapAlloc
+test eax,eax
+jz BuildGeometry_Error
+mov gpIndices,eax
+
+mov xCell,0
+mov yCell,0
+mov nBytesWritten,0
+mov nIndicesWritten,0
+lea eax,Layout
+mov pLut,eax
+
+;-- Row loop --
+NextRow:
+
+;-- Column loop --
+NextColumn:
+
+;-- Color lookup --
+mov eax,pLut
+movzx eax,byte ptr[eax]
+cmp eax,1
+jne @f
+lea edx,Gray
+jmp SetColor
+@@:
+cmp eax,2
+jne @f
+lea edx,Green
+jmp SetColor
+@@:
+cmp eax,3
+jne @f
+lea edx,Yellow
+jmp SetColor
+@@:
+cmp eax,4
+jne @f
+lea edx,Red
+jmp SetColor
+@@:
+cmp eax,5
+jne NextCellSkip
+lea edx,Blue
+
+SetColor:
+movss xmm5,dword ptr[edx+0]
+movss xmm6,dword ptr[edx+4]
+movss xmm7,dword ptr[edx+8]
+
+;-- Cap origin --
+cvtsi2ss xmm0,dword ptr[xCell]
+mulss xmm0,dChannelGrid
+addss xmm0,xOrigin
+cvtsi2ss xmm1,dword ptr[yCell]
+mulss xmm1,dChannelGrid
+addss xmm1,yOrigin
+
+;-- 12 vertices --
+lea esi,CapPattern
+mov ecx,12
+WriteVert:
+movss xmm2,dword ptr[esi+0]
+addss xmm2,xmm0
+movss dword ptr[edi+0],xmm2
+movss xmm3,dword ptr[esi+4]
+addss xmm3,xmm1
+movss dword ptr[edi+4],xmm3
+movups xmm4,oword ptr[esi+8]
+movups oword ptr[edi+8],xmm4
+movss dword ptr[edi+24],xmm5
+movss dword ptr[edi+28],xmm6
+movss dword ptr[edi+32],xmm7
+add esi,24
+add edi,STRIDE
+dec ecx
+jnz WriteVert
+
+add nBytesWritten,12*36
+
+;-- Compute base vertex for this cap --
+mov eax,nBytesWritten ;eax = nBytesWritten = 12 * 36 = 432
+mov ecx,STRIDE ;ecx = 36
+xor edx,edx
+div ecx ;eax = nBytesWritten / stride = 432 / 36 = 12
+sub eax,12 ;eax = 12 - 12 = 0
+mov baseVertex,eax ;baseVertex = 0
+
+;-- 30 indices --
+lea esi,CapIndices
+mov edi,gpIndices
+mov eax,nIndicesWritten ;eax = 0
+lea edi,[edi+eax*2] ;edi = gpIndices + 0
+mov ecx,30 ;Counter
+mov edx,baseVertex ;edx = baseVertex = 0
+WriteIndex:
+mov ax,word ptr[esi]
+add ax,dx
+mov word ptr[edi],ax
+add esi,2
+add edi,2
+dec ecx
+jnz WriteIndex
+
+add nIndicesWritten,30
+
+NextCellSkip:
+;-- Advance column --
+inc xCell
+inc pLut
+cmp xCell,48
+jl NextColumn
+
+;-- Advance row --
+mov xCell,0
+inc yCell
+cmp yCell,48
+jl NextRow
+
+;-- Post-check --
+cmp nBytesWritten,RBMK_ARRAY_SIZE
+jne BuildGeometry_Error
+cmp nIndicesWritten,RBMK_TOTAL_INDICES
+jne BuildGeometry_Error
+
+invoke WriteLog,offset szLogDataLoaded
+jmp BuildGeometry_End
+
+BuildGeometry_Error:
+invoke WriteLog,offset szErrDataLoading
+
+BuildGeometry_End:
+invoke WriteLog,offset szLastRow
+invoke WriteDecimalToLog,yCell
+invoke WriteLog,offset szLastColumn
+invoke WriteDecimalToLog,xCell
+invoke WriteLog,offset szBytesWritten
+invoke WriteDecimalToLog,nBytesWritten
+invoke WriteLog,offset szCRLF
+ret
+BuildGeometry endp
