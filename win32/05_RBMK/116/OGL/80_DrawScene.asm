@@ -1,12 +1,12 @@
 DrawScene proc
 
-;1.1. Activate the Projection Matrix
-push 1701h ;GL_PROJECTION
-call glMatrixMode
+;1.1. Activate the Projection Matrix - Temporarily not used
+;push 1701h ;GL_PROJECTION
+;call glMatrixMode
 
-;1.2. Load the current Projection matrix
-push offset mtxProjectionVolatile
-call glLoadMatrixf
+;1.2. Load the current Projection Matrix - Temporarily not used
+;push offset mtxProjectionVolatile
+;call glLoadMatrixf
 
 ;2.1. Activate the ModelView Matrix
 push 1700h ;GL_MODELVIEW

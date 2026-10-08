@@ -1,10 +1,10 @@
-;Camera and Object operate their own Local coordinate systems
-;and their own Camera and Object Matrices
+;Object operates in the world coordinate system
+;and their own Object Volatile and Default Matrices
 ;Local +x = OpenGL +x
-;Local +y = OpenGL -z
-;Local +z = OpenGL +y
+;Local +y = OpenGL +y
+;Local +z = OpenGL +z
 
-CameraRotate proc lParam:QWORD
+ObjectRotate proc lParam:QWORD
 PROLOG 100h
 
 ;mov lParam,r9
@@ -14,50 +14,38 @@ GET_NEW_CURSOR_POSITION
 ;deltaMouse = MouseNew - MouseOld
 COMPUTE_MOUSE_DELTA
 
-;1.1. Save the Camera's World Position
-lea rcx,mtxCameraVolatile
-lea rdx,vecCamPos
-call GetGlobalOrigin
+;1. Load Object Matrix Address
+lea rcx,mtxObjectVolatile
 
-;1.2. Load Camera Matrix Address
-lea rcx,mtxCameraVolatile
+;2.1. Check for Consistency
+cmp dxMouse,0
+je ObjRx
 
-;1.3. Translate the Camera to the Origin
-mov dword ptr[rcx+12*4],0
-mov dword ptr[rcx+13*4],0
-mov dword ptr[rcx+14*4],0
-
-;2.1. Load the Mouse Delta (signed)
+;2.2. Load the Mouse Delta (signed)
 cvtsi2ss xmm0,dxMouse
 
-;2.2. Check for Consistency
-movss xmm1,xmm0
-mulss xmm1,xmm1
-comiss xmm1,f32_epsilon ;is dxMouse^2 < epsilon?
-jb CamRx
-
 ;2.3. Compute the Angle
-mulss xmm0,CamRotateSpeedHor ;Degrees by Pixel
+mulss xmm0,ObjRotateSpeedHor ;Degrees by Pixel
 mulss xmm0,f32_PiOver180 ;xmm0 = angle in radians (in SSE)
-movss CamAngleHor,xmm0 ;Store to memory so x87 can load it
-fld CamAngleHor ; ST(0) = angle
+movss ObjAngleHor,xmm0 ;Store to memory so x87 can load it
+fld ObjAngleHor ; ST(0) = angle
 fsincos ; ST(0) = cos, ST(1) = sin
-fstp CamCosHor
-fstp CamSinHor
+fstp ObjCosHor
+fstp ObjSinHor
 
 ;2.4. Load Sines and Cosines
-movss xmm0,CamSinHor
+movss xmm0,ObjSinHor
 shufps xmm0,xmm0,0 ;Broadcast SinA
-movss xmm1,CamCosHor
+movss xmm1,ObjCosHor
 shufps xmm1,xmm1,0 ;Broadcast CosA
 
 ;3. Compute the Matrix
-lea rcx,mtxCameraVolatile
+lea rcx,mtxObjectVolatile
 
 ;x|00|04|08|12| |x|cos|-sin|0|0|
 ;y|01|05|09|13| |y|sin| cos|0|0|
-;z|02|06|10|14| |z| 0 |  0 |1|0|
-;w|03|07|11|15| |w| 0 |  0 |0|1|
+;z|02|06|10|14| |z|  0|   0|1|0|
+;w|03|07|11|15| |w|  0|   0|0|1|
 movaps xmm2,oword ptr[rcx+0*4] ;old[00..03]
 movaps xmm3,oword ptr[rcx+4*4] ;old[04..07]
 movaps xmm4,xmm2 ;old[00..03]
@@ -81,38 +69,36 @@ mulps xmm5,xmm1 ;old[04..07]*cos
 subps xmm5,xmm4
 movaps oword ptr[rcx+4*4],xmm5 ;new[04..07]
 
-CamRx:
-;4.1. Load the Mouse Delta (signed)
+ObjRx:
+;4.1. Check for Consistency
+cmp dyMouse,0
+je ObjectRotate_End
+
+;4.2. Load the Mouse Delta (signed)
 cvtsi2ss xmm0,dyMouse
 
-;4.2. Check for Consistency
-movss xmm1,xmm0
-mulss xmm1,xmm1
-comiss xmm1,f32_epsilon ;is dyMouse^2 < epsilon?
-jb RestoreCamPos
-
 ;4.3. Compute the Angle
-mulss xmm0,CamRotateSpeedVer ;Degrees by Pixel
+mulss xmm0,ObjRotateSpeedVer ;Degrees by Pixel
 mulss xmm0,f32_PiOver180 ;xmm0 = angle in radians (in SSE)
-movss CamAngleVer,xmm0 ;Store to memory so x87 can load it
-fld CamAngleVer ; ST(0) = angle
+movss ObjAngleVer,xmm0 ;Store to memory so x87 can load it
+fld ObjAngleVer ; ST(0) = angle
 fsincos ; ST(0) = cos, ST(1) = sin
-fstp CamCosVer
-fstp CamSinVer
+fstp ObjCosVer
+fstp ObjSinVer
 
 ;4.4. Load Sines and Cosines
-movss xmm0,CamSinVer
+movss xmm0,ObjSinVer
 shufps xmm0,xmm0,0 ;Broadcast SinA
-movss xmm1,CamCosVer
+movss xmm1,ObjCosVer
 shufps xmm1,xmm1,0 ;Broadcast CosA
 
 ;5. Compute the Matrix
-;lea rcx,mtxCameraVolatile
+;lea rcx,mtxObjectVolatile
 
-;x|00|04|08|12| |x|1| 0 |  0 |0|
+;x|00|04|08|12| |x|1|  0|   0|0|
 ;y|01|05|09|13| |y|0|cos|-sin|0|
 ;z|02|06|10|14| |z|0|sin| cos|0|
-;w|03|07|11|15| |w|0| 0 |  0 |1|
+;w|03|07|11|15| |w|0|  0|   0|1|
 
 ;Load Values
 movaps xmm2,oword ptr[rcx+4*4] ;old[04..07]
@@ -138,13 +124,7 @@ mulps xmm4,xmm0 ;old[04..07]*sin
 subps xmm5,xmm4
 movaps oword ptr[rcx+8*4],xmm5 ;new[08..11]
 
-;6. Restore the Camera's World Position
-RestoreCamPos:
-lea rcx,mtxCameraVolatile 
-lea rdx,vecCamPos
-call SetGlobalOrigin
-
-CameraRotate_End:
+ObjectRotate_End:
 ;MouseOld <- MouseNew
 SAVE_OLD_CURSOR_POSITION
 
@@ -153,6 +133,6 @@ mov isInitialPosition,0
 mov isRefreshed,0
 
 EPILOG
-CameraRotate endp
+ObjectRotate endp
 
 

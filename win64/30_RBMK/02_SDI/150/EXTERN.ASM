@@ -9,7 +9,7 @@ CameraWalkMagnitude PROTO ;xmm0 = direction:REAL4
 CameraRotate PROTO lParam:QWORD
 CloseGL PROTO hWnd:QWORD
 CloseWndProc PROTO hWnd:QWORD
-ConvertFloat PROTO f32_Value:REAL4, pszOutput:QWORD
+FloatToANSI PROTO binFloatValue:QWORD,pszOutput:QWORD
 DrawScene PROTO
 GetDefaults PROTO
 GetGlobalOrigin PROTO ;rcx = pMtxLocal:QWORD ;rdx = pVecGlobal:QWORD

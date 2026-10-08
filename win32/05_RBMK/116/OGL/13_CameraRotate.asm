@@ -1,50 +1,58 @@
-;Camera and Object operate their own Local coordinate systems
-;and their own Camera and Object Matrices
+;Camera operates its own Local coordinate systems
+;and its own Camera Volatile and Default Matrices
 ;Local +x = OpenGL +x
 ;Local +y = OpenGL -z
 ;Local +z = OpenGL +y
 
-ObjectRotate proc lParam:DWORD
+CameraRotate proc lParam:DWORD
 
 ;MouseNew <- lParam
 GET_NEW_CURSOR_POSITION  
 ;deltaMouse = MouseNew - MouseOld
 COMPUTE_MOUSE_DELTA
 
-;1. Load Object Matrix Address
-lea ecx,mtxObjectVolatile
+;1.1. Save the Camera's World Position
+lea ecx,mtxCameraVolatile ;fastcall
+lea edx,vecCamPos
+call GetGlobalOrigin 
 
-;2.1. Load the Mouse Delta (signed)
+;1.2. Load Camera Matrix Address
+lea ecx,mtxCameraVolatile
+
+;1.3. Translate the Camera to the Origin
+mov dword ptr[ecx+12*4], 0
+mov dword ptr[ecx+13*4], 0
+mov dword ptr[ecx+14*4], 0
+
+;2.1. Check for Consistency
+cmp dxMouse,0
+je CamRx
+
+;2.2. Load the Mouse Delta (signed)
 cvtsi2ss xmm0,dxMouse
 
-;2.2. Check for Consistency
-movss xmm1,xmm0
-mulss xmm1,xmm1
-comiss xmm1,f32_epsilon ;is dxMouse^2 < epsilon?
-jb ObjRx
-
 ;2.3. Compute the Angle
-mulss xmm0,ObjRotateSpeedHor ;Degrees by Pixel
+mulss xmm0,CamRotateSpeedHor ;Degrees by Pixel
 mulss xmm0,f32_PiOver180 ;xmm0 = angle in radians (in SSE)
-movss ObjAngleHor,xmm0 ;Store to memory so x87 can load it
-fld ObjAngleHor ; ST(0) = angle
+movss CamAngleHor,xmm0 ;Store to memory so x87 can load it
+fld CamAngleHor ; ST(0) = angle
 fsincos ; ST(0) = cos, ST(1) = sin
-fstp ObjCosHor
-fstp ObjSinHor
+fstp CamCosHor
+fstp CamSinHor
 
 ;2.4. Load Sines and Cosines
-movss xmm0,ObjSinHor
+movss xmm0,CamSinHor
 shufps xmm0,xmm0,0 ;Broadcast SinA
-movss xmm1,ObjCosHor
+movss xmm1,CamCosHor
 shufps xmm1,xmm1,0 ;Broadcast CosA
 
 ;3. Compute the Matrix
-lea ecx,mtxObjectVolatile
+;lea ecx,mtxCameraVolatile
 
 ;x|00|04|08|12| |x|cos|-sin|0|0|
 ;y|01|05|09|13| |y|sin| cos|0|0|
-;z|02|06|10|14| |z|  0|   0|1|0|
-;w|03|07|11|15| |w|  0|   0|0|1|
+;z|02|06|10|14| |z| 0 |  0 |1|0|
+;w|03|07|11|15| |w| 0 |  0 |0|1|
 movaps xmm2,oword ptr[ecx+0*4] ;old[00..03]
 movaps xmm3,oword ptr[ecx+4*4] ;old[04..07]
 movaps xmm4,xmm2 ;old[00..03]
@@ -68,36 +76,36 @@ mulps xmm5,xmm1 ;old[04..07]*cos
 subps xmm5,xmm4
 movaps oword ptr[ecx+4*4],xmm5 ;new[04..07]
 
-ObjRx:
-;4.1. Load the Mouse Delta (signed)
+CamRx:
+;4.1. Check for Consistency
+cmp dyMouse,0
+je RestoreCamPos
+
+;4.2. Load the Mouse Delta (signed)
 cvtsi2ss xmm0,dyMouse
 
-;4.2. Check for Consistency
-movss xmm1,xmm0
-mulss xmm1,xmm1
-comiss xmm1,f32_epsilon ;is dyMouse^2 < epsilon?
-jb ObjectRotate_End
-
 ;4.3. Compute the Angle
-mulss xmm0,ObjRotateSpeedVer ;Degrees by Pixel
+mulss xmm0,CamRotateSpeedVer ;Degrees by Pixel
 mulss xmm0,f32_PiOver180 ;xmm0 = angle in radians (in SSE)
-movss ObjAngleVer,xmm0 ;Store to memory so x87 can load it
-fld ObjAngleVer ; ST(0) = angle
+movss CamAngleVer,xmm0 ;Store to memory so x87 can load it
+fld CamAngleVer ; ST(0) = angle
 fsincos ; ST(0) = cos, ST(1) = sin
-fstp ObjCosVer
-fstp ObjSinVer
+fstp CamCosVer
+fstp CamSinVer
 
 ;4.4. Load Sines and Cosines
-movss xmm0,ObjSinVer
+movss xmm0,CamSinVer
 shufps xmm0,xmm0,0 ;Broadcast SinA
-movss xmm1,ObjCosVer
+movss xmm1,CamCosVer
 shufps xmm1,xmm1,0 ;Broadcast CosA
 
 ;5. Compute the Matrix
-;x|00|04|08|12| |x|1|  0|   0|0|
+;lea ecx,mtxCameraVolatile
+
+;x|00|04|08|12| |x|1| 0 |  0 |0|
 ;y|01|05|09|13| |y|0|cos|-sin|0|
 ;z|02|06|10|14| |z|0|sin| cos|0|
-;w|03|07|11|15| |w|0|  0|   0|1|
+;w|03|07|11|15| |w|0| 0 |  0 |1|
 
 ;Load Values
 movaps xmm2,oword ptr[ecx+4*4] ;old[04..07]
@@ -123,7 +131,13 @@ mulps xmm4,xmm0 ;old[04..07]*sin
 subps xmm5,xmm4
 movaps oword ptr[ecx+8*4],xmm5 ;new[08..11]
 
-ObjectRotate_End:
+;6. Restore the Camera's World Position
+RestoreCamPos:
+lea ecx,mtxCameraVolatile ;fastcall
+lea edx,vecCamPos
+call SetGlobalOrigin
+
+CameraRotate_End:
 ;MouseOld <- MouseNew
 SAVE_OLD_CURSOR_POSITION
 
@@ -132,6 +146,6 @@ mov isInitialPosition,0
 mov isRefreshed,0
 
 ret
-ObjectRotate endp
+CameraRotate endp
 
 

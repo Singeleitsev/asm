@@ -1,6 +1,7 @@
 ;Converts a 32-bit floating point to a string of ANSI bytes
-;Input: binFloatValue = bit pattern of IEEE-754 float
-;pszOutput = address of the string buffer
+;Input:
+;esi = binFloatValue = bit pattern of IEEE-754 float
+;edi = pszOutput = address of the string buffer
 
 ;GPRs only implementation
 
@@ -8,55 +9,55 @@
 ;szZero db "0.0000",0,0 ;Two dwords
 ;szNaN db "NaN",0 ;One dword
 ;szInfinity db "Inf",0 ;One dword
-;szOverflow db "Too far",0 ;Two dwords
 
-FloatToANSI proc uses ebx esi edi binFloatValue:DWORD,pszOutput:DWORD
-LOCAL sign:DWORD,intPart:DWORD,fracPart:DWORD
-LOCAL exponent:DWORD,mantissa:DWORD
+FloatToANSI proc binFloatValue:QWORD,pszOutput:QWORD
 LOCAL intBuf[16]:BYTE
 LOCAL fracBuf[8]:BYTE 
 
-mov esi,dword ptr[binFloatValue] ;esi = bit pattern of (-1234567.1234)
-mov edi,pszOutput ;edi = address of the string buffer
+PROLOG 100h
+
+;mov binFloatValue,esi ;bit pattern of (-1234567.1234)
+mov pszOutput,rdi ;address of the string buffer
 
 ;Initialize the Variables
-mov sign,0
+;xor r10,r10 ;sign
+xor r11,r11 ;intPart
+xor r12,r12 ;fracPart
+xor r13,r13 ;exponent
+xor r14,r14 ;mantissa
 
 ;1.1. Detect the Sign
 bt esi,31 ;CF = bit 31 of esi (the sign bit)
 jnc Extract
-mov sign,1 ;Negative Case
+mov r10,1 ;Negative Case
 
 ;1.2. Write the Minus sign unconditionally,
 ;because it is the most probable case.
 ;If later Zero case will be detected,
 ;Then we'll overwrite the Minus with "0" character
-mov byte ptr[edi],02Dh ;ASCII Minus Sign
-inc edi
+mov byte ptr[rdi],02Dh ;ASCII Minus Sign
+inc rdi
 
 Extract:
-;2.1. Extract exponent
-mov eax,esi
-shr eax,23
-and eax,0FFh ;eax = exponent field E (0..255)
-mov exponent,eax
+;2.1. Extract exponent (bits 30..23)
+mov r13d,esi
+shr r13d,23
+and r13d,0FFh ;r13d = exponent
 ;2.2. Extract mantissa
-mov ebx,esi
-and ebx,007FFFFFh ;ebx = mantissa field M (23 bits,no implicit 1)
-mov mantissa,ebx
+mov r14d,esi
+and r14d,007FFFFFh ;r14d = mantissa (bits 22..0)
 
 ;3. Special / Boundary Cases
-test eax,eax
+test r13d,r13d
 jz Exp0 ;E = 0: Zero or Subnormal
-cmp eax,255
+cmp r13d,255
 je Exp255 ;E = 255: Infinity or Not a Number
 
 ;4. Reconstruct the exact dyadic value: |v| = S * 2^k
 ;We don't compute |v| as a number
 ;That's the whole point of the IEEE-754 bit route
-;mov ebx,mantissa ;It's still there
+mov ebx,r14d ;It's still there
 or ebx,800000h ;Implicit Leading 1 (24 bits)
-;mov absv,ebx
 
 ;5. Compute the true binary point shift
 ;relative to the 23rd bit of the mantissa
@@ -65,7 +66,7 @@ or ebx,800000h ;Implicit Leading 1 (24 bits)
 ;relative to the 23rd bit of the mantissa.
 ;Shift = 23 - Power = 23 - (Exponent - 127) = 150 - Exponent.
 mov ecx,150
-sub ecx,eax ;exponent 
+sub ecx,r13d ;exponent 
 
 cmp ecx,0
 jle ShiftLeft
@@ -76,7 +77,7 @@ jge WholeIsZero
 ;Both Integer and fractional Parts are Present
 mov eax,ebx
 shr eax,cl ;Implicit Leading 1 (24 bits)
-mov intPart,eax
+mov r11d,eax ;intPart
 
 ;Extract fractional bits with the mask
 mov edx,1
@@ -87,7 +88,7 @@ jmp ScaleFraction
 
 ;Shift >= 24 (Less than 1.0)
 WholeIsZero:
-mov intPart,0
+xor r11,r11 ;intPart
 jmp ScaleFraction
 
 ;Shift <= 0 (Large Integer)
@@ -106,7 +107,7 @@ shl eax,cl ;eax = low 32 bits of (significand << n)
 test edx,edx
 jnz Overflow
 
-mov intPart,eax
+mov r11d,eax ;intPart
 xor ebx,ebx ;fractional part is 0 for large integers
 xor ecx,ecx
 jmp ScaleFraction
@@ -115,6 +116,10 @@ ScaleFraction:
 ;ebx = fractional bits,ecx = scale (2^ecx)
 test ebx,ebx
 jz NoFraction
+
+;float < 0.00005 rounds to 0.0000
+cmp ecx,38
+jae NoFraction
 
 ;64-bit shift requires cl < 32. If cl >= 32, pre-shift ebx right.
 cmp ecx,31
@@ -129,7 +134,7 @@ DoScale64:
 mov eax,ebx
 mov edx,100000
 mul edx
-;Shift right by cl across the 64-bit pair (cl <= 31 here)
+;Shift right by cl across the 64-bit register (cl <= 31 here)
 shrd eax,edx,cl
 ;eax = floor(ebx * 100000 / 2^ecx)  (5-digit-or-less value)
 
@@ -144,114 +149,112 @@ div ecx
 cmp eax,10000
 jb StoreFrac
 sub eax,10000
-inc intPart
+inc r11d ;intPart
 StoreFrac:
-mov fracPart,eax
+mov r12d,eax ;fracPart
 jmp EmitInteger
 
 NoFraction:
-mov fracPart,0
+xor r12d,r12d ;fracPart
 
 EmitInteger:
-mov eax,intPart
+mov eax,r11d ;intPart
 test eax,eax
 jnz ProcessDigits
 
-mov byte ptr [edi],'0'
-inc edi
-mov ebx,10
+mov byte ptr [rdi],'0'
+inc rdi
+mov ebx,10 ;ebx = divisor = 10
 jmp EmitDot
 
 ProcessDigits:
-lea esi,[intBuf + 15] 
-mov ebx,10
+lea r15,intBuf
+add r15,15 ;r15 points to end of intBuf
+mov ebx,10 ;ebx = divisor = 10
 xor ecx,ecx ;ECX will be digit count
 
 LoopInt:
 xor edx,edx
-div ebx
+div ebx ;ebx = divisor = 10
 add dl,'0' 
-mov byte ptr [esi],dl
-dec esi
+mov byte ptr [r15],dl
+dec r15
 inc ecx
 test eax,eax
 jnz LoopInt
 
 ;Copy digits to output
 CopyLoop:
-inc esi ;Move back to the first digit
-mov al,byte ptr [esi]
-mov byte ptr [edi],al
-inc edi
+inc r15 ;Move back to the first digit
+mov al,byte ptr [r15]
+mov byte ptr [rdi],al
+inc rdi
 loop CopyLoop
 
 EmitDot:
-mov byte ptr [edi],'.'
-inc edi
+mov byte ptr [rdi],'.'
+inc rdi
 
 ;Output exactly 4 fractional digits with zero-padding
-mov eax,fracPart 
+mov eax,r12d ;fracPart 
 mov ecx,4 
-lea esi,[fracBuf + 4] ;ESI points to end of fracBuf
+lea r15,fracBuf
+add r15,4 ;r15 points to end of fracBuf
 
 LoopFrac:
 xor edx,edx ;Clear EDX for DIV
-div ebx ;EBX is still 10
+div ebx ;ebx = divisor = 10
 add dl,'0'
-dec esi
-mov byte ptr [esi],dl
+dec r15
+mov byte ptr [r15],dl
 loop LoopFrac
 
 ;Copy fraction to output
 mov ecx,4
 
 CopyFrac:
-mov al,byte ptr[esi]
-mov byte ptr[edi],al
-inc esi
-inc edi
+mov al,byte ptr[r15]
+mov byte ptr[rdi],al
+inc r15
+inc rdi
 loop CopyFrac
 
-mov byte ptr [edi],0
+mov byte ptr [rdi],0
 jmp FloatToANSI_End
 
 Exp0:
 ;E = 0,M = 0: Zero
 ;E = 0,M != 0: Subnormal,treated as 0
-mov edi,pszOutput ;Reload the address to wipe out the "-" sign if it's set
-mov eax,dword ptr[szZero+0] ;"0.0000",0,0
-mov dword ptr[edi],eax ;"0.00"
-mov eax,dword ptr[szZero+4]
-mov dword ptr[edi+4],eax ;"00",0,0
+mov rdi,pszOutput ;Reload the address to wipe out the "-" sign if it's set
+mov rax,qword ptr[szZero] ;"0.0000",0,0
+mov qword ptr[rdi],rax
 jmp FloatToANSI_End
 
 Exp255:
 ;E = 255,M = 0: Infinity
 ;E = 255,M != 0: Not a Number
-test ebx,ebx ;mantissa = 0?
+test r14,r14 ;mantissa = 0?
 jz Infinity
 
 ;NaN:
-mov edi,pszOutput ;Reload the address to wipe out the "-" sign if it's set
+mov rdi,pszOutput ;Reload the address to wipe out the "-" sign if it's set
 mov eax,dword ptr[szNaN] ;"NaN",0
-mov dword ptr[edi],eax
+mov dword ptr[rdi],eax
 jmp FloatToANSI_End
 
 Infinity:
 mov eax,dword ptr[szInfinity] ;"Inf",0
-mov dword ptr[edi],eax
+mov dword ptr[rdi],eax
 jmp FloatToANSI_End
 
 Overflow:
-mov edi,pszOutput ;Reload the address to wipe out the "-" sign if it's set
-mov eax,dword ptr[szOverflow+0] ;"Too "
-mov dword ptr[edi],eax
-mov eax,dword ptr[szOverflow+4] ;"far",0
-mov dword ptr[edi+4],eax
+mov rdi,pszOutput ;Reload the address to wipe out the "-" sign if it's set
+mov rax,qword ptr[szOverflow] ;"Too far",0
+mov qword ptr[rdi],rax
 jmp FloatToANSI_End
 
 FloatToANSI_End:
-ret
+EPILOG
 FloatToANSI endp
 
 

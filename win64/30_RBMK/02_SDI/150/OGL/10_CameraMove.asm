@@ -1,47 +1,53 @@
-;Magnitude for the Object Move mode
+;Magnitude for the Camera Walk mode
 ;Input:
 ;xmm0 = direction:REAL4 (either +1.0 or -1.0)
 
-ObjectMoveMagnitude proc
+CameraWalkMagnitude proc
 PROLOG 100h
 
 ;xmm0 = direction:REAL4
-mulss xmm0,ObjMoveSpeed
+mulss xmm0,CamWalkSpeed
 
 cmp byte ptr[key+10h],0 ;Shift
 jne SetBoost
 EPILOG
 
 SetBoost:
-mulss xmm0,ObjMoveBoost
+mulss xmm0,CamWalkBoost
 EPILOG
-ObjectMoveMagnitude endp
+CameraWalkMagnitude endp
 
-;Move the Object along one of its own axes
+;Camera is Moved by three Methods:
+;CameraWalk - by Keyboard
+;CameraDrag - by Mouse
+;CameraDolly - by Mouse
+
+;Move the Camera along one of its own axes
 ;with specified speed, sign of speed is direction
-;affecting mtxObjectVolatile
+;affecting mtxCameraVolatile
 ;Input:
 ;xmm0 = magnitude:REAL4 (sign is direction)
 ;rcx = axis:DWORD
-;0 = Model +x = OpenGL +x
-;1 = Model +y = OpenGL -z
-;2 = Model +z = OpenGL +y
+;0 = Camera +x = OpenGL +x
+;1 = Camera +y = OpenGL -z
+;2 = Camera +z = OpenGL +y
 
-ObjectMove proc
+CameraMove proc
 PROLOG 100h
 
 ;rcx = axis
 ;xmm0 = magnitude
 
 ;1. Load the Speed (signed)
+;xmm0 = magnitude
 movss xmm1,xmm0
 movss xmm2,xmm0
 
 ;2. Compute the Chosen Axis offset
 shl rcx,2 ;axis_index * 4 bytes
 
-;3. Point to the Object Matrix
-lea rdx,mtxObjectVolatile
+;3. Point to the Camera Matrix
+lea rdx,mtxCameraVolatile
 
 ;4. Compute the Chosen Axis address
 add rcx,rdx
@@ -77,13 +83,9 @@ shufps xmm2,xmm2,0 ;dz_local
 ;dy_world = dx_local*m01 + dy_local*m05 + dz_local*m09
 ;dz_world = dx_local*m02 + dy_local*m06 + dz_local*m10
 
-movaps xmm3,oword ptr[rdx+0*4] ;old[00..03]
-movaps xmm4,oword ptr[rdx+4*4] ;old[04..07]
-movaps xmm5,oword ptr[rdx+8*4] ;old[08..11]
-
-mulps xmm0,xmm3
-mulps xmm1,xmm4
-mulps xmm2,xmm5
+mulps xmm0,oword ptr[rdx+0*4] ;old[00..03]
+mulps xmm1,oword ptr[rdx+4*4] ;old[04..07]
+mulps xmm2,oword ptr[rdx+8*4] ;old[08..11]
 
 addps xmm0,xmm1
 addps xmm0,xmm2
@@ -104,6 +106,6 @@ mov isInitialPosition,0
 mov isRefreshed,0
 
 EPILOG
-ObjectMove endp
+CameraMove endp
 
 

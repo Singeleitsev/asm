@@ -1,13 +1,13 @@
 DrawScene proc
 PROLOG 100h
 
-;1.1. Activate the Projection Matrix
-mov rcx,1701h ;GL_PROJECTION
-call glMatrixMode
+;1.1. Activate the Projection Matrix - Temporarily not used
+;mov rcx,1701h ;GL_PROJECTION
+;call glMatrixMode
 
-;1.2. Load the current Projection matrix
-lea rcx,mtxProjectionVolatile
-call glLoadMatrixf
+;1.2. Load the current Projection matrix - Temporarily not used
+;lea rcx,mtxProjectionVolatile
+;call glLoadMatrixf
 
 ;2.1. Activate the ModelView Matrix
 mov rcx,1700h ;GL_MODELVIEW
