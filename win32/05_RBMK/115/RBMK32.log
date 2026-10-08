@@ -1,0 +1,22 @@
+Application Started
+Entered WinMain
+GetModuleHandleA: OK
+RegisterClassExA: OK
+Creating the Menu: OK
+CreateAcceleratorTableA: OK
+CreateWindowExA: OK
+Creating the Status Bar: OK
+GetDC: OK
+ChoosePixelFormat: OK
+SetPixelFormat: OK
+wglCreateContext: OK
+wglMakeCurrent: OK
+NVIDIA Corporation
+NVIDIA GeForce GTX 1650/PCIe/SSE2
+4.6.0 NVIDIA 591.86
+Object Data Loaded Successfully
+Last Row Read: 48
+Last Column Read: 48
+Vertices Written: 22656
+Indices Written: 37760
+ExitProcess
