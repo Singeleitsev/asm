@@ -4,6 +4,8 @@ RBMK64 and RBMK32 are two Windows OpenGL programs, both written in **pure assemb
 
 They are **not a port**. They are two independent implementations of the same design, written in two different assembly dialects, with different ABIs, different toolchains, and different GL pipelines underneath.
 
+- **RBMK32 source:** [win32/05_RBMK](https://github.com/Singeleitsev/asm/tree/master/win32/05_RBMK/)
+- **RBMK64 source:** [win64/30_RBMK/02_SDI](https://github.com/Singeleitsev/asm/tree/master/win64/30_RBMK/02_SDI)
 ---
 
 ## What's the same
