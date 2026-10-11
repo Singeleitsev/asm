@@ -1,4 +1,4 @@
-# RBMK64 & RBMK32 — OpenGL Engines in Pure MASM
+# RBMK64 & RBMK32 â€” OpenGL Engines in Pure MASM
 
 RBMK64 and RBMK32 are two Windows OpenGL programs, both written in **pure assembly** using the **Microsoft MASM toolchain**.
 
@@ -29,21 +29,21 @@ They are **not a port**. They are two independent implementations of the same de
 ### Other
 - Logging system
 - Number formatting logic
-- Matrix math (in principle)
+- Matrix math (same design, different implementations)
 
 ---
 
 ## What's different
 
 ### RBMK32
-- **32-bit GPRs** — only 6 registers available
+- **32-bit GPRs** â€” only 6 registers available
 - **SIMD:** SSE1
 - **Graphics API:** OpenGL 1.1
 - **Requires:** Pentium III or later
 - **Era:** circa year 2000
 
 ### RBMK64
-- **64-bit GPRs** — 14 registers available
+- **64-bit GPRs** â€” 14 registers available
 - **SIMD:** SSE2
 - **Graphics API:** OpenGL 3.3 with VBO/VAO and shaders
 - **Requires:** Pentium 4 with EM64T and GeForce 8 Series (for OpenGL 3.3)
