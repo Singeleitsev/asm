@@ -1,0 +1,80 @@
+Application Started
+Entered WinMain
+GetModuleHandleA: OK
+RegisterClassExA: OK
+Creating the Menu: OK
+CreateAcceleratorTableA: OK
+CreateWindowExA: OK
+Creating the Status Bar: OK
+Object Data Loaded Successfully
+Last Row Read: 48
+Last Column Read: 48
+Vertices Written: 22656
+Indices Written: 56640
+GetDC: OK
+ChoosePixelFormat: OK
+SetPixelFormat: OK
+wglCreateContext: OK
+wglMakeCurrent: OK
+Loading Vertex Shader Source
+CreateFileA: OK
+File Size: 584
+HeapAlloc: OK
+Reading the File
+Bytes Read: 584
+Shader Source Loaded Successfully
+glCreateShader: OK
+glShaderSource: OK
+glCompileShader: OK
+glGetShaderiv: OK
+Shader Compiled Successfully
+Loading Fragment Shader Source
+CreateFileA: OK
+File Size: 822
+HeapAlloc: OK
+Reading the File
+Bytes Read: 822
+Shader Source Loaded Successfully
+glCreateShader: OK
+glShaderSource: OK
+glCompileShader: OK
+glGetShaderiv: OK
+Shader Compiled Successfully
+glCreateProgram: OK
+glAttachShader: OK
+glAttachShader: OK
+glBindAttribLocation: OK
+glBindAttribLocation: OK
+glBindAttribLocation: OK
+glLinkProgram: OK
+glGetProgramiv: OK
+glDeleteShader: OK
+glDeleteShader: OK
+glGetUniformLocation: OK
+glGetUniformLocation: OK
+glGetUniformLocation: OK
+glGetUniformLocation: OK
+Shaders Linked Successfully
+glGenBuffers: OK
+glBindBuffer: OK
+glBufferData: OK
+glGenBuffers: OK
+glBindBuffer: OK
+glBufferData: OK
+glBindBuffer: OK
+VBO Set Successfully
+glGenVertexArrays: OK
+glBindVertexArray: OK
+glEnableVertexAttribArray: OK
+glEnableVertexAttribArray: OK
+glEnableVertexAttribArray: OK
+glBindBuffer: OK
+glVertexAttribPointer: OK
+glVertexAttribPointer: OK
+glVertexAttribPointer: OK
+glBindVertexArray: OK
+VAO Set Successfully
+Intel
+Intel(R) HD Graphics 4000
+4.0.0 - Build 10.18.10.4252
+ExitProcess
