@@ -3,7 +3,7 @@ lea rcx,szLogCreatingStatusBar
 call WriteLog
 
 ;1. Initialize the Common Controls
-mov rcx,OFFSET_ICCE
+lea rcx,icce
 call InitCommonControlsEx
 
 ;2. Create the Window
@@ -23,7 +23,7 @@ mov qword ptr[rsp+50h],rax
 mov qword ptr[rsp+58h],0 ;lpParam = 0 ;Don't Pass Anything To WM_CREATE
 call CreateWindowExA
 test rax,rax
-jz WinMain_Error
+jz CreateMainWnd_Error
 mov ghWndStatusBar,rax
 
 ;3. Set Status Bar Parts
@@ -33,7 +33,7 @@ mov r8,STATUS_BAR_PARTS ;wParam = 6 parts
 lea r9,xStatusParts ;lParam = address of the Array of Coordinates
 call SendMessageA
 test rax,rax
-jz WinMain_Error
+jz CreateMainWnd_Error
 
 ;Success
 lea rcx,szOK

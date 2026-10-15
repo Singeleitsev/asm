@@ -5,7 +5,7 @@ je WndProc_Return0
 
 ;Fill the RECT structure
 ;mov rcx,hWnd ;It's still there
-mov rdx,OFFSET_RECT_CLIENT
+lea rdx,rectClient
 call GetClientRect
 test eax,eax
 jz WndProc_Error

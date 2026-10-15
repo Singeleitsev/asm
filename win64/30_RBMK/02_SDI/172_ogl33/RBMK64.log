@@ -1,6 +1,19 @@
-Application Started
-Entered WinMain
+Log Started
 GetModuleHandleA: OK
+Started Creating the Dummy Window
+RegisterClassExA: OK
+CreateWindowExA: OK
+GetDC: OK
+ChoosePixelFormat: OK
+SetPixelFormat: OK
+wglCreateContext: OK
+wglMakeCurrent: OK
+GL_VENDOR: NVIDIA Corporation
+GL_RENDERER: NVIDIA GeForce GTX 1650/PCIe/SSE2
+GL_VERSION: 4.6.0 NVIDIA 591.86
+GL_CONTEXT_PROFILE_MASK: 0
+Dummy Window Created and Destroyed
+Started Creating the Main Window
 RegisterClassExA: OK
 Creating the Menu: OK
 CreateAcceleratorTableA: OK
@@ -14,8 +27,12 @@ Indices Written: 56640
 GetDC: OK
 ChoosePixelFormat: OK
 SetPixelFormat: OK
-wglCreateContext: OK
+wglCreateContextAttribsARB: OK
 wglMakeCurrent: OK
+GL_VENDOR: NVIDIA Corporation
+GL_RENDERER: NVIDIA GeForce GTX 1650/PCIe/SSE2
+GL_VERSION: 3.3.0 NVIDIA 591.86
+GL_CONTEXT_PROFILE_MASK: 1
 Loading Vertex Shader Source
 CreateFileA: OK
 File Size: 584
@@ -74,7 +91,5 @@ glVertexAttribPointer: OK
 glVertexAttribPointer: OK
 glBindVertexArray: OK
 VAO Set Successfully
-NVIDIA Corporation
-NVIDIA GeForce GTX 1650/PCIe/SSE2
-4.6.0 NVIDIA 591.86
+Main Window Created Successfully
 ExitProcess

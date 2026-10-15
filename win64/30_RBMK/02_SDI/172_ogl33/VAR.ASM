@@ -1,8 +1,8 @@
 ;WinMain
 ghInst dq 0
+ghProcessHeap dq 0
 gnWndClass dq 0
 ghWnd dq 0
-ghProcessHeap dq 0
 
 ;Menu
 ghMenu dq 0
@@ -19,7 +19,20 @@ xStatusParts dd STATUS_BAR_PARTS-1 dup (0),-1
 ;Proportions Empirically Counted for Width = 1024
 xStatusProportions dd 170,340,510,680,850 ;(n-1) constants
 
-;WinGDI
+;Timer
+align 10h
+qpcFreq dq 0 ;Ticks per Second
+qpcPrev dq 0 ;Last Sample
+qpcNow dq 0 ;Current Sample
+FPS dd 0 ;Special Counter for FPS
+
+;Flags
+isActive db 1
+isInitialPosition db 1
+isRefreshed db 0
+gnMouseMode dd MOUSE_MODE_FREE
+
+;GDI
 ghDC dq 0
 giPixelFormat dd 0
 ghRC dq 0
@@ -28,22 +41,6 @@ gRectClientHeight dd 0 ;Integer
 gRectClientAspect real8 0.0
 xScrCenter dd 0 ;Integer
 yScrCenter dd 0 ;Integer
-
-;Flags
-isActive db 1
-isInitialPosition db 1
-isRefreshed db 0
-gnMouseMode dd MOUSE_MODE_FREE
-
-;Counters
-gnFrame dd 0
-
-;Timer
-align 10h
-qpcFreq dq 0 ;Ticks per Second
-qpcPrev dq 0 ;Last Sample
-qpcNow dq 0 ;Current Sample
-FPS dd 0 ;Special Counter for FPS
 
 ;Application Logger
 ghLogFile dq 0
@@ -109,7 +106,9 @@ ObjAngleVer real4 0.0
 ObjSinVer real4 0.0
 ObjCosVer real4 0.0
 
-;OpenGL Scene Defaults
+;OpenGL 3.2+
+profileMask dd 0 ;Core profile
+numFormats dd 0
 
 ;------------------------------------------------------------
 ;Camera convention for this project:
@@ -127,7 +126,7 @@ ObjCosVer real4 0.0
 
 align 10h
 mtxProjectionDefault mat4 < \
- 1.8106602,	\ ;m00 = f / aspect
+ 1.6423,	\ ;m00 = f / aspect
  0.0,		\ ;m01
  0.0,		\ ;m02
  0.0,		\ ;m03
@@ -247,6 +246,10 @@ Blue	RGBA <0.25,0.40,0.85,1.0> ;Code 5
 
 ;OpenGL Functions from the vendor's driver DLL
 
+;ARB Functions
+gpWglCreateContextAttribsARB dq 0
+gpWglChoosePixelFormatARB dq 0
+
 ;Matrices
 gpGlUniformMatrix4fv dq 0
 
@@ -312,7 +315,5 @@ gpGlGetShaderInfoLog dq 0
 gpGlGetProgramInfoLog dq 0
 shaderLogLength dd 0
 shaderLogBuffer db 1024 dup (0)
-
-
 
 

@@ -2,11 +2,11 @@
 lea rcx,szCreateAcceleratorTableA
 call WriteLog
 
-mov rcx,OFFSET_ACCEL
+lea rcx,accel
 mov rdx,2 ;The number of ACCEL structures in the array = 2 (see struct.asm)
 call CreateAcceleratorTableA
 test rax,rax
-je WinMain_Error
+je CreateMainWnd_Error
 mov ghAccTable,rax
 
 ;Success

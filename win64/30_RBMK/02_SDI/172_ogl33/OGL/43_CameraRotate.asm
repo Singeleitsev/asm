@@ -134,7 +134,11 @@ mulps xmm4,xmm0 ;old[04..07]*sin
 subps xmm5,xmm4
 movaps oword ptr[rcx+8*4],xmm5 ;new[08..11]
 
-;6. Restore the Camera's World Position
+;6. Renormalize the vector
+;TODO: orthonormalize the 3x3 rotation block here to prevent
+;long-term drift. See notes on Gram-Schmidt + cross product.
+
+;7. Restore the Camera's World Position
 RestoreCamPos:
 lea rcx,mtxCameraVolatile 
 lea rdx,vecCamPos

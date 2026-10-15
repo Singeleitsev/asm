@@ -3,178 +3,196 @@ PROLOG 100h
 
 ;Load the Entry Points from the vendor's driver DLL
 
-;Matrices
+;ARB Functions
 
-lea rcx,szGlUniformMatrix4fv
+lea rcx,szWglCreateContextAttribsARB
 call wglGetProcAddress
-mov gpGlUniformMatrix4fv,rax
 test rax,rax
 jz GetNames_Error
+mov gpWglCreateContextAttribsARB,rax
+
+lea rcx,szWglChoosePixelFormatARB
+call wglGetProcAddress
+test rax,rax
+jz GetNames_Error
+mov gpWglChoosePixelFormatARB,rax
 
 ;VBO - OpenGL 1.5
 
 lea rcx,szGlGenBuffers
 call wglGetProcAddress
-mov gpGlGenBuffers,rax
 test rax,rax
 jz GetNames_Error
+mov gpGlGenBuffers,rax
 
 lea rcx,szGlBindBuffer
 call wglGetProcAddress
-mov gpGlBindBuffer,rax
 test rax,rax
 jz GetNames_Error
+mov gpGlBindBuffer,rax
 
 lea rcx,szGlBufferData
 call wglGetProcAddress
-mov gpGlBufferData,rax
 test rax,rax
 jz GetNames_Error
+mov gpGlBufferData,rax
 
 lea rcx,szGlDeleteBuffers
 call wglGetProcAddress
+test rax,rax
+jz GetNames_Error
 mov gpGlDeleteBuffers,rax
 
 ;VAO
 
 lea rcx,szGlEnableVertexAttribArray
 call wglGetProcAddress
-mov gpGlEnableVertexAttribArray,rax
 test rax,rax
 jz GetNames_Error
+mov gpGlEnableVertexAttribArray,rax
 
 lea rcx,szGlDisableVertexAttribArray
 call wglGetProcAddress
-mov gpGlDisableVertexAttribArray,rax
 test rax,rax
 jz GetNames_Error
+mov gpGlDisableVertexAttribArray,rax
 
 lea rcx,szGlVertexAttribPointer
 call wglGetProcAddress
-mov gpGlVertexAttribPointer,rax
 test rax,rax
 jz GetNames_Error
+mov gpGlVertexAttribPointer,rax
 
 lea rcx,szGlGetAttribLocation
 call wglGetProcAddress
-mov gpGlGetAttribLocation,rax
 test rax,rax
 jz GetNames_Error
+mov gpGlGetAttribLocation,rax
 
 lea rcx,szGlBindAttribLocation
 call wglGetProcAddress
-mov gpGlBindAttribLocation,rax
 test rax,rax
 jz GetNames_Error
+mov gpGlBindAttribLocation,rax
 
 lea rcx,szGlGenVertexArrays
 call wglGetProcAddress
-mov gpGlGenVertexArrays,rax
 test rax,rax
 jz GetNames_Error
+mov gpGlGenVertexArrays,rax
 
 lea rcx,szGlBindVertexArray
 call wglGetProcAddress
-mov gpGlBindVertexArray,rax
 test rax,rax
 jz GetNames_Error
+mov gpGlBindVertexArray,rax
 
 lea rcx,szGlDeleteVertexArrays
 call wglGetProcAddress
-mov gpGlDeleteVertexArrays,rax
 test rax,rax
 jz GetNames_Error
+mov gpGlDeleteVertexArrays,rax
 
 ;Shaders - OpenGL 2.0
 
 lea rcx,szGlCreateShader
 call wglGetProcAddress
-mov gpGlCreateShader,rax
 test rax,rax
 jz GetNames_Error
+mov gpGlCreateShader,rax
 
 lea rcx,szGlShaderSource
 call wglGetProcAddress
-mov gpGlShaderSource,rax
 test rax,rax
 jz GetNames_Error
+mov gpGlShaderSource,rax
 
 lea rcx,szGlCompileShader
 call wglGetProcAddress
-mov gpGlCompileShader,rax
 test rax,rax
 jz GetNames_Error
+mov gpGlCompileShader,rax
 
 lea rcx,szGlGetShaderiv
 call wglGetProcAddress
-mov gpGlGetShaderiv,rax
 test rax,rax
 jz GetNames_Error
+mov gpGlGetShaderiv,rax
 
 lea rcx,szGlCreateProgram
 call wglGetProcAddress
-mov gpGlCreateProgram,rax
 test rax,rax
 jz GetNames_Error
+mov gpGlCreateProgram,rax
 
 lea rcx,szGlAttachShader
 call wglGetProcAddress
-mov gpGlAttachShader,rax
 test rax,rax
 jz GetNames_Error
+mov gpGlAttachShader,rax
 
 lea rcx,szGlLinkProgram
 call wglGetProcAddress
-mov gpGlLinkProgram,rax
 test rax,rax
 jz GetNames_Error
+mov gpGlLinkProgram,rax
 
 lea rcx,szGlGetProgramiv
 call wglGetProcAddress
-mov gpGlGetProgramiv,rax
 test rax,rax
 jz GetNames_Error
+mov gpGlGetProgramiv,rax
 
 lea rcx,szGlUseProgram
 call wglGetProcAddress
-mov gpGlUseProgram,rax
 test rax,rax
 jz GetNames_Error
+mov gpGlUseProgram,rax
 
 lea rcx,szGlDeleteShader
 call wglGetProcAddress
-mov gpGlDeleteShader,rax
 test rax,rax
 jz GetNames_Error
+mov gpGlDeleteShader,rax
 
 lea rcx,szGlDeleteProgram
 call wglGetProcAddress
+test rax,rax
+jz GetNames_Error
 mov gpGlDeleteProgram,rax
-test rax,rax
-jz GetNames_Error
 
-;Shader uniforms
-
-lea rcx,szGlGetUniformLocation
-call wglGetProcAddress
-mov gpGlGetUniformLocation,rax
-test rax,rax
-jz GetNames_Error
+;Uniforms
 
 lea rcx,szGlUniform3f
 call wglGetProcAddress
-mov gpGlUniform3f,rax
 test rax,rax
 jz GetNames_Error
+mov gpGlUniform3f,rax
+
+lea rcx,szGlGetUniformLocation
+call wglGetProcAddress
+test rax,rax
+jz GetNames_Error
+mov gpGlGetUniformLocation,rax
+
+lea rcx,szGlUniformMatrix4fv
+call wglGetProcAddress
+test rax,rax
+jz GetNames_Error
+mov gpGlUniformMatrix4fv,rax
 
 ;OpenGL Logger
 
 lea rcx,szGlGetShaderInfoLog
 call wglGetProcAddress
+test rax,rax
+jz GetNames_Error
 mov gpGlGetShaderInfoLog,rax
 
 lea rcx,szGlGetProgramInfoLog
 call wglGetProcAddress
+test rax,rax
+jz GetNames_Error
 mov gpGlGetProgramInfoLog,rax
 
 jmp GetNames_End

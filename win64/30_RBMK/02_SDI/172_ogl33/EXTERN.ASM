@@ -1,7 +1,6 @@
 ;Application procedures
 AboutProc PROTO
 BuildGeometry PROTO
-BuildLightingDisplayList PROTO
 CameraDrag PROTO lParam:QWORD
 CameraDolly PROTO wParam:QWORD
 CameraMove PROTO ;rcx = axis:DWORD ;xmm0 = magnitude:REAL4
@@ -11,15 +10,18 @@ CloseGL PROTO hWnd:QWORD
 CloseWndProc PROTO hWnd:QWORD
 CreateShaders PROTO
 CompileShader PROTO ShaderIndex:QWORD
+CreateDummyWnd PROTO
+CreateMainWnd PROTO
 DrawScene PROTO
 FloatToANSI PROTO binFloatValue:QWORD,pszOutput:QWORD
 GetDefaults PROTO
 GetFileSize PROTO hFile:QWORD, lpFileSizeHigh:QWORD
 GetGlobalOrigin PROTO ;rcx = pMtxLocal:QWORD ;rdx = pVecGlobal:QWORD
 HeapFree PROTO hHeap:QWORD, dwFlags:QWORD, lpMem:QWORD
-InitGL PROTO
+InitDummyGL PROTO
+InitCoreGL PROTO
 InitLogger PROTO
-Mat4byMat4 PROTO pMtxSrc0:QWORD,pMtxSrc1:QWORD,pMtxDst:QWORD
+MulMat4Mat4 PROTO pMtxSrc0:QWORD,pMtxSrc1:QWORD,pMtxDst:QWORD
 ObjectMove PROTO ;rcx = axis:DWORD ;xmm0 = magnitude:REAL4
 ObjectMoveMagnitude PROTO ;xmm0 = direction:REAL4
 ObjectRotate PROTO lParam:QWORD
@@ -79,6 +81,7 @@ SetWindowTextA PROTO hWnd:QWORD, lpString:QWORD
 ShowWindow PROTO hWnd:QWORD, nCmdShow:QWORD
 TranslateAcceleratorA PROTO hWnd:QWORD, hAccTable:QWORD, lpMsg:QWORD
 TranslateMessage PROTO lpMsg:QWORD
+UnregisterClassA PROTO lpClassName:QWORD, hInstance:QWORD
 UpdateWindow PROTO hWnd:QWORD
 
 ;Comctl32
@@ -92,6 +95,7 @@ SetPixelFormat PROTO hdc:QWORD, iFormat:QWORD, ppfd:QWORD
 SwapBuffers PROTO hdc:QWORD
 
 ;Opengl32 context
+glGetIntegerv PROTO pname:QWORD, params:QWORD
 glGetString PROTO nName:QWORD
 wglCreateContext PROTO hdc:QWORD
 wglDeleteContext PROTO hGLRC:QWORD

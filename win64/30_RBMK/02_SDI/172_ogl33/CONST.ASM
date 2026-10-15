@@ -21,9 +21,6 @@ MOUSE_MODE_CAMERA_ROTATE equ 1
 MOUSE_MODE_CAMERA_DRAG equ 2
 MOUSE_MODE_OBJECT_ROTATE equ 3
 
-;Display Lists IDs
-DISPLAY_LIST_LIGHTING EQU 1
-
 ;Object
 
 ;Stride = 36 bytes = (3 coordinates + 3 normals + 3 colors) * 4 bytes

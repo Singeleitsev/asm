@@ -1,4 +1,4 @@
-Mat4byMat4 proc pMtxSrc0:QWORD,pMtxSrc1:QWORD,pMtxDst:QWORD
+MulMat4Mat4 proc pMtxSrc0:QWORD,pMtxSrc1:QWORD,pMtxDst:QWORD
 
 PROLOG 100h
 
@@ -121,5 +121,5 @@ addps xmm4,xmm7
 movaps oword ptr[r8+12*4],xmm4 ;Done
 
 EPILOG
-Mat4byMat4 endp
+MulMat4Mat4 endp
 

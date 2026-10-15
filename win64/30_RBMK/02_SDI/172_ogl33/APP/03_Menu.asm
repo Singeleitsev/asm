@@ -5,13 +5,13 @@ call WriteLog
 ;Main Menu
 call CreateMenu
 test rax,rax
-je WinMain_Error
+je CreateMainWnd_Error
 mov ghMenu,rax
 
 ;File
 call CreatePopupMenu
 test rax,rax
-je WinMain_Error
+je CreateMainWnd_Error
 mov ghMenuFile,rax
 
 mov rcx,ghMenu
@@ -35,7 +35,7 @@ call AppendMenuA
 ;Help
 call CreatePopupMenu
 test rax,rax
-je WinMain_Error
+je CreateMainWnd_Error
 mov ghMenuHelp,rax
 
 mov rcx,ghMenu

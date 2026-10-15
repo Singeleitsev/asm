@@ -1,8 +1,9 @@
 ;WinMain
-szMainWndClass db "MainWndClass",0
-szMainWndTitle db "MASM64 OpenGL Environment" ;No Zero Terminator
-szMainWndTitleFrame db " - [Frame 00000000]" ;No Zero Terminator
-szMainWndTitleFPS db " - [000 FPS]",0 ;Concatenation Ends
+szWndClassDummy db "WndClassDummy",0
+szWndClassMain db "WndClassMain",0
+szWndTitleDummy db "Dummy",0
+szWndTitleMain db "MASM64 OpenGL Environment" ;No Zero Terminator
+szWndTitleMainFPS db " - [000 FPS]",0 ;Concatenation Ends
 
 ;Menu
 szMenuFile db "&File",0
@@ -33,7 +34,8 @@ szOverflow db "Too far",0 ;Two dwords
 
 ;About
 szAboutMsgTitle db "About MASM64 OpenGL Demo",0
-szAboutMsgText db "Controls:",0Dh,0Ah ;No Zero Terminator
+szAboutMsgText label byte ;Concatenation
+db "Controls:",0Dh,0Ah ;No Zero Terminator
 db 0Dh,0Ah
 db "Left Mouse Button - Rotate the Camera",0Dh,0Ah
 db "Mouse Wheel Down - Drag the Camera",0Dh,0Ah
@@ -59,15 +61,23 @@ szAttributePos db "aPos",0
 szAttributeNormal db "aNormal",0
 szAttributeColor db "aColor",0
 
-;Matrices
+;Uniforms
 szUniformProjection db "uProjection",0
 szUniformModel db "uModel",0
 szUniformView db "uView",0
+szUniformLightDir db "lightDir",0
 
 ;OpenGL Functions from the vendor's driver DLL
 
 ;ARB Functions
 szWglCreateContextAttribsARB db "wglCreateContextAttribsARB",0
+szWglChoosePixelFormatARB db "wglChoosePixelFormatARB",0
+
+;VBO Functions
+szGlGenBuffers db "glGenBuffers",0
+szGlBindBuffer db "glBindBuffer",0
+szGlBufferData db "glBufferData",0
+szGlDeleteBuffers db "glDeleteBuffers",0
 
 ;VAO Functions
 szGlEnableVertexAttribArray db "glEnableVertexAttribArray",0
@@ -77,15 +87,6 @@ szGlBindAttribLocation db "glBindAttribLocation",0
 szGlGenVertexArrays db "glGenVertexArrays",0
 szGlBindVertexArray db "glBindVertexArray",0
 szGlDeleteVertexArrays db "glDeleteVertexArrays",0
-
-;Matrix Functions
-szGlUniformMatrix4fv db "glUniformMatrix4fv",0
-
-;Buffer Functions
-szGlGenBuffers db "glGenBuffers",0
-szGlBindBuffer db "glBindBuffer",0
-szGlBufferData db "glBufferData",0
-szGlDeleteBuffers db "glDeleteBuffers",0
 
 ;Shader Functions
 szGlCreateShader db "glCreateShader",0
@@ -102,9 +103,9 @@ szGlDeleteProgram db "glDeleteProgram",0
 szGlGetAttribLocation db "glGetAttribLocation",0
 
 ;Uniform Functions
-szGlGetUniformLocation db "glGetUniformLocation",0
 szGlUniform3f db "glUniform3f",0
-szUniformLightDir db "lightDir",0
+szGlGetUniformLocation db "glGetUniformLocation",0
+szGlUniformMatrix4fv db "glUniformMatrix4fv",0
 
 ;OpenGL Logger Functions
 szGlGetShaderInfoLog db "glGetShaderInfoLog",0
@@ -122,17 +123,20 @@ szErrWriteLog db "WriteLog Error",0
 szCRLF db 0Dh,0Ah,0
 
 ;WinMain - Log
-szLogInit db "Application Started",0Dh,0Ah,0
-szLogEnterWinMain db "Entered WinMain",0Dh,0Ah,0
+szLogInit db "Log Started",0Dh,0Ah,0
 szGetModuleHandleA db "GetModuleHandleA",0
+szExitProcess db "ExitProcess",0Dh,0Ah,0
+
+;Window Query
+szLogCreateWindowDummy db "Started Creating the Dummy Window",0Dh,0Ah,0
 szRegisterClassExA db "RegisterClassExA",0
+szCreateWindowExA db "CreateWindowExA",0
+szLogDestroyWindowDummy db "Dummy Window Created and Destroyed",0Dh,0Ah,0
+szLogCreatingMainWnd db "Started Creating the Main Window",0Dh,0Ah,0
 szLogCreatingMenu db "Creating the Menu",0
 szCreateAcceleratorTableA db "CreateAcceleratorTableA",0
-szLogCreatingMainWnd db "Started Creating the Main Window",0Dh,0Ah,0
-szCreateWindowExA db "CreateWindowExA",0
-szLogMainWndCreated db "The Main Window Created Successfully",0Dh,0Ah,0
 szLogCreatingStatusBar db "Creating the Status Bar",0
-szExitProcess db "ExitProcess",0Dh,0Ah,0
+szLogMainWndCreated db "Main Window Created Successfully",0Dh,0Ah,0
 
 ;Object - Log
 szLogDataLoaded db "Object Data Loaded Successfully",0Dh,0Ah,0
@@ -142,12 +146,25 @@ szLastColumn db "Last Column Read: ",0
 szVertices db "Vertices Written: ",0
 szIndices db "Indices Written: ",0
 
-;InitializeGL - Log
+;Initialize Dummy GL - Log
+szInitDummyGL db "Initializing the Dummy OpenGL Context",0
 szGetDC db "GetDC",0
 szChoosePixelFormat db "ChoosePixelFormat",0
 szSetPixelFormat db "SetPixelFormat",0
 szWglCreateContext db "wglCreateContext",0
 szWglMakeCurrent db "wglMakeCurrent",0
+szWglGetProcAddress db "wglGetProcAddress",0
+szGlVendor db "GL_VENDOR: ",0
+szGlRenderer db "GL_RENDERER: ",0
+szGlVersion db "GL_VERSION: ",0
+szGlContextProfileMask db "GL_CONTEXT_PROFILE_MASK: ",0
+szWglDeleteContext db "wglDeleteContext",0
+szReleaseDC db "ReleaseDC",0
+szDestroyWindow db "DestroyWindow",0
+szUnregisterClassA db "UnregisterClassA",0
+
+;Initialize Core GL - Log
+szInitCoreGL db "Initializing the Core OpenGL Context",0
 szGlViewport db "glViewport",0
 szErrSetShaders db "Failed to Set the Shaders",0Dh,0Ah,0
 szErrSetVBO db "Failed to Set the VBO Environment",0Dh,0Ah,0

@@ -243,7 +243,7 @@ rep movsd
 lea rcx,mtxRodrigues
 lea rdx,mtxBuffer
 lea r8,mtxObjectVolatile
-call Mat4byMat4
+call MulMat4Mat4
 
 ;3. Restore the Object's Local Position
 RestoreObjPos:
