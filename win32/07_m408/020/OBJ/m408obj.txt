@@ -1,0 +1,113 @@
+mtllib m408.mtl
+
+#
+# object m408_Window_R
+#
+
+v  -5.7006 -93.7732 49.8554
+..
+v  24.7731 -26.1652 37.1873
+# 60 vertices
+
+vn -0.0711 -0.7729 0.6306
+..
+vn 0.8747 0.4012 0.2718
+# 66 vertex normals
+
+vt 0.0000 0.0000 0.0000
+..
+vt 0.7938 0.1685 0.0000
+# 27 texture coords
+
+o m408_Window_R
+g m408_Window_R
+usemtl m408_Glass
+s 1
+f -60/-27/-66 -59/-26/-65 -58/-27/-64 
+.. 
+f -4/-4/-2 -2/-2/-2 -1/-1/-2 
+# 54 faces
+
+#
+# object m408_Window_R_Chrome
+#
+
+v  10.0535 -105.2262 35.7961
+..
+v  -9.9243 -104.7501 36.2120
+# 151 vertices
+
+vn 0.0678 -0.7340 0.6758
+..
+vn -0.0316 -0.5820 0.8126
+# 160 vertex normals
+
+vt 0.0000 0.0000 0.0000
+# 1 texture coords
+
+o m408_Window_R_Chrome
+g m408_Window_R_Chrome
+usemtl m408_Chrome
+s 1
+f -151/-1/-160 -150/-1/-159 -149/-1/-158 
+..
+f -73/-1/-1 -5/-1/-1 -1/-1/-1 
+# 194 faces
+
+#
+# object m408_Bumper_F
+#
+
+v  -28.6647 15.1743 13.8421
+..
+v  26.0062 23.7087 16.9368
+# 122 vertices
+
+vn -0.8795 -0.1063 -0.4640
+..
+vn 0.0371 0.3942 0.9183
+# 122 vertex normals
+
+vt 0.9245 0.5807 0.0000
+..
+vt 0.2751 0.3470 0.0000
+# 64 texture coords
+
+o m408_Bumper_F
+g m408_Bumper_F
+usemtl m408_Chrome
+s 1
+f -122/-64/-122 -121/-63/-121 -120/-62/-120 
+..
+f -10/-12/-10 -69/-11/-69 -59/-1/-59 
+# 196 faces
+
+#
+# object m408_Fender_FL_BlueSpace
+#
+
+v  -25.4046 22.3556 19.8808
+..
+v  -26.8923 24.0306 28.7487
+# 158 vertices
+
+vn -0.0417 -0.0216 -0.9989
+..
+vn -0.9353 0.3533 0.0227
+# 205 vertex normals
+
+vt 0.0000 0.0000 0.0000
+..
+vt 0.0444 1.0719 0.0000
+# 20 texture coords
+
+o m408_Fender_FL_BlueSpace
+g m408_Fender_FL_BlueSpace
+usemtl m408_BlueSpace
+s 1
+f -158/-20/-205 -157/-20/-205 -156/-20/-205 
+..
+f -33/-20/-41 -34/-20/-42 -1/-20/-1 
+# 231 faces
+
+
