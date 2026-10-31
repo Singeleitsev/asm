@@ -494,7 +494,7 @@ rasterizer_flags dd 0
 rasterizer_depthClampEnable dd 0
 rasterizer_rasterizerDiscardEnable dd 0
 rasterizer_polygonMode dd 0 ;VK_POLYGON_MODE_FILL
-rasterizer_cullMode dd 0 ;VK_CULL_MODE_NONE
+rasterizer_cullMode dd 2 ;VK_CULL_MODE_NONE = 0; VK_CULL_MODE_BACK_BIT = 2
 rasterizer_frontFace dd 0 ;VK_FRONT_FACE_COUNTER_CLOCKWISE ; can be VK_FRONT_FACE_CLOCKWISE
 rasterizer_depthBiasEnable dd 0
 rasterizer_depthBiasConstantFactor dd 0
