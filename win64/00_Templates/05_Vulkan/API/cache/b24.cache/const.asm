@@ -1,0 +1,9 @@
+;Main Window
+DEFAULT_SCREEN_WIDTH equ 1024
+
+;Menu IDs
+IDM_APP_EXIT equ 10Fh
+IDM_HELP_ABOUT equ 0F01h
+
+;StatusBar
+N_STATUSBAR_PARTS equ 0Ch ;12 Parts

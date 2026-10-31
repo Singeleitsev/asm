@@ -1,0 +1,81 @@
+Available Vulkan Instance Extensions:
+
+Instance Extension 0: 
+Name: VK_KHR_surface
+Spec Version: 25
+
+Instance Extension 1: 
+Name: VK_KHR_win32_surface
+Spec Version: 5
+
+Instance Extension 2: 
+Name: VK_KHR_external_memory_capabilities
+Spec Version: 1
+
+Instance Extension 3: 
+Name: VK_KHR_external_semaphore_capabilities
+Spec Version: 1
+
+Instance Extension 4: 
+Name: VK_KHR_external_fence_capabilities
+Spec Version: 1
+
+Instance Extension 5: 
+Name: VK_KHR_get_physical_device_properties2
+Spec Version: 2
+
+Instance Extension 6: 
+Name: VK_KHR_get_surface_capabilities2
+Spec Version: 1
+
+Instance Extension 7: 
+Name: VK_KHR_device_group_creation
+Spec Version: 1
+
+Instance Extension 8: 
+Name: VK_EXT_swapchain_colorspace
+Spec Version: 4
+
+Instance Extension 9: 
+Name: VK_KHR_display
+Spec Version: 23
+
+Instance Extension 10: 
+Name: VK_KHR_get_display_properties2
+Spec Version: 1
+
+Instance Extension 11: 
+Name: VK_KHR_surface_maintenance1
+Spec Version: 1
+
+Instance Extension 12: 
+Name: VK_KHR_surface_protected_capabilities
+Spec Version: 1
+
+Instance Extension 13: 
+Name: VK_EXT_debug_report
+Spec Version: 10
+
+Instance Extension 14: 
+Name: VK_EXT_debug_utils
+Spec Version: 2
+
+Instance Extension 15: 
+Name: VK_EXT_direct_mode_display
+Spec Version: 1
+
+Instance Extension 16: 
+Name: VK_EXT_surface_maintenance1
+Spec Version: 1
+
+Instance Extension 17: 
+Name: VK_NV_external_memory_capabilities
+Spec Version: 1
+
+Instance Extension 18: 
+Name: VK_KHR_portability_enumeration
+Spec Version: 1
+
+Instance Extension 19: 
+Name: VK_LUNARG_direct_driver_loading
+Spec Version: 1
