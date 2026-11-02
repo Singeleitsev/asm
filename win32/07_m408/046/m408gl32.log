@@ -1,0 +1,47 @@
+Application Started
+Entered WinMain
+GetModuleHandleA: OK
+RegisterClassExA: OK
+Creating the Menu: OK
+CreateAcceleratorTableA: OK
+CreateWindowExA: OK
+Creating the Status Bar: OK
+GetDC: OK
+ChoosePixelFormat: OK
+SetPixelFormat: OK
+wglCreateContext: OK
+wglMakeCurrent: OK
+NVIDIA Corporation
+NVIDIA GeForce GTX 1650/PCIe/SSE2
+4.6.0 NVIDIA 610.88
+Loading OBJ file
+OBJ file opened, size: 1461481
+Found OBJ tokens:
+mtllib: 1
+o: 88
+g: 88
+usemtl: 88
+s: 89
+v: 15074
+vn: 11679
+vt: 0
+f: 20521
+Loading MTL file
+MTL file opened, size: 1789
+Found MTL tokens:
+newmtl: 9
+Parsed Mtl entities:
+New Materials: 9
+MTL data loaded successfully
+Parsed OBJ entities:
+Parsed Material Libraries: 1
+Parsed Objects: 88
+Parsed Groups: 88
+Used Materials: 88
+Parsed Smoothing Groups: 89
+Parsed Vertices: 15074
+Parsed Normals: 11679
+Parsed Texture Vectors: 0
+Parsed Faces: 20521
+OBJ data loaded successfully
+ExitProcess
