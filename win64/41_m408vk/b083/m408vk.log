@@ -1,0 +1,162 @@
+Application Started
+Entering WinMain
+RegisterClass: OK
+CreateMenu: OK
+CreateAcceleratorTable: OK
+CreateWindow: OK
+CreateStatusBar: OK
+Loading OBJ file
+OBJ file opened, size: 1460057
+Found OBJ tokens:
+mtllib: 1
+o: 90
+g: 90
+usemtl: 92
+s: 93
+v: 15086
+vn: 11705
+vt: 0
+f: 20523
+Loading MTL file
+MTL file opened, size: 1715
+Found MTL tokens:
+newmtl: 9
+Parsed Mtl entities:
+New Materials: 9
+MTL loaded successfully
+Parsed OBJ entities:
+Parsed Material Libraries: 1
+Parsed Objects: 90
+Parsed Groups: 90
+Used Materials: 92
+Parsed Smoothing Groups: 94
+Parsed Vertices: 15086
+Parsed Normals: 11705
+Parsed Texture Vectors: 0
+Parsed Faces: 20523
+OBJ loaded successfully
+vkCreateInstance: OK
+vkCreateWin32SurfaceKHR: OK
+vkEnumeratePhysicalDevices - First Pass: OK
+vkEnumeratePhysicalDevices - Second Pass: OK
+GetPhysicalDeviceProperties: NVIDIA GeForce GTX 1650
+GetPhysicalDeviceProperties: Intel(R) UHD Graphics 630
+vkGetPhysicalDeviceMemoryProperties: OK
+vkGetPhysicalDeviceQueueFamilyProperties - First Pass: OK
+Memory Allocating: OK
+vkGetPhysicalDeviceQueueFamilyProperties - Second Pass: OK
+Memory Allocating: OK
+vkGetPhysicalDeviceSurfaceSupportKHR: OK
+Queue Family Selected Successfully
+vkGetPhysicalDeviceSurfaceCapabilitiesKHR: OK
+Extent Chosen Successfully
+vkGetPhysicalDeviceSurfaceFormatsKHR - First Pass: OK
+Memory Allocating: OK
+vkGetPhysicalDeviceSurfaceFormatsKHR - Second Pass: OK
+Format Chosen Successfully
+vkGetPhysicalDeviceSurfacePresentModesKHR - First Pass: OK
+Memory Allocating: OK
+vkGetPhysicalDeviceSurfacePresentModesKHR - Second Pass: OK
+Present Mode Chosen Successfully
+vkCreateDevice: OK
+vkGetDeviceQueue (Graphics Queue): OK
+vkGetDeviceQueue (Present Queue): OK
+vkCreateSwapchainKHR: OK
+vkGetSwapchainImagesKHR - First Pass: OK
+Memory Allocating: OK
+vkGetSwapchainImagesKHR - Second Pass: OK
+Memory Allocating: OK
+vkCreateImageView: OK
+vkCreateImageView: OK
+vkCreateImage: OK
+vkGetImageMemoryRequirements: OK
+Device Memory Type Chosen Successfully
+vkAllocateMemory: OK
+vkBindImageMemory: OK
+vkCreateImageView: OK
+vkCreateRenderPass: OK
+vkCreatePipelineLayout: OK
+Loading Vertex Shader: OK
+vkCreateShaderModule (Vertex): OK
+Loading Fragment Shader: OK
+vkCreateShaderModule (Fragment): OK
+vkCreateCommandPool: OK
+vkCreateBuffer: OK
+vkGetBufferMemoryRequirements: OK
+vkAllocateMemory: OK
+vkBindBufferMemory: OK
+vkMapMemory: OK
+vkUnmapMemory: OK
+vkCreateBuffer: OK
+vkGetBufferMemoryRequirements: OK
+vkAllocateMemory: OK
+vkBindBufferMemory: OK
+vkCreateBuffer: OK
+vkGetBufferMemoryRequirements: OK
+vkAllocateMemory: OK
+vkBindBufferMemory: OK
+vkMapMemory: OK
+vkCreateBuffer: OK
+vkGetBufferMemoryRequirements: OK
+vkAllocateMemory: OK
+vkBindBufferMemory: OK
+vkAllocateCommandBuffers: OK
+vkCreateFencevkQueueSubmitModel Buffers created successfully
+vkCreateGraphicsPipelines: OK
+vkCreateSemaphoreImageAvailable: OK
+vkCreateSemaphoreRenderFinished: OK
+vkCreateFence: OK
+Memory Allocating: OK
+vkAllocateCommandBuffers: OK
+Memory Allocating: OK
+vkCreateFramebuffer: OK
+vkCreateFramebuffer: OK
+Record Command Buffers
+vkBeginCommandBuffer: OK
+vkCmdBeginRenderPass: OK
+vkCmdSetViewport: OK
+vkCmdSetScissor: OK
+vkCmdBindPipeline: OK
+vkCmdBindVertexBuffers: OK
+vkCmdBindIndexBuffer: OK
+vkCmdEndRenderPass: OK
+vkEndCommandBuffer: OK
+vkBeginCommandBuffer: OK
+vkCmdBeginRenderPass: OK
+vkCmdSetViewport: OK
+vkCmdSetScissor: OK
+vkCmdBindPipeline: OK
+vkCmdBindVertexBuffers: OK
+vkCmdBindIndexBuffer: OK
+vkCmdEndRenderPass: OK
+vkEndCommandBuffer: OK
+UpdateWindow: OK
+Entering Message Loop
+DrawScene called
+vkAcquireNextImageKHR: OK
+vkResetFences: OK
+vkQueueSubmit: OK
+vkQueuePresentKHR: OK
+WM_CLOSE received
+vkDestroyFramebuffer: OK
+vkDestroyFramebuffer: OK
+vkDestroyFence: OK
+vkDestroySemaphoreImageAvailable: OK
+vkDestroyPipeline: OK
+vkDestroyPipelineLayout: OK
+Model Buffers created successfully
+vkDestroyCommandPool: OK
+vkDestroyShaderModule (Fragment): OK
+vkDestroyShaderModule (Vertex): OK
+vkDestroyRenderPass: OK
+vkDestroyImageView: OK
+vkFreeMemory: OK
+vkDestroyImage: OK
+vkDestroyImageView: OK
+vkDestroyImageView: OK
+vkDestroySwapchainKHR: OK
+vkDestroyDevice: OK
+vkDestroySurfaceKHR: OK
+vkDestroyInstance: OK
+WM_DESTROY received
+ExitProcess

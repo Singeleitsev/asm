@@ -1,0 +1,51 @@
+CloseGL proc hWnd:QWORD
+PROLOG 100h
+
+cmp gpGlDeleteVertexArrays,0
+je @f
+mov rcx,1
+lea rdx,VaoID
+call qword ptr[gpGlDeleteVertexArrays]
+
+@@:
+cmp gpShaderProgram,0
+je @f
+mov rcx,gpShaderProgram
+call qword ptr[gpGlDeleteProgram]
+mov gpShaderProgram,0
+
+@@:
+cmp gpGlDeleteBuffers,0
+je  @f
+
+mov rcx,1
+lea rdx,VboVerticesID
+call qword ptr[gpGlDeleteBuffers]
+
+mov rcx,1
+lea rdx,VboIndicesID
+call qword ptr[gpGlDeleteBuffers]
+
+@@:
+xor rcx,rcx
+xor rdx,rdx
+call wglMakeCurrent
+
+cmp ghRC,0
+je @f
+mov rcx,ghRC
+call wglDeleteContext
+mov ghRC,0
+
+@@:
+cmp ghDC,0
+je @f
+mov rcx,hWnd
+mov rdx,ghDC
+call ReleaseDC
+mov ghDC,0
+
+@@:
+CloseGL_End:
+EPILOG
+CloseGL endp
