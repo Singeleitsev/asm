@@ -1,0 +1,118 @@
+Log Started
+GetModuleHandleA: OK
+Started Creating the Dummy Window
+RegisterClassExA: OK
+CreateWindowExA: OK
+GetDC: OK
+ChoosePixelFormat: OK
+SetPixelFormat: OK
+wglCreateContext: OK
+wglMakeCurrent: OK
+GL_VENDOR: NVIDIA Corporation
+GL_RENDERER: NVIDIA GeForce GTX 1650/PCIe/SSE2
+GL_VERSION: 4.6.0 NVIDIA 610.88
+GL_CONTEXT_PROFILE_MASK: 0
+Dummy Window Created and Destroyed
+Started Creating the Main Window
+RegisterClassExA: OK
+Creating the Menu: OK
+CreateAcceleratorTableA: OK
+CreateWindowExA: OK
+Creating the Status Bar: OK
+Loading OBJ file
+OBJ file opened, size: 1460057
+Found OBJ tokens:
+mtllib: 1
+o: 90
+g: 90
+usemtl: 92
+s: 93
+v: 15086
+vn: 11705
+vt: 0
+f: 20523
+Loading MTL file
+MTL file opened, size: 1715
+Found MTL tokens:
+newmtl: 9
+Parsed Mtl entities:
+New Materials: 9
+MTL loaded successfully
+Parsed OBJ entities:
+Parsed Material Libraries: 1
+Parsed Objects: 90
+Parsed Groups: 90
+Used Materials: 92
+Parsed Smoothing Groups: 94
+Parsed Vertices: 15086
+Parsed Normals: 11705
+Parsed Texture Vectors: 0
+Parsed Faces: 20523
+OBJ loaded successfully
+GetDC: OK
+ChoosePixelFormat: OK
+SetPixelFormat: OK
+wglCreateContextAttribsARB: OK
+wglMakeCurrent: OK
+GL_VENDOR: NVIDIA Corporation
+GL_RENDERER: NVIDIA GeForce GTX 1650/PCIe/SSE2
+GL_VERSION: 3.3.0 NVIDIA 610.88
+GL_CONTEXT_PROFILE_MASK: 1
+Loading Vertex Shader Source
+CreateFileA: OK
+File Size: 623
+HeapAlloc: OK
+Reading the File
+Bytes Read: 623
+Shader Source Loaded Successfully
+glCreateShader: OK
+glShaderSource: OK
+glCompileShader: OK
+glGetShaderiv: OK
+Shader Compiled Successfully
+Loading Fragment Shader Source
+CreateFileA: OK
+File Size: 847
+HeapAlloc: OK
+Reading the File
+Bytes Read: 847
+Shader Source Loaded Successfully
+glCreateShader: OK
+glShaderSource: OK
+glCompileShader: OK
+glGetShaderiv: OK
+Shader Compiled Successfully
+glCreateProgram: OK
+glAttachShader: OK
+glAttachShader: OK
+glBindAttribLocation: OK
+glBindAttribLocation: OK
+glBindAttribLocation: OK
+glLinkProgram: OK
+glGetProgramiv: OK
+glDeleteShader: OK
+glDeleteShader: OK
+glGetUniformLocation: OK
+Shaders Linked Successfully
+glGenBuffers: OK
+glBindBuffer: OK
+glBufferData: OK
+glGenBuffers: OK
+glBindBuffer: OK
+glGenBuffers: OK
+glBindBuffer: OK
+glBindBuffer: OK
+VBO Set Successfully
+glGenVertexArrays: OK
+glBindVertexArray: OK
+glBindBuffer: OK
+glEnableVertexAttribArray: OK
+glEnableVertexAttribArray: OK
+glEnableVertexAttribArray: OK
+glVertexAttribPointer: OK
+glVertexAttribPointer: OK
+glVertexAttribPointer: OK
+glBindVertexArray: OK
+VAO Set Successfully
+Main Window Created Successfully
+ExitProcess
