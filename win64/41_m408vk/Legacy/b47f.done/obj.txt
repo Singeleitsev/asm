@@ -1,0 +1,33 @@
+OBJECT_NAME equ 0
+OBJECT_GROUPS_POINTER equ 40h
+OBJECT_GROUPS_COUNT equ 48h
+OBJECT_RECORD_SIZE equ 50h
+
+GROUP_NAME equ 0
+GROUP_MATERIALS_POINTER equ 40h
+GROUP_MATERIALS_COUNT equ 48h
+GROUP_RECORD_SIZE equ 50h
+
+MATERIAL_NAME equ 0
+MATERIAL_INDEX equ 40h
+MATERIAL_VERTICES_POINTER equ 44h
+MATERIAL_VERTICES_COUNT equ 4Ch
+MATERIAL_NORMALS_POINTER equ 50h
+MATERIAL_NORMALS_COUNT equ 58h
+MATERIAL_FACES_POINTER equ 5Ch
+MATERIAL_FACES_COUNT equ 64h
+MATERIAL_INDICES_POINTER equ 68h
+MATERIAL_INDICES_COUNT equ 70h
+MATERIAL_RECORD_SIZE equ 80h
+
+gpObjMetadata dq 0
+gnTotalObjects dd 0
+gnTotalVertices dd 0
+gnTotalNormals dd 0
+gnTotalFaces dd 0
+gnTotalIndices dd 0
+
+gnCurrentObjIdx dd -1
+gnCurrentGroupIdx dd -1
+gnCurrentMtlIdx dd -1 ; index of the current Material within its Group
+gnLastMtlIdx dd -1 ; last resolved material index to detect changes
