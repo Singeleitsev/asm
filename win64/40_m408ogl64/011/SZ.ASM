@@ -63,17 +63,25 @@ szFileNameShaderF db "glsl\fragment.glsl",0
 ;VAO
 szAttributePos db "aPos",0
 szAttributeNormal db "aNormal",0
-szAttributeColor db "aColor",0
+szAttributeDiffuse db "aDiffuse",0
+szAttributeSpecular db "aSpecular",0
+szAttributeAmbient db "aAmbient",0
+szAttributeEmissive db "aEmissive",0
+szAttributeProps0 db "aProps0",0
+szAttributeProps1 db "aProps1",0
 
 ;Uniforms
 szUniformProjection db "uProjection",0
 szUniformModel db "uModel",0
 szUniformView db "uView",0
-szUniformKs db "uKs",0
-szUniformKe db "uKe",0
-szUniformNs db "uNs",0
-szUniformAlpha db "uAlpha",0
-szUniformLightDir db "lightDir",0
+szUniformLightDir db "uLightDir",0
+szUniformCamera db "uCameraPos",0
+szUniformDiffuse db "uDiffuse",0
+szUniformSpecular db "uSpecular",0
+szUniformAmbient db "uAmbient",0
+szUniformEmissive db "uEmissive",0
+szUniformProps0 db "uProps0",0
+szUniformProps1 db "uProps1",0
 
 ;OpenGL Functions from the vendor's driver DLL
 
@@ -112,8 +120,9 @@ szGlGetAttribLocation db "glGetAttribLocation",0
 
 ;Uniform Functions
 szGlUniform3f db "glUniform3f",0
-szGlGetUniformLocation db "glGetUniformLocation",0
+szGlUniform3fv db "glUniform3fv",0
 szGlUniformMatrix4fv db "glUniformMatrix4fv",0
+szGlGetUniformLocation db "glGetUniformLocation",0
 
 ;OpenGL Logger Functions
 szGlGetShaderInfoLog db "glGetShaderInfoLog",0
@@ -182,6 +191,7 @@ szBytesRead db "Bytes Read: ",0
 szLogSourceLoadSuccess db "Shader Source Loaded Successfully",0Dh,0Ah,0
 szLogCompileSuccess db "Shader Compiled Successfully",0Dh,0Ah,0
 szLinkShadersSuccess db "Shaders Linked Successfully",0Dh,0Ah,0
+szErrUniformNotFound db "Uniform Variable Not Found",0Dh,0Ah,0
 
 ;OBJ
 

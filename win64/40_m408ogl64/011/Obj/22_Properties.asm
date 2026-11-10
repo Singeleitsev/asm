@@ -114,6 +114,7 @@ call parseFloat
 movss dword ptr[rdi + OFFSET_KS + 4],xmm0
 call parseFloat
 movss dword ptr[rdi + OFFSET_KS + 8],xmm0
+mov dword ptr[rdi + OFFSET_KS + 12],3F800000h ;f32_posOne
 jmp lbl_NextLine
 
 lbl_Token_Ka:
@@ -124,6 +125,7 @@ call parseFloat
 movss dword ptr[rdi + OFFSET_KA + 4],xmm0
 call parseFloat
 movss dword ptr[rdi + OFFSET_KA + 8],xmm0
+mov dword ptr[rdi + OFFSET_KA + 12],3F800000h ;f32_posOne
 jmp lbl_NextLine
 
 lbl_Token_Ke:
@@ -134,6 +136,7 @@ call parseFloat
 movss dword ptr[rdi + OFFSET_KE + 4],xmm0
 call parseFloat
 movss dword ptr[rdi + OFFSET_KE + 8],xmm0
+mov dword ptr[rdi + OFFSET_KE + 12],3F800000h ;f32_posOne
 jmp lbl_NextLine
 
 lbl_Token_Ns:
@@ -151,7 +154,7 @@ jmp lbl_NextLine
 lbl_Token_d:
 add rsi,2 ;skip "d "
 call parseFloat
-movss dword ptr[rdi + OFFSET_D],xmm0
+movss dword ptr[rdi + OFFSET_KD + 12],xmm0 ;Write to Kd.a
 jmp lbl_NextLine
 
 lbl_Token_Tr:
@@ -175,17 +178,13 @@ jmp lbl_NextLine
 lbl_Token_illum:
 add rsi,6 ;skip "illum "
 call parseSignedInt
-mov [rdi + OFFSET_ILLUM],eax
+;mov dword ptr[rdi + OFFSET_TR],eax
+cvtsi2ss xmm0,eax ;int -> float
+movss dword ptr[rdi + OFFSET_ILLUM],xmm0 ;store 1.0f, not 0x00000001
 jmp lbl_NextLine
 
 lbl_Token_Tf:
 add rsi,3 ;skip "Tf "
-call parseFloat
-movss dword ptr[rdi + OFFSET_TF + 0],xmm0
-call parseFloat
-movss dword ptr[rdi + OFFSET_TF + 4],xmm0
-call parseFloat
-movss dword ptr[rdi + OFFSET_TF + 8],xmm0
 jmp lbl_NextLine
 
 lbl_Token_Pc:

@@ -169,6 +169,12 @@ test rax,rax
 jz GetNames_Error
 mov gpGlUniform3f,rax
 
+lea rcx,szGlUniform3fv
+call wglGetProcAddress
+test rax,rax
+jz GetNames_Error
+mov gpGlUniform3fv,rax
+
 lea rcx,szGlGetUniformLocation
 call wglGetProcAddress
 test rax,rax

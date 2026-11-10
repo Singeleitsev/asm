@@ -60,10 +60,10 @@ GL_VERSION: 3.3.0 NVIDIA 610.88
 GL_CONTEXT_PROFILE_MASK: 1
 Loading Vertex Shader Source
 CreateFileA: OK
-File Size: 623
+File Size: 1084
 HeapAlloc: OK
 Reading the File
-Bytes Read: 623
+Bytes Read: 1084
 Shader Source Loaded Successfully
 glCreateShader: OK
 glShaderSource: OK
@@ -72,10 +72,10 @@ glGetShaderiv: OK
 Shader Compiled Successfully
 Loading Fragment Shader Source
 CreateFileA: OK
-File Size: 847
+File Size: 3732
 HeapAlloc: OK
 Reading the File
-Bytes Read: 847
+Bytes Read: 3732
 Shader Source Loaded Successfully
 glCreateShader: OK
 glShaderSource: OK
@@ -85,8 +85,6 @@ Shader Compiled Successfully
 glCreateProgram: OK
 glAttachShader: OK
 glAttachShader: OK
-glBindAttribLocation: OK
-glBindAttribLocation: OK
 glBindAttribLocation: OK
 glLinkProgram: OK
 glGetProgramiv: OK
@@ -107,10 +105,6 @@ glGenVertexArrays: OK
 glBindVertexArray: OK
 glBindBuffer: OK
 glEnableVertexAttribArray: OK
-glEnableVertexAttribArray: OK
-glEnableVertexAttribArray: OK
-glVertexAttribPointer: OK
-glVertexAttribPointer: OK
 glVertexAttribPointer: OK
 glBindVertexArray: OK
 VAO Set Successfully

@@ -17,66 +17,65 @@ call glClear
 mov rcx,gpShaderProgram
 call qword ptr[gpGlUseProgram]
 
-;3. Update Matrices
+;3. Update Uniforms
+lea rcx,mtxCameraVolatile
+lea rdx,vecCamPos
+call GetGlobalOrigin
 
 ;uProjection
-mov rcx,uProjectionLocation
+mov rcx,uLocationProjection
 mov rdx,1
 mov r8,0 ;GL_FALSE (transpose)
 lea r9,mtxProjectionVolatile
 call qword ptr[gpGlUniformMatrix4fv]
 ;uView
-mov rcx,uViewLocation
+mov rcx,uLocationView
 mov rdx,1
 mov r8,0
 lea r9,mtxCameraVolatile
 call qword ptr[gpGlUniformMatrix4fv]
 ;uModel
-mov rcx,uModelLocation
+mov rcx,uLocationModel
 mov rdx,1
 mov r8,0
 lea r9,mtxObjectVolatile
 call qword ptr[gpGlUniformMatrix4fv]
-
-;4. Update the Light Direction
+;uCameraPos
+mov rcx,uLocationCamera
+mov rdx,1
+lea r8,vecCamPos
+call qword ptr[gpGlUniform3fv]
+;uLightDir
 include ogl\81_LightDirection.asm
 
-;5. Bind VAO
-mov rcx,VaoID
-call qword ptr[gpGlBindVertexArray]
-
-;6. Draw the Object
+;4. Draw the Object
 include ogl\82_DrawVBO.asm
 
-;7. Deactivate — revert to fixed function
+;5. Deactivate — revert to fixed function
 xor rcx,rcx
 call qword ptr[gpGlUseProgram]
 
-;8. Unbind VAO
-xor rcx,rcx
-call qword ptr[gpGlBindVertexArray]
-
-;9. Swap the buffers
+;6. Swap the buffers
 mov rcx,ghDC
 call SwapBuffers
 
-;10. Update the Indicators
-;10.1. Screen Frames per Second
+;7. Update the Indicators
+;7.1. Screen Frames per Second
 call ComputeFPS
-;10.2. Application Title
+;7.2. Application Title
 call RefreshTitle
-;10.3. Get the Camera's World Position
+;7.3. Get the Camera's World Position
 lea rcx,mtxCameraVolatile
 lea rdx,vecCamPos
 call GetGlobalOrigin
-;10.4. Get the Object's World Position
+;7.4. Get the Object's World Position
 lea rcx,mtxObjectVolatile
 lea rdx,vecObjPos
 call GetGlobalOrigin 
-;10.5. Status Bar
+;7.5. Status Bar
 call RefreshStatus
 
-;11. Mark the frame as drawn
+;8. Mark the frame as drawn
 mov isRefreshed,1
 
 DrawScene_End:

@@ -29,7 +29,7 @@ call WriteLog
 mov rcx,8892h ;GL_ARRAY_BUFFER
 xor rdx,rdx
 mov edx,gnTotalIndices
-imul edx,edx,STRIDE
+imul rdx,rdx,STRIDE
 mov r8,gpInterleavedVNC
 mov r9,88E4h ;GL_STATIC_DRAW
 call qword ptr[gpGlBufferData]

@@ -11,7 +11,7 @@ mov rcx,ghProcessHeap
 mov rdx,8
 xor r8,r8
 mov r8d,gnTotalIndices
-imul r8,r8,STRIDE ;(3 pos + 3 norm + 4 color/alpha) * 4 bytes = 40 bytes
+imul r8,r8,STRIDE
 call HeapAlloc
 test rax,rax
 jz lbl_Error
@@ -41,7 +41,7 @@ mov gpIndicesTransparent,rax
 
 ;Fill the buffers
 mov gnCurrentFaceIndex,0
-mov rdx,gpBuffer_f ;Current face address
+mov rcx,gpBuffer_f ;rcx = Current face address (to read from)
 mov gnCurrentVertex,0
 mov rax,gpIndicesOpaque
 mov rsiOpaque,rax
@@ -49,30 +49,23 @@ mov rax,gpIndicesTransparent
 mov rsiTransparent,rax
 mov rdi,gpInterleavedVNC ;VNC write pointer
 
-lbl_FaceLoop:
+lbl_NextFace:
 mov eax,gnCurrentFaceIndex
 cmp eax,gnCurrent_f
 jge lbl_Done
 
 ;Color = Kd
-call GetFaceMaterial ;eax = material index, uses ebx
+call GetFaceMaterial ;eax = material index
 cmp eax,gnCount_newmtl
 jb lbl_HaveMat
-xor rax,rax ;Default
+xor rax,rax ;Fall back to Default
 lbl_HaveMat:
 imul rax,rax,SIZE_NEWMTL_METADATA
-add rax,gpBuffer_newmtl
-lea r8,xmmCurrentColor
-mov r9d,dword ptr[rax + OFFSET_KD + 0] ;r
-mov dword ptr[r8+00h],r9d
-mov r9d,dword ptr[rax + OFFSET_KD + 4] ;g
-mov dword ptr[r8+04h],r9d
-mov r9d,dword ptr[rax + OFFSET_KD + 8] ;b
-mov dword ptr[r8+08h],r9d
-mov r9d,dword ptr[rax + OFFSET_D] ;a
-mov dword ptr[r8+0Ch],r9d
+mov rdx,gpBuffer_newmtl
+add rdx,rax ;rdx = Current material address (to read from)
 
-movd xmm0,r9d ;a
+;Get Alpha to xmm0[0]
+movss xmm0,dword ptr[rdx + OFFSET_KD + 12] ;Alpha
 comiss xmm0,f32_posOne
 jb lbl_TransparentFace
 ;Opaque
@@ -80,7 +73,7 @@ mov rsi,rsiOpaque
 call WriteFace
 add gnIndexCountOpaque,3
 mov rsiOpaque,rsi
-jmp lbl_FaceReady
+jmp lbl_FaceDone
 
 lbl_TransparentFace:
 mov rsi,rsiTransparent
@@ -88,11 +81,11 @@ call WriteFace
 add gnIndexCountTransparent,3
 mov rsiTransparent,rsi
 
-lbl_FaceReady:
+lbl_FaceDone:
 ;Advance the Current Face Index and Address
 inc gnCurrentFaceIndex
-add rdx,36 ;((xv,yv,zv), (xvt,yvt,zvt), (xvn,yvn,zvn)) * 4 bytes
-jmp lbl_FaceLoop
+add rcx,SIZE_FACE
+jmp lbl_NextFace
 
 lbl_Done:
 mov eax,gnCurrentVertex

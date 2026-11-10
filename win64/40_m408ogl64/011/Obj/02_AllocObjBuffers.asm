@@ -124,7 +124,7 @@ xor r8,r8
 mov r8d,gnCount_f
 test r8d,r8d
 jz @f
-imul r8d,r8d,36 ;3 vertices * 3 coodrinates * 4 bytes
+imul r8d,r8d,SIZE_FACE
 mov rdx,8 ;HEAP_ZERO_MEMORY
 mov rcx,ghProcessHeap
 call HeapAlloc

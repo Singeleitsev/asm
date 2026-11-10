@@ -47,7 +47,7 @@ jge lbl_NotFound
 
 ;rdx = pointer to this material's name
 mov rax,r10
-imul eax,eax,SIZE_NEWMTL_METADATA
+imul rax,rax,SIZE_NEWMTL_METADATA
 mov rdi,gpBuffer_newmtl
 add rdi,rax
 

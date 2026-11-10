@@ -14,13 +14,16 @@ addps xmm5,xmm6
 addps xmm5,xmm7 ;xmm5 = [?,len*len,len*len,len*len]
 rsqrtps xmm5,xmm5 ;xmm5 = [?,1/len,1/len,1/len]
 mulps xmm4,xmm5 ;xmm4 = [?,Lnz,Lny,Lnx]
+
+jmp @f ;Skip the camera-transform block
+
 movaps xmm5,xmm4 ;xmm5 = [?,Lnz,Lny,Lnx]
 movaps xmm6,xmm4 ;xmm6 = [?,Lnz,Lny,Lnx]
 shufps xmm4,xmm4,0 ;xmm4 = [Lnx,Lnx,Lnx,Lnx]
 shufps xmm5,xmm5,01010101b ;xmm5 = [Lny,Lny,Lny,Lny]
 shufps xmm6,xmm6,10101010b ;xmm6 = [Lnz,Lnz,Lnz,Lnz]
 
-;3. Transform by camera rotation (world > eye)
+;3. Transform by camera rotation (world -> eye)
 ;Broadcast Lx, Ly, Lz and multiply by columns 0,1,2
 ;L_eye.x = m00*Lx + m04*Ly + m08*Lz
 ;L_eye.y = m01*Lx + m05*Ly + m09*Lz
@@ -31,6 +34,7 @@ mulps xmm6,oword ptr[mtxCameraVolatile+8*4] ;[m11 m10 m09 m08]
 addps xmm4,xmm5
 addps xmm4,xmm6
 
+@@:
 ;4. Store the result
 movss xmm1,xmm4
 shufps xmm4,xmm4,00111001b ;Rotate Right by 1 lane (little-endian)
@@ -39,9 +43,10 @@ shufps xmm4,xmm4,00111001b ;Rotate Right by 1 lane (little-endian)
 movss xmm3,xmm4
 
 ;5. Set the light direction uniform
-mov rcx,lightDirLocation
+mov rcx,uLocationLightDir
 ;xmm1 = lightDirX
 ;xmm2 = lightDirY
 ;xmm3 = lightDirZ
 call qword ptr[gpGlUniform3f]
+
 

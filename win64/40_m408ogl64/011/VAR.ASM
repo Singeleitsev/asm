@@ -185,7 +185,7 @@ mtxRodrigues mat4 <>
 mtxBuffer mat4 <>
 
 ;Lighting
-lightPosition vec4 <0.0,12000.0,6000.0,1.0>
+lightPosition vec4 <0.3,-0.8,0.5,1.0>
 
 ;OpenGL Functions from the vendor's driver DLL
 
@@ -228,6 +228,7 @@ gpGlGetAttribLocation dq 0
 ;Shader Uniforms
 gpGlGetUniformLocation dq 0
 gpGlUniform3f dq 0
+gpGlUniform3fv dq 0
 
 ;Application Pointers
 
@@ -249,14 +250,17 @@ gnShaderStatus  dd 0
 gnProgramStatus dd 0
 
 ;Uniforms
-uProjectionLocation dq 0
-uViewLocation dq 0
-uModelLocation dq 0
-uKsLocation dq 0
-uKeLocation dq 0
-uNsLocation dq 0
-uAlphaLocation dq 0
-lightDirLocation dq 0
+uLocationProjection dq 0
+uLocationView dq 0
+uLocationModel dq 0
+uLocationCamera dq 0
+uLocationLightDir dq 0
+uLocationDiffuse dq 0
+uLocationSpecular dq 0
+uLocationAmbient dq 0
+uLocationEmissive dq 0
+uLocationProps0 dq 0
+uLocationProps1 dq 0
 
 ;OpenGL Logger
 gpGlGetShaderInfoLog dq 0
@@ -337,7 +341,6 @@ gnCurrentFaceIndex dd 0
 gnCurrentVertex dd 0
 rsiOpaque dq 0
 rsiTransparent dq 0
-xmmCurrentColor dd 0,0,0,0
 
 ;Final Counter
 gnTotalIndices dd 0

@@ -6,7 +6,7 @@ add rsi,2 ;skip "f "
 ;rdi = gpBuffer_f + gnCurrent_f * 36
 xor rax,rax
 mov eax,gnCurrent_f
-imul eax,eax,36 ;sizeof(face)
+imul eax,eax,SIZE_FACE
 mov rdi,gpBuffer_f
 add rdi,rax
 xor rbx,rbx ;group index 0,1,2
@@ -51,7 +51,7 @@ mov dword ptr[rdi+rbx+8],eax
 ;skip space before next group
 inc rsi
 add rbx,12 ;sizeof(vec3)
-cmp rbx,36 ;sizeof(face)
+cmp rbx,SIZE_FACE
 jl lbl_GroupLoop
 
 ;lbl_End:

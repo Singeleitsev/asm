@@ -1,0 +1,114 @@
+;Numeric
+f32_negOne real4 -1.0
+f32_epsilon real4 0.001 ;One micrometer
+f32_PiOver180 real4 0.017453292519943295
+f32_0p1 real4 0.1
+f32_posOne real4 1.0
+
+;Numeric
+EPS equ 0.001 ;Epsilon
+
+;Default Sizes
+DEFAULT_WND_WIDTH equ 800
+DEFAULT_WND_HEIGHT equ 600
+MIN_WND_WIDTH  equ 480
+MIN_WND_HEIGHT equ 360
+
+;Menu
+IDM_FILE_SAVE equ 103h
+IDM_FILE_EXIT equ 109h
+IDM_HELP_ABOUT equ 901h
+
+;Status Bar
+STATUS_BAR_PARTS equ 6
+
+;Mouse Modes
+MOUSE_MODE_FREE equ 0
+MOUSE_MODE_CAMERA_ROTATE equ 1
+MOUSE_MODE_CAMERA_DRAG equ 2
+MOUSE_MODE_OBJECT_ROTATE equ 3
+
+;Shaders
+SHADER_INDEX_VERTEX equ 0
+SHADER_INDEX_FRAGMENT equ 1
+
+;Object
+STRIDE equ 80h ;std140
+;[00] pos.x [04] pos.y [08] pos.z [0C] pos.w (loc 0) aPos
+;[10] nrm.x [14] nrm.y [18] nrm.z [1C] nrm.w (loc 1) aNormal
+;[20] Kd.r  [24] Kd.g  [28] Kd.b  [2C] d     (loc 2) aDiffuse
+;[30] Ks.r  [34] Ks.g  [38] Ks.b  [3C] Ks.a  (loc 3) aSpecular
+;[40] Ka.r  [44] Ka.g  [48] Ka.b  [4C] Ka.a  (loc 4) aAmbient
+;[50] Ke.r  [54] Ke.g  [58] Ke.b  [5C] Ke.a  (loc 5) aEmissive
+;[60] Ns    [64] Ni    [68] Tr    [6C] Pr    (loc 6) aProps0
+;[70] Pm    [74] Pc    [78] Pcr   [7C] illum (loc 7) aProps1
+
+DEFAULT_NAME_LENGTH equ 40h ;63 bytes + null-terminator
+;Material Metadata
+OFFSET_MATERIAL_NAME equ 0
+;Diffuse color (vec3, Kd)
+OFFSET_KD equ DEFAULT_NAME_LENGTH + 0
+;Dissolve / opacity (float, d)
+OFFSET_D equ DEFAULT_NAME_LENGTH + 0Ch
+;Specular color (vec4, Ks)
+OFFSET_KS equ DEFAULT_NAME_LENGTH + 10h
+;Ambient color (vec4, Ka)
+OFFSET_KA equ DEFAULT_NAME_LENGTH + 20h
+;Emission color (vec4, Ke)
+OFFSET_KE equ DEFAULT_NAME_LENGTH + 30h
+;Shininess / specular exponent (float, Ns)
+OFFSET_NS equ DEFAULT_NAME_LENGTH + 40h
+;Index of refraction (float, Ni)
+OFFSET_NI equ DEFAULT_NAME_LENGTH + 44h
+;Transparency / inverse of d (float, Tr)
+OFFSET_TR equ DEFAULT_NAME_LENGTH + 48h
+;Roughness (float, Pr)
+OFFSET_PR equ DEFAULT_NAME_LENGTH + 4Ch
+;Metallic (float, Pm)
+OFFSET_PM equ DEFAULT_NAME_LENGTH + 50h
+;Clearcoat / sheen (float, Pc)
+OFFSET_PC equ DEFAULT_NAME_LENGTH + 54h
+;Clearcoat roughness (float, Pcr)
+OFFSET_PCR equ DEFAULT_NAME_LENGTH + 58h
+;Illumination model (GL_INT, illum)
+OFFSET_ILLUM equ DEFAULT_NAME_LENGTH + 5Ch
+;Total Size
+SIZE_NEWMTL_METADATA equ DEFAULT_NAME_LENGTH + 60h
+
+;MtlLib Metadata
+OFFSET_MTLLIB_NAME equ 0
+OFFSET_MTLLIB_FIRST_MATERIAL_INDEX equ DEFAULT_NAME_LENGTH + 8
+OFFSET_MTLLIB_LAST_MATERIAL_INDEX equ DEFAULT_NAME_LENGTH + 0Ch
+SIZE_MTLLIB_METADATA equ DEFAULT_NAME_LENGTH + 10h
+
+;Object Metadata
+OFFSET_OBJECT_NAME equ 0
+OFFSET_OBJECT_FIRST_GROUP_INDEX equ DEFAULT_NAME_LENGTH + 8
+OFFSET_OBJECT_LAST_GROUP_INDEX equ DEFAULT_NAME_LENGTH + 0Ch
+SIZE_OBJECT_METADATA equ DEFAULT_NAME_LENGTH + 10h
+
+;Group Metadata
+OFFSET_GROUP_NAME equ 0
+OFFSET_GROUP_HOST_OBJECT_INDEX equ DEFAULT_NAME_LENGTH + 4
+OFFSET_GROUP_FIRST_USEMTL_INDEX equ DEFAULT_NAME_LENGTH + 8
+OFFSET_GROUP_LAST_USEMTL_INDEX equ DEFAULT_NAME_LENGTH + 0Ch
+SIZE_GROUP_METADATA equ DEFAULT_NAME_LENGTH + 10h
+
+;UseMtl Metadata
+OFFSET_USEMTL_NAME equ 0
+OFFSET_USEMTL_HOST_GROUP_INDEX equ DEFAULT_NAME_LENGTH + 4
+OFFSET_USEMTL_FIRST_SMOOTHING_INDEX equ DEFAULT_NAME_LENGTH + 8
+OFFSET_USEMTL_LAST_SMOOTHING_INDEX equ DEFAULT_NAME_LENGTH + 0Ch
+SIZE_USEMTL_METADATA equ DEFAULT_NAME_LENGTH + 10h
+
+;Smoothing Groups
+OFFSET_SMOOTHING_NAME equ 0
+OFFSET_SMOOTHING_HOST_USEMTL_INDEX equ DEFAULT_NAME_LENGTH + 4
+OFFSET_SMOOTHING_FIRST_FACE_INDEX equ DEFAULT_NAME_LENGTH + 8
+OFFSET_SMOOTHING_LAST_FACE_INDEX equ DEFAULT_NAME_LENGTH + 0Ch
+SIZE_SMOOTHING_METADATA equ DEFAULT_NAME_LENGTH + 10h
+
+;Faces
+SIZE_FACE equ 24h ;3 vertices * 3 coodrinates * 4 bytes
+
+

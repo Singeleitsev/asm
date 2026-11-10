@@ -37,40 +37,58 @@ lea rcx,szOK
 call WriteLog
 
 ;3. Bind Attributes
-
-;3.1. Bind aPos to attribute location 0
 lea rcx,szGlBindAttribLocation
 call WriteLog
 
+;3.1. Bind aPos to Attribute location 0
 mov rcx,gpShaderProgram
 xor rdx,rdx ;Attribute Location = 0
 lea r8,szAttributePos
 call qword ptr[gpGlBindAttribLocation]
 
-lea rcx,szOK
-call WriteLog
-
-;3.2. Bind aNormal to attribute location 1
-lea rcx,szGlBindAttribLocation
-call WriteLog
-
+;3.2. Bind aNormal to Attribute location 1
 mov rcx,gpShaderProgram
 mov rdx,1 ;Attribute Location
 lea r8,szAttributeNormal
 call qword ptr[gpGlBindAttribLocation]
 
-lea rcx,szOK
-call WriteLog
-
-;3.3. Bind aColor to attribute location 2
-lea rcx,szGlBindAttribLocation
-call WriteLog
-
+;3.3. Bind aDiffuse to Attribute location 2
 mov rcx,gpShaderProgram
 mov rdx,2 ;Attribute Location
-lea r8,szAttributeColor
+lea r8,szAttributeDiffuse
 call qword ptr[gpGlBindAttribLocation]
 
+;3.4. Bind aSpecular to Attribute location 3
+mov rcx,gpShaderProgram
+mov rdx,3 ;Attribute Location
+lea r8,szAttributeSpecular
+call qword ptr[gpGlBindAttribLocation]
+
+;3.5. Bind aAmbient to Attribute location 4
+mov rcx,gpShaderProgram
+mov rdx,4 ;Attribute Location
+lea r8,szAttributeAmbient
+call qword ptr[gpGlBindAttribLocation]
+
+;3.6. Bind aEmissive to Attribute location 5
+mov rcx,gpShaderProgram
+mov rdx,5 ;Attribute Location
+lea r8,szAttributeEmissive
+call qword ptr[gpGlBindAttribLocation]
+
+;3.7. Bind aProps0 to Attribute location 6
+mov rcx,gpShaderProgram
+mov rdx,6 ;Attribute Location
+lea r8,szAttributeProps0
+call qword ptr[gpGlBindAttribLocation]
+
+;3.8. Bind aProps1 to Attribute location 7
+mov rcx,gpShaderProgram
+mov rdx,7 ;Attribute Location
+lea r8,szAttributeProps1
+call qword ptr[gpGlBindAttribLocation]
+
+;3.9. Report Success
 lea rcx,szOK
 call WriteLog
 
@@ -93,7 +111,7 @@ mov rdx,8B82h ;GL_LINK_STATUS
 lea r8,gnProgramStatus
 call qword ptr[gpGlGetProgramiv]
 cmp gnProgramStatus,0
-je LinkShaders_Error
+je lbl_GetProgram_Error
 
 lea rcx,szOK
 call WriteLog
@@ -121,68 +139,61 @@ lea rcx,szOK
 call WriteLog
 
 ;7. Uniforms
-
-;7.1.  Projection
 lea rcx,szGlGetUniformLocation
 call WriteLog
 
+;7.1.1. Projection
 mov rcx,gpShaderProgram
 lea rdx,szUniformProjection
 call qword ptr[gpGlGetUniformLocation]
-mov uProjectionLocation,rax
+cmp rax,-1
+je lbl_UniformLocation_Error
+mov uLocationProjection,rax
 
-lea rcx,szOK
-call WriteLog
-
-;7.2. View
+;7.1.2. View
 mov rcx,gpShaderProgram
 lea rdx,szUniformView
 call qword ptr[gpGlGetUniformLocation]
-mov uViewLocation,rax
+cmp rax,-1
+je lbl_UniformLocation_Error
+mov uLocationView,rax
 
-;7.3. Model
+;7.1.3. Model
 mov rcx,gpShaderProgram
 lea rdx,szUniformModel
 call qword ptr[gpGlGetUniformLocation]
-mov uModelLocation,rax
+cmp rax,-1
+je lbl_UniformLocation_Error
+mov uLocationModel,rax
 
-;7.4. Light
+;7.1.4. Camera Position
+mov rcx,gpShaderProgram
+lea rdx,szUniformCamera
+call qword ptr[gpGlGetUniformLocation]
+cmp rax,-1
+je lbl_UniformLocation_Error
+mov uLocationCamera,rax
+
+;7.2. Light Direction
 mov rcx,gpShaderProgram
 lea rdx,szUniformLightDir
 call qword ptr[gpGlGetUniformLocation]
-mov lightDirLocation,rax
+cmp rax,-1
+je lbl_UniformLocation_Error
+mov uLocationLightDir,rax
 
-;7.5. Ks
-mov rcx,gpShaderProgram
-lea rdx,szUniformKs
-call qword ptr[gpGlGetUniformLocation]
-mov uKsLocation,rax
+;7.3. Report Uniform Success
+lea rcx,szOK
+call WriteLog
 
-;7.6. Ke
-mov rcx,gpShaderProgram
-lea rdx,szUniformKe
-call qword ptr[gpGlGetUniformLocation]
-mov uKeLocation,rax
-
-;7.7. Ns
-mov rcx,gpShaderProgram
-lea rdx,szUniformNs
-call qword ptr[gpGlGetUniformLocation]
-mov uNsLocation,rax
-
-;7.8. Alpha
-mov rcx,gpShaderProgram
-lea rdx,szUniformAlpha
-call qword ptr[gpGlGetUniformLocation]
-mov uAlphaLocation,rax
-
-;8. Report Success
+;8. Report General Success
 lea rcx,szLinkShadersSuccess
 call WriteLog
 
-jmp LinkShaders_End
+jmp lbl_End
 
-LinkShaders_Error:
+;Errors
+lbl_GetProgram_Error:
 mov rcx,gpShaderProgram
 mov rdx,1023 ;maxLength
 lea r8,shaderLogLength
@@ -192,8 +203,13 @@ lea rcx,shaderLogBuffer
 call WriteLog
 lea rcx,szCRLF
 call WriteLog
+jmp lbl_End
 
-LinkShaders_End:
+lbl_UniformLocation_Error:
+LOG_TEXT szErrUniformNotFound
+;jmp lbl_End
+
+lbl_End:
 EPILOG
 LinkShaders endp
 
