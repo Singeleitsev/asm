@@ -1,0 +1,19 @@
+;Log Results
+push rcx
+push rdx
+push rsi
+push rdi
+LOG_TEXT szCRLF
+mov ecx,dword ptr[rdi+00h]
+call WriteHexToLog
+LOG_TEXT szCRLF
+mov ecx,dword ptr[rdi+04h]
+call WriteHexToLog
+LOG_TEXT szCRLF
+mov ecx,dword ptr[rdi+08h]
+call WriteHexToLog
+LOG_TEXT szCRLF
+pop rdi
+pop rsi
+pop rdx
+pop rcx

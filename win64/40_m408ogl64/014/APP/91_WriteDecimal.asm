@@ -1,3 +1,7 @@
+;-------------------------------------
+;WriteHexToLog - log a decimal value
+;Input: ecx = value
+;------------------
 WriteDecimalToLog proc nNumber:QWORD
 LOCAL buffer[32]:BYTE
 

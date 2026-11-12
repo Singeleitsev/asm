@@ -45,6 +45,7 @@ include app\19_Close.asm
 include app\80_FPS.asm
 include app\90_Logger.asm
 include app\91_WriteDecimal.asm
+include app\92_WriteHexToLog.asm
 ;include app\98_SpellRAX.asm
 include app\99_SpellError.asm
 
@@ -73,15 +74,15 @@ include ogl\80_DrawScene.asm
 include ogl\90_CloseGL.asm
 
 include Obj\00_ReadObjFile.asm
-include Obj\01_CountObjEntities.asm
+include Obj\01_CountObjEntities_GPR.asm
 include Obj\02_AllocObjBuffers.asm
 include Obj\10_ReadMtlFile.asm
-include Obj\11_CountMtlEntities.asm
+include Obj\11_CountMtlEntities_GPR.asm
 include Obj\12_AllocMtlBuffers.asm
-include Obj\20_ParseMtlData.asm
+include Obj\20_ParseMtlData_GPR.asm
 include Obj\21_Parse_newmtl.asm
 include Obj\22_Properties.asm
-include Obj\30_ParseObjData.asm
+include Obj\30_ParseObjData_GPR.asm
 include Obj\31_Parse_v.asm
 include Obj\32_Parse_vn.asm
 include Obj\33_Parse_vt.asm

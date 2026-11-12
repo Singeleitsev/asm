@@ -8,30 +8,26 @@ mov gnCurrent_newmtl,eax ;Materials
 ;Set the Local Pointer
 mov rsi,gpMtlDataStart ;pCurrentPosition = gpMtlDataStart
 
-lbl_FindToken: ;Read xmmword
+lbl_FindToken:
+mov al,byte ptr[rsi] ;pCurrentPosition
+test al,al
+jz lbl_Success
+cmp al,6Eh ;'n' - Left ASCII Range Border
+jl lbl_NextByte
+cmp al,6Eh ;'n' - Right ASCII Range Border
+jg lbl_NextByte
+jmp lbl_ReadToken
+
+lbl_NextByte:
+inc rsi ;pCurrentPosition
 cmp rsi,gpMtlDataEnd
-jge lbl_Success
-
-;Pattern: ASCII code
-;Arranged by Probability: 'n', '#'
-mov rax,236Eh ;little-endian: #n
-movq xmm0,rax
-;Compare bytes at [rsi] against pattern in XMM0
-;Mode 0: equal_any, positive polarity, implicit length
-vpcmpistri xmm0,xmmword ptr[rsi],0
-jc lbl_ReadToken
-
-add rsi,10h ;Compute the next address to check
-jmp lbl_FindToken ;Next xmmword
+jb lbl_FindToken
+jmp lbl_Success
 
 lbl_ReadToken:
-;rcx contains the index of the first found character
-add rsi,rcx ;Compute the absolute address
 lea rax,[rsi+7] ;Room check
 cmp rax,gpMtlDataEnd
 ja lbl_Error
-
-
 
 ;Token detection
 mov eax,dword ptr[rsi] ;pCurrentPosition
@@ -74,7 +70,6 @@ je lbl_FindToken
 
 inc rsi ;pCurrentPosition
 jmp lbl_NextLine
-
 
 
 ;Success

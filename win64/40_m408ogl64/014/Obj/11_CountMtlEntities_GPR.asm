@@ -9,45 +9,36 @@ mov gnCount_newmtl,eax ;Material Libraries
 mov rsi,gpMtlDataStart ;pCurrentPosition = gpMtlDataStart
 mov rdi,gpMtlDataEnd
 
-lbl_FindToken: ;Read xmmword
-cmp rsi,gpMtlDataEnd
-jge lbl_Success
+lbl_FindToken:
+mov al,byte ptr[rsi] ;pCurrentPosition
+test al,al
+jz lbl_Success
+cmp al,6Eh ;'n' - Left ASCII Range Border
+jl lbl_NextByte
+cmp al,6Eh ;'n' - Right ASCII Range Border
+jg lbl_NextByte
+jmp lbl_ReadToken
 
-;Pattern: ASCII code
-;Arranged by Probability: 'n', '#'
-mov rax,236Eh ;little-endian: #n
-movq xmm0,rax
-;Compare bytes at [rsi] against pattern in XMM0
-;Mode 0: equal_any, positive polarity, implicit length
-vpcmpistri xmm0,xmmword ptr[rsi],0
-jc lbl_ReadToken
-
-add rsi,10h ;Compute the next address to check
-jmp lbl_FindToken ;Next xmmword
+lbl_NextByte:
+inc rsi ;pCurrentPosition
+cmp rsi,rdi ;gpMtlDataEnd
+jb lbl_FindToken
+jmp lbl_Success
 
 lbl_ReadToken:
-;rcx contains the index of the first found character
-add rsi,rcx ;Compute the absolute address
-lea rax,[rsi+3] ;Room check
+lea rax,[rsi+7] ;Room check
 cmp rax,rdi ;gpMtlDataEnd
 ja lbl_Error
 
-
-
-;Token detection
+;Token detection. Arranged by Probability
 mov eax,dword ptr[rsi] ;pCurrentPosition
-
 cmp eax,6D77656Eh ;"newm" in little-endian
-je lbl_Branch_newm
+jne lbl_NextLine
 
-jmp lbl_NextLine
-
-
-
-lbl_Branch_newm:
 mov ax,word ptr[rsi+4] ;pCurrentPosition
 cmp ax,6C74h ;"tl" little-endian
 je lbl_Token_newmtl
+
 jmp lbl_NextLine
 
 
@@ -56,7 +47,7 @@ lbl_Token_newmtl:
 ;Count material: "newmtl"
 inc gnCount_newmtl
 add rsi,7 ;"newmtl" + delimiter
-;jmp lbl_NextLine
+jmp lbl_NextLine
 
 
 

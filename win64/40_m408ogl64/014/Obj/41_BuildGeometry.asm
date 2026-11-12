@@ -41,8 +41,10 @@ mov gpIndicesTransparent,rax
 
 ;Fill the buffers
 mov gnCurrentFaceIndex,0
-mov rcx,gpBuffer_f ;rcx = Current face address (to read from)
 mov gnCurrentVertex,0
+mov gnIndexCountOpaque,0
+mov gnIndexCountTransparent,0
+mov rcx,gpBuffer_f ;rcx = Current face address (to read from)
 mov rax,gpIndicesOpaque
 mov rsiOpaque,rax
 mov rax,gpIndicesTransparent

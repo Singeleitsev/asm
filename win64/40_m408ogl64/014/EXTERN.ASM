@@ -33,6 +33,7 @@ ResetScene PROTO
 WndProc PROTO hWnd:QWORD, uMsg:QWORD, wParam:QWORD, lParam:QWORD
 WriteLog PROTO pszText:QWORD
 WriteDecimalToLog PROTO nNumber:QWORD
+WriteHexToLog PROTO nNumber:QWORD
 
 ;Kernel32
 CloseHandle PROTO hObject:QWORD

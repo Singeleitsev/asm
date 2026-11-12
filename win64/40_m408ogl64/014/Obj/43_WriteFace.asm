@@ -39,7 +39,7 @@ mov r9d,dword ptr [rax+4]
 mov dword ptr [rdi+14h],r9d
 mov r9d,dword ptr [rax+8]
 mov dword ptr [rdi+18h],r9d
-mov dword ptr [rdi+1Ch],0 
+mov dword ptr [rdi+1Ch],0
 
 ;Kd (vec4) - diffuse Color with Aplha
 movups xmm2,xmmword ptr [rdx + OFFSET_KD]
@@ -77,6 +77,9 @@ add rbx,12 ;sizeof(vec3)
 cmp rbx,SIZE_FACE
 jl lbl_GroupLoop
 
+;jmp lbl_End
+
+lbl_End:
 EPILOG
 WriteFace endp
 

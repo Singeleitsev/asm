@@ -17,31 +17,26 @@ mov gnCount_f,eax ;Faces
 mov rsi,gpObjDataStart ;pCurrentPosition = gpObjDataStart
 mov rdi,gpObjDataEnd
 
+lbl_FindToken:
+mov al,byte ptr[rsi] ;pCurrentPosition
+test al,al
+jz lbl_Success
+cmp al,66h ;'f'
+jl lbl_NextByte
+cmp al,76h ;'v'
+jg lbl_NextByte
+jmp lbl_ReadToken
 
-lbl_FindToken: ;Read xmmword
-cmp rsi,gpObjDataEnd
-jge lbl_Success
+lbl_NextByte:
+inc rsi ;pCurrentPosition
+cmp rsi,rdi ;gpObjDataEnd
+jb lbl_FindToken
+jmp lbl_Success
 
-;Pattern: ASCII code
-;Arranged by Probability: 'm', '#', 's', 'u', 'o', 'g', 'f', 'v'
-mov rax,7666676F7573236Dh ;little-endian: vfgous#m
-movq xmm0,rax
-;Compare bytes at [rsi] against pattern in XMM0
-;Mode 0: equal_any, positive polarity, implicit length
-vpcmpistri xmm0,xmmword ptr[rsi],0
-jc lbl_ReadToken
- 
-add rsi,10h ;Compute the next address to check
-jmp lbl_FindToken ;Next xmmword
- 
 lbl_ReadToken:
-;rcx contains the index of the first found character
-add rsi,rcx ;Compute the absolute address
 lea rax,[rsi+3] ;Room check
 cmp rax,rdi ;gpObjDataEnd
 ja lbl_Error
-
-
 
 ;Token detection. Arranged by Probability
 mov ax,word ptr[rsi] ;pCurrentPosition
@@ -187,33 +182,21 @@ jmp lbl_NextLine
 
 
 
-
 lbl_NextLine:
 cmp rsi,rdi ;gpObjDataEnd
 jae lbl_Success
 
-lbl_FindEndOfLine:
-cmp rsi,gpObjDataEnd
-jge lbl_Success
+mov ax,word ptr[rsi] ;pCurrentPosition
 
-;Pattern: ASCII code: Carriage Return = 0Dh, Line Feed = 0Ah
-mov rax,0Ah ;Chech for LF alone
-movq xmm0,rax
-;Compare bytes at [rsi] against pattern in XMM0
-;Mode 0: equal_any, positive polarity, implicit length
-vpcmpistri xmm0,xmmword ptr[rsi],0
-jz lbl_Success
-jc lbl_EndOfLineFound
- 
-add rsi,10h ;Compute the next address to check
-jmp lbl_FindEndOfLine
- 
-lbl_EndOfLineFound:
-;rcx contains the index of the first found character
-add rsi,rcx ;Compute the absolute address
-cmp rsi,gpObjDataEnd
-jge lbl_Success
-jmp lbl_FindToken
+cmp ax,0A0Dh ;0Dh,0Ah in little-endian
+je lbl_FindToken
+cmp al,0Ah ;Check for LF alone
+je lbl_FindToken
+cmp al,0Dh ;Check for CR alone
+je lbl_FindToken
+
+inc rsi ;pCurrentPosition
+jmp lbl_NextLine
 
 
 
